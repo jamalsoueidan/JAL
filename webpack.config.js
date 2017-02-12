@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 // https://github.com/philolo1/webpack-react-hot-reloading-sample
 const r = path.resolve
@@ -17,9 +18,6 @@ module.exports = {
     path: r(__dirname, './dist'),
     filename: 'bundle.js',
   },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin()
-  ],
   devServer: {
     historyApiFallback: true,
     inline: false,
@@ -38,13 +36,26 @@ module.exports = {
         exclude: [/node_modules/]
       },
       {
-        test: /\.html$/,
-        loader: "file?name=[name].[ext]"
-      }
+        test: /\.css$/,
+        use: ExtractTextPlugin.extract({
+          fallback: "style-loader",
+          use: [
+            {
+              loader: "css-loader",
+              options: { importLoaders: 1, modules: false },
+            },
+            "postcss-loader"
+          ]
+        })
+      },
     ],
   },
   resolve: {
     extensions: ['.js', '.jsx', '.sass'],
     modules: [r(__dirname, './src/components'), 'node_modules']
-  }
+  },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new ExtractTextPlugin("styles.css")
+  ]
 };
