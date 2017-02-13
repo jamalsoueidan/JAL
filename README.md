@@ -1,4 +1,4 @@
-# Jamal Application Library
+# React Application Library
 
 Developing some components that I can reuse on different projects I'm developing for customers!
 
@@ -6,4 +6,4 @@ Developing some components that I can reuse on different projects I'm developing
 
 - [Dropdown]
 
-[Dropdown]: https://github.com/jamalsoueidan/JAL/tree/master/src/components/dropdown
+[Dropdown]: https://github.com/jamalsoueidan/RAL/tree/master/src/components/dropdown

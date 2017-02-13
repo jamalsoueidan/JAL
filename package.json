@@ -1,7 +1,7 @@
 {
-  "name": "jal",
+  "name": "ral",
   "version": "1.0.0",
-  "description": "Library that contains components",
+  "description": "React application library that contains components",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --progress --colors"
