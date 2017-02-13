@@ -1,5 +1,5 @@
 {
-  "name": "ral",
+  "name": "react-application-library",
   "version": "1.0.0",
   "description": "React application library that contains components",
   "main": "index.js",
