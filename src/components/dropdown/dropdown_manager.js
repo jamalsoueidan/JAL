@@ -1,4 +1,6 @@
-const DropdownManager = class {
+import { EventEmitter } from 'fbemitter'
+
+class DropdownManager extends EventEmitter {
   toggle(options) {
     const exist = this.current && this.current.element === options.element
     if(exist) {
@@ -12,6 +14,7 @@ const DropdownManager = class {
     let element = this.current.element
     element.hide();
     this.current = null;
+    this.emit('hide', this)
   }
 
   show(options) {
@@ -21,6 +24,7 @@ const DropdownManager = class {
 
     this.current = options
     this.current.element.show(options.target)
+    this.emit('show', this)
   }
 
   static getInstance() {
