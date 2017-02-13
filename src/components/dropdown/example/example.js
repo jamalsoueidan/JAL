@@ -49,15 +49,30 @@ const LinkManager = class extends React.Component {
 
 
 export default class extends React.Component {
-  componentDidMount() {
-    document.addEventListener('click', this.documentClick.bind(this))
+  constructor() {
+    super(...arguments)
+    this.onClick = this.onClick.bind(this);
   }
 
-  documentClick(evt) {
+  componentDidMount() {
+    DropdownManager.getInstance().addListener('show', this.show.bind(this))
+  }
+
+  componentWillUnmount() {
+    DropdownManager.getInstance().removeListener('show', this.show.bind(this))
+    document.removeEventListener('click', this.onClick, false)
+  }
+
+  show() {
+    document.addEventListener('click', this.onClick, false)
+  }
+
+  onClick(evt) {
     let d = DropdownManager.getInstance()
     if (d.current && evt.target !== d.current.target) {
       d.hide();
     }
+    document.removeEventListener('click', this.onClick, false)
   }
 
   render() {
