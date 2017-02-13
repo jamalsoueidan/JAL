@@ -26,7 +26,7 @@ const LinkManager = class extends React.Component {
 }
 ```
 
-If you like to have more control over the element use directly Dropdown!
+If you like to have more control over the dropdown element, but use this only if you would like to be able to show more then one dropdown at the time.
 
 ```js
 const LinkControl = class extends React.Component {
@@ -60,7 +60,7 @@ const LinkControl = class extends React.Component {
 }
 ```
 
-Last thing, if you would like to have the option to click anywhere on the screne to hide any dropdown, you can listen on dropdownManager.
+Last thing, if you would like to have the option to click anywhere on the screen to hide any dropdown, you can listen on dropdownManager, keep in mind you have to toggle the dropdowns using dropdownManger.toggle method! 
 
 ```js
 export default class extends React.Component {
