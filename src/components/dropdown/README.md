@@ -60,6 +60,42 @@ const LinkControl = class extends React.Component {
 }
 ```
 
+Last thing, if you would like to have the option to click anywhere on the screne to hide any dropdown, you can listen on dropdownManager.
+
+```js
+export default class extends React.Component {
+  constructor() {
+    super(...arguments)
+    this.onClick = this.onClick.bind(this);
+  }
+
+  componentDidMount() {
+    DropdownManager.getInstance().addListener('show', this.show.bind(this))
+  }
+
+  componentWillUnmount() {
+    DropdownManager.getInstance().removeListener('show', this.show.bind(this))
+    document.removeEventListener('click', this.onClick, false)
+  }
+
+  show() {
+    document.addEventListener('click', this.onClick, false)
+  }
+
+  onClick(evt) {
+    let d = DropdownManager.getInstance()
+    if (d.current && evt.target !== d.current.target) {
+      d.hide();
+    }
+    document.removeEventListener('click', this.onClick, false)
+  }
+
+  render() {
+    ...
+  }
+}
+```
+
 ## Customization
 
 Depending on where the dropdown element will be positioned, the element will get special className (.dropdown.centerTop, .dropdown.centerBottom, .dropdown.leftTop etc).
