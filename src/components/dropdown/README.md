@@ -16,10 +16,12 @@ const LinkManager = class extends React.Component {
   }
 
   render() {
-    return(<div>
-        <div ref="link" className="link" style={this.props.style} onClick={this.onClick.bind(this)}>{this.props.name}</div>
-        <Dropdown ref="dropdown">{this.props.children}</Dropdown>
-        </div>)
+    return(
+      <div>
+        <div ref="link" onClick={this.onClick.bind(this)}>Open dropdown</div>
+        <Dropdown ref="dropdown">example</Dropdown>
+      </div>
+    )
   }
 }
 ```
@@ -48,10 +50,12 @@ const LinkControl = class extends React.Component {
   }
 
   render() {
-    return(<div>
-        <div ref="link" className="link" style={this.props.style} onClick={this.onClick.bind(this)}>{this.props.name}</div>
-        <Dropdown ref="dropdown">{this.props.children}</Dropdown>
-        </div>)
+    return(
+      <div>
+        <div ref="link" onClick={this.onClick.bind(this)}>Open dropdown</div>
+        <Dropdown ref="dropdown">example</Dropdown>
+      </div>
+    )
   }
 }
 ```
@@ -60,4 +64,4 @@ const LinkControl = class extends React.Component {
 
 Depending on where the dropdown element will be positioned, the element will get special className (.dropdown.centerTop, .dropdown.centerBottom, .dropdown.leftTop etc).
 
-You can style those and get the look and feel you need! 
+You can style those and get the look and feel you need!
