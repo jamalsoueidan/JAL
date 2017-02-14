@@ -101,3 +101,15 @@ export default class extends React.Component {
 Depending on where the dropdown element will be positioned, the element will get special className (.dropdown.centerTop, .dropdown.centerBottom, .dropdown.leftTop etc).
 
 You can style those and get the look and feel you need!
+
+## TODO
+
+- High order on dropdown component, 
+
+class extends With(Dropdown)
+or
+Dropdown(Component)
+
+- change options 
+
+target, and dropdown
