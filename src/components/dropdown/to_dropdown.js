@@ -29,7 +29,7 @@ export default (WrapperComponent) => {
       this.target = target
       this.position = new Position({
         target: this.target,
-        element: this
+        dropdown: this
       })
       this.calculateStyle();
     }

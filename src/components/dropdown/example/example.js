@@ -36,7 +36,7 @@ const LinkControl = class extends React.Component {
 const LinkManager = class extends React.Component {
   onClick(evt) {
     DropdownManager.toggle({
-      element: this.refs.dropdown,
+      dropdown: this.refs.dropdown,
       target: this.refs.link
     })
   }

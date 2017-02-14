@@ -2,7 +2,7 @@ import { EventEmitter } from 'fbemitter'
 
 class DropdownManager extends EventEmitter {
   toggle(options) {
-    const exist = this.current && this.current.element === options.element
+    const exist = this.current && this.current.dropdown === options.dropdown
     if(exist) {
       this.hide();
     } else {
@@ -11,19 +11,19 @@ class DropdownManager extends EventEmitter {
   }
 
   hide() {
-    let element = this.current.element
-    element.hide();
+    let dropdown = this.current.dropdown
+    dropdown.hide();
     this.current = null;
     this.emit('hide', this)
   }
 
   show(options) {
     if(this.current) {
-      this.current.element.hide();
+      this.current.dropdown.hide();
     }
 
     this.current = options
-    this.current.element.show(options.target)
+    this.current.dropdown.show(options.target)
     this.emit('show', this)
   }
 

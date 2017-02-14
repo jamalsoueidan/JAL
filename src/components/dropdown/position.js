@@ -12,12 +12,12 @@ export default class {
   }
 
   getStyle() {
-    let { target, element } = this.options;
+    let { target, dropdown } = this.options;
     target = findDOMNode(target).getBoundingClientRect()
-    element = findDOMNode(element).getBoundingClientRect()
+    dropdown = findDOMNode(dropdown).getBoundingClientRect()
 
     // DEFAULT BOTTOM/CENTER
-    let left = target.left + ( target.width / 2 ) - ( element.width / 2 );
+    let left = target.left + ( target.width / 2 ) - ( dropdown.width / 2 );
     let top  = target.bottom;
 
     this.className = "center"
@@ -28,17 +28,17 @@ export default class {
     }
 
     // out right side?
-    let outRight = left+element.width > window.innerWidth
+    let outRight = left+dropdown.width > window.innerWidth
     if ( outRight ) {
       this.className = "right"
-      left = window.innerWidth - element.width
+      left = window.innerWidth - dropdown.width
     }
 
     // out bottom?
-    let outBottom = top+element.height > window.innerHeight
+    let outBottom = top+dropdown.height > window.innerHeight
     if ( outBottom ) {
       this.className += "Top"
-      top = target.top - element.height
+      top = target.top - dropdown.height
     } else {
       this.className += "Bottom"
     }
