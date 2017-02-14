@@ -46,7 +46,7 @@ export default class {
     return {
       left: left,
       top: top,
-      position: 'absolute'
+      position: 'fixed'
     }
   }
 }

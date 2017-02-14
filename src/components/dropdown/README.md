@@ -60,7 +60,7 @@ const LinkControl = class extends React.Component {
 }
 ```
 
-Last thing, if you would like to have the option to click anywhere on the screen to hide any dropdown, you can listen on dropdownManager, keep in mind you have to toggle the dropdowns using dropdownManger.toggle method! 
+Last thing, if you would like to have the option to click anywhere on the screen to hide any dropdown, you can listen on dropdownManager, keep in mind you have to toggle the dropdowns using dropdownManger.toggle method!
 
 ```js
 export default class extends React.Component {
@@ -104,12 +104,5 @@ You can style those and get the look and feel you need!
 
 ## TODO
 
-- High order on dropdown component, 
-
-class extends With(Dropdown)
-or
-Dropdown(Component)
-
-- change options 
-
+- change options
 target, and dropdown
