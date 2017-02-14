@@ -16,11 +16,9 @@ export default class {
     target = findDOMNode(target).getBoundingClientRect()
     element = findDOMNode(element).getBoundingClientRect()
 
-    const space = 6
-
     // DEFAULT BOTTOM/CENTER
     let left = target.left + ( target.width / 2 ) - ( element.width / 2 );
-    let top  = target.bottom + space;
+    let top  = target.bottom;
 
     this.className = "center"
     // out left side?
@@ -40,7 +38,7 @@ export default class {
     let outBottom = top+element.height > window.innerHeight
     if ( outBottom ) {
       this.className += "Top"
-      top = target.top - element.height - space
+      top = target.top - element.height
     } else {
       this.className += "Bottom"
     }

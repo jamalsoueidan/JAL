@@ -24,10 +24,12 @@ const LinkControl = class extends React.Component {
   }
 
   render() {
-    return(<div>
+    return(
+      <div>
         <div ref="link" className="link" style={this.props.style} onClick={this.onClick.bind(this)}>{this.props.name}</div>
         <Dropdown ref="dropdown">{this.props.children}</Dropdown>
-        </div>)
+      </div>
+    )
   }
 }
 
@@ -40,10 +42,12 @@ const LinkManager = class extends React.Component {
   }
 
   render() {
-    return(<div>
+    return(
+      <div>
         <div ref="link" className="link" style={this.props.style} onClick={this.onClick.bind(this)}>{this.props.name}</div>
         <Dropdown ref="dropdown">{this.props.children}</Dropdown>
-        </div>)
+      </div>
+    )
   }
 }
 
@@ -76,13 +80,15 @@ export default class extends React.Component {
   }
 
   render() {
-    return(<div>
+    return(
+      <div>
         <LinkControl style={{left: "0px", bottom: "0px", position: "absolute"}} name="Bottom Left"><div>okasd </div></LinkControl>
         <LinkControl style={{right: "0px", top: "0px", position: "absolute"}} name="Top Right">DOWN NOW</LinkControl>
         <LinkManager style={{right: "0px", bottom: "0px", position: "absolute"}} name="Bottom right">Jamal Soueidan</LinkManager>
         <LinkManager style={{left: "50%", top: "10%", position: "absolute"}} name="Top center">Jamal <br />Soueidan</LinkManager>
         <LinkManager style={{left: "50%", top: "80%", position: "absolute"}} name="Bottom center">Jamal GETINSTANCE <br />Soueidan</LinkManager>
         <LinkManager name="Top left"><div>=====================</div></LinkManager>
-      </div>)
+      </div>
+    )
   }
 }
