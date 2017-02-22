@@ -4,6 +4,5 @@ Developing some components that I can reuse on different projects I'm developing
 
 ## Components
 
-- [Dropdown]
-
-[Dropdown]: https://github.com/jamalsoueidan/react-application-library/tree/master/src/components/dropdown
+- [BarChart](https://github.com/jamalsoueidan/react-application-library/tree/master/src/components/bar_chart)
+- [Dropdown](https://github.com/jamalsoueidan/react-application-library/tree/master/src/components/dropdown)
