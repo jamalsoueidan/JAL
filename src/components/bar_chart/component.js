@@ -2,14 +2,14 @@ import React, { PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import Area from './area'
 import Axis from './axis'
-import Rect from './rect'
-import Text from './text'
-import Line from './line'
+import { Current, LastYear, Text, Average } from './overlays'
 
 import * as d3 from 'd3'
 import * as json from './data'
 
-export default class SVG extends React.Component {
+require('./stylesheet.css')
+
+class SVG extends React.Component {
   constructor(props) {
     super(props)
     this.onResize = this.onResize.bind(this)
@@ -18,31 +18,6 @@ export default class SVG extends React.Component {
       height: props.height,
       ticks: 30
     }
-  }
-
-  static defaultProps = {
-    width: "100%",
-    height: "100%",
-    margins: {
-      left: 40,
-      right: 20,
-      top: 20,
-      bottom: 20
-    },
-    className: "svg",
-    hideLine: true,
-    hideText: true,
-    responsive: true
-  }
-
-  static propTypes = {
-    responsive: PropTypes.bool,
-    width: PropTypes.string,
-    height: PropTypes.string,
-    margins: PropTypes.object,
-    className: PropTypes.string,
-    hideLine: PropTypes.bool,
-    hideText: PropTypes.bool,
   }
 
   onResize() {
@@ -56,6 +31,7 @@ export default class SVG extends React.Component {
 
   componentDidMount() {
     this.onResize();
+    // maybe manager to handle all at once instead every SVG handle itself?
     window.addEventListener('resize', this.onResize);
   }
 
@@ -89,10 +65,40 @@ export default class SVG extends React.Component {
       <Area top={margins.top} right={margins.right} bottom={margins.bottom} left={margins.left}>
         <Axis scale={scaleX} orient="bottom" transform={"translate(0," + areaHeight + ")"} ticks={ticks} />
         <Axis scale={scaleY} orient="left"/>
-        <Rect data={json.data} scaleX={scaleX} scaleY={scaleY} />
-        <Line data={json.consumption._average} scaleX={scaleX} scaleY={scaleY} height={areaHeight} hide={this.props.hideLine}/>
+        <Current data={json.data} scaleX={scaleX} scaleY={scaleY} />
+        <LastYear data={json.data} scaleX={scaleX} scaleY={scaleY} hide={this.props.hideLastYear} />
+        <Average data={json.consumption._average} scaleX={scaleX} scaleY={scaleY} height={areaHeight} hide={this.props.hideAverage}/>
         <Text data={json.data} scaleX={scaleX} scaleY={scaleY} hide={this.props.hideText} />
       </Area>
     )
   }
 }
+
+SVG.propTypes = {
+  responsive: PropTypes.bool,
+  width: PropTypes.string,
+  height: PropTypes.string,
+  margins: PropTypes.object,
+  className: PropTypes.string,
+  hideAverage: PropTypes.bool,
+  hideText: PropTypes.bool,
+  hideLastYear: PropTypes.bool,
+}
+
+SVG.defaultProps = {
+  width: "100%",
+  height: "100%",
+  margins: {
+    left: 40,
+    right: 20,
+    top: 20,
+    bottom: 20
+  },
+  className: "svg",
+  hideAverage: true,
+  hideText: true,
+  hideLastYear: true,
+  responsive: true
+}
+
+export default SVG

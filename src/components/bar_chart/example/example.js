@@ -15,14 +15,16 @@ export default class extends React.Component {
     super(props)
     this.state = {
       hideText: true,
-      hideLine: true
+      hideAverage: true,
+      hideLastYear: true
     }
   }
 
   addValues() {
     this.setState({
       hideText: !this.state.hideText,
-      hideLine: !this.state.hideLine
+      hideAverage: !this.state.hideAverage,
+      hideLastYear: !this.state.hideLastYear
     })
   }
 

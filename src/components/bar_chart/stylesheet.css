@@ -1,0 +1,9 @@
+g.lastYear rect {
+  fill: red;
+  z-index: 1000000;
+  opacity: 0.5;
+}
+
+g.current rect {
+  fill: blue;
+}

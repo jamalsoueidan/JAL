@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default class Line extends React.Component {
+export default class extends React.Component {
   render() {
     let { data, height, scaleX, scaleY, hide } = this.props
     if(hide) return null;
