@@ -11,12 +11,26 @@ var sampleData = [
 var domain = {x: [0, 30], y: [0, 100] }
 
 export default class extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      showValues: false,
+      showAverage: false
+    }
+  }
+
+  addValues() {
+    this.setState({
+      showValues: !this.state.showValues,
+      showAverage: !this.state.showAverage
+    })
+  }
+
   render() {
     return(
       <div>
-        <BarChart
-          data={sampleData}
-          domain={domain} />
+      <button onClick={this.addValues.bind(this)}>Values</button>
+      <BarChart data={sampleData} domain={domain} {...this.state} />
       </div>
     )
   }

@@ -10,7 +10,6 @@ class SVG {
     this.width = props.width
     this.height = props.height
     this.state = state
-    this.setScale();
   }
 
   setScale() {
@@ -36,6 +35,14 @@ class SVG {
     }
   }
 
+  setDimension() {
+    if(this.width === "100%") {
+      let { width, height } = this.el.getBoundingClientRect()
+      this.width = width
+      this.height = height
+    }
+  }
+
   addSVG() {
     this.svg = d3.select(this.el)
                  .append('svg')
@@ -50,17 +57,6 @@ class SVG {
     this.area = this.svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
   }
 
-  addRects() {
-    let { x, y } = this.scale
-
-    this.area.selectAll(".rect")
-              .data(this.getData())
-              .enter().append("rect")
-              .attr("height", y.bandwidth())
-              .attr("y", function(d) { return y(d._label); })
-              .attr("width", function(d) { return x(d._value); })
-  }
-
   addAxises() {
     let { width, height } = this.getAreaSize();
     let { x, y } = this.scale
@@ -69,8 +65,66 @@ class SVG {
     this.area.append("g").call(d3.axisLeft(y))
   }
 
+  addRects() {
+    let { x, y } = this.scale
+
+    this.area.append('g').selectAll(".rect")
+                         .data(this.getData())
+                         .enter().append("rect")
+                         .attr("height", y.bandwidth())
+                         .attr("y", function(d) { return y(d._label); })
+                         .attr("width", function(d) { return x(d._value); })
+  }
+
+  toggle(actions) {
+    this.toggleValues(actions.showValues)
+    this.toggleAverage(actions.showAverage)
+  }
+
+  toggleValues(show) {
+    if (!show) {
+      this.area.select("g.text").remove()
+      return;
+    }
+
+    let { x, y } = this.scale
+    this.area.append('g').attr('class', 'text').selectAll("text")
+            .data(this.getData())
+            .enter()
+            .append("text")
+            .attr("x", function(d) { return x(d._value)+1; })
+            .attr("y", function(d) {
+              return y(d._label)+(y.bandwidth()/2);
+            })
+            .attr("dy", "3px")
+            .attr("font-size", "12px")
+            .text(function(d) { return d._value === "" ? "?" : d._value; })
+  }
+
+  toggleAverage(show) {
+    if(!show) {
+      this.area.select("g.line").remove()
+      return;
+    }
+
+    let { x, y } = this.scale
+    let { height } = this.getAreaSize()
+
+    this.area.append('g').attr('class', 'line').append("line")
+      .attr('stroke', 'red')
+      .attr('stroke-width', '2')
+      .attr('stroke-linecap', 'butt')
+      .attr('stroke-opacity', 0.5)
+      .attr("x1", x(this.state.consumption._average))
+      .attr("y1", height)
+      .attr("x2", x(this.state.consumption._average))
+      .attr("y2", 0);
+  }
+
   enter(el) {
     this.el = el
+    this.setDimension();
+    this.setScale();
     this.addSVG();
     this.addArea();
     this.addAxises();
