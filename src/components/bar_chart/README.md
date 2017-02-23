@@ -2,6 +2,8 @@
 
 BarChart with customization
 
+![](https://github.com/jamalsoueidan/react-application-library/blob/master/src/components/bar_chart/screenshot.png?raw=true)
+
 ## Examples
 
 Went from codepen to >
