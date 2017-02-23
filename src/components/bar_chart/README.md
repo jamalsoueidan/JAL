@@ -6,7 +6,10 @@ BarChart with customization
 
 ## Examples
 
-Went from codepen to >
+Went from codepen >
+http://codepen.io/jamalsoueidan/pen/2825d74f5ddc9575c4f85396c262eea7?editors=0110
+
+To >
 http://nicolashery.com/integrating-d3js-visualizations-in-a-react-app/
 
 Then >
