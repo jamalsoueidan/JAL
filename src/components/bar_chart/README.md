@@ -4,10 +4,10 @@ BarChart with customization
 
 ## Examples
 
-Went from >
+Went from codepen to >
 http://nicolashery.com/integrating-d3js-visualizations-in-a-react-app/
 
-To >
+Then >
 https://github.com/freddyrangel/playing-with-react-and-d3
 
-Now it's all REACT :)
+Finally good version!
