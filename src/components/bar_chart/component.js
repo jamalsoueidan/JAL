@@ -12,17 +12,17 @@ import * as json from './data'
 export default class SVG extends React.Component {
   constructor(props) {
     super(props)
+    this.onResize = this.onResize.bind(this)
     this.state = {
       width: props.width,
       height: props.height,
-      ticks: 15
+      ticks: 30
     }
-    this.onResize = this.onResize.bind(this)
   }
 
   static defaultProps = {
-    width: "500",
-    height: "500",
+    width: "100%",
+    height: "100%",
     margins: {
       left: 40,
       right: 20,
@@ -31,32 +31,32 @@ export default class SVG extends React.Component {
     },
     className: "svg",
     hideLine: true,
-    hideText: true
+    hideText: true,
+    responsive: true
   }
 
   static propTypes = {
+    responsive: PropTypes.bool,
     width: PropTypes.string,
     height: PropTypes.string,
     margins: PropTypes.object,
     className: PropTypes.string,
     hideLine: PropTypes.bool,
-    hideText: PropTypes.bool
+    hideText: PropTypes.bool,
   }
 
   onResize() {
     let { width, height } = ReactDOM.findDOMNode(this).getBoundingClientRect()
-    let ticks = 5;
-    if(width > 500) ticks = 10
-    if(width > 1000) ticks = 15
+    let ticks = 30;
+    if(width < 1000) ticks = 15
+    if(width < 500)  ticks = 5
+    if(width < 250)  ticks = 1
     this.setState({ width, height, ticks })
   }
 
   componentDidMount() {
-    let { width } = this.state
-    if (width === "100%" ) {
-      this.onResize();
-      window.addEventListener('resize', this.onResize);
-    }
+    this.onResize();
+    window.addEventListener('resize', this.onResize);
   }
 
   componentWillUnmount() {
@@ -64,20 +64,19 @@ export default class SVG extends React.Component {
   }
 
   render() {
-    let { className } = this.props
-    
+    let { className, width, height } = this.props
     return(
-      <svg width="100%" height="100%" className={className}>
+      <svg width={width} height={height} className={className}>
         {this.renderArea()}
       </svg>
     )
   }
 
   renderArea() {
-    let { width, height } = this.state
-    // if width is 100% we need to figure out the width in pixel,
-    // so wait on componentDidMount, just return empty SVG!
-    if( width === "100%" ) return null;
+    let { width, height, ticks } = this.state
+
+    // wait until we calculate width and height
+    if(width === "100%") return null;
 
     let { margins } = this.props
     let areaHeight = height - margins.top - margins.bottom;
@@ -88,7 +87,7 @@ export default class SVG extends React.Component {
 
     return(
       <Area top={margins.top} right={margins.right} bottom={margins.bottom} left={margins.left}>
-        <Axis scale={scaleX} orient="bottom" transform={"translate(0," + areaHeight + ")"} ticks={this.state.ticks} />
+        <Axis scale={scaleX} orient="bottom" transform={"translate(0," + areaHeight + ")"} ticks={ticks} />
         <Axis scale={scaleY} orient="left"/>
         <Rect data={json.data} scaleX={scaleX} scaleY={scaleY} />
         <Line data={json.consumption._average} scaleX={scaleX} scaleY={scaleY} height={areaHeight} hide={this.props.hideLine}/>

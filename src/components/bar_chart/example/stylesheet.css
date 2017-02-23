@@ -4,11 +4,10 @@ html, body, div{
 
 div.float {
   float: left;
-  height: 70%;
+  height: 100%;
   width: 32%;
-  border: 1px solid #000;
 }
 
 div.overflow {
-  overflow: hidden;
+  height: 50%;
 }

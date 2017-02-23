@@ -32,15 +32,16 @@ export default class extends React.Component {
         <button onClick={this.addValues.bind(this)}>Values</button>
         <div className="overflow">
           <div className="float">
-            <BarChart data={sampleData} domain={domain} {...this.state} width="100%" height="100%" />
+            <BarChart data={sampleData} domain={domain} {...this.state} />
           </div>
           <div className="float">
-            <BarChart data={sampleData} domain={domain} {...this.state} width="100%" height="100%" />
+            <BarChart data={sampleData} domain={domain} {...this.state} />
           </div>
           <div className="float">
-            <BarChart data={sampleData} domain={domain} {...this.state} width="100%" height="100%" />
+            <BarChart data={sampleData} domain={domain} {...this.state} />
           </div>
         </div>
+        <BarChart data={sampleData} domain={domain} {...this.state} width="500" height="500" />
       </div>
     )
   }
