@@ -4,6 +4,10 @@ BarChart with customization
 
 ![](https://github.com/jamalsoueidan/react-application-library/blob/master/src/components/bar_chart/screenshot.png?raw=true)
 
+## Why did I build this?
+
+Just to learn d3.js.
+
 ## Examples
 
 Went from codepen >
