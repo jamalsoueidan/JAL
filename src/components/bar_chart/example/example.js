@@ -12,14 +12,31 @@ export default class extends React.Component {
     this.state = {
       hideText: true,
       hideAverage: true,
-      hideLastYear: true
+      hideLastYear: true,
+      hideStandby: true
     }
   }
 
-  addValues() {
+  showValues() {
     this.setState({
-      hideText: !this.state.hideText,
-      hideAverage: !this.state.hideAverage,
+      hideText: !this.state.hideText
+    })
+  }
+
+  showAverage() {
+    this.setState({
+      hideAverage: !this.state.hideAverage
+    })
+  }
+
+  showStandby() {
+    this.setState({
+      hideStandby: !this.state.hideStandby
+    })
+  }
+
+  showLastYear() {
+    this.setState({
       hideLastYear: !this.state.hideLastYear
     })
   }
@@ -27,7 +44,11 @@ export default class extends React.Component {
   render() {
     return(
       <div>
-        <button onClick={this.addValues.bind(this)}>Values</button>
+        <button onClick={this.showValues.bind(this)}>Sæjleværdier</button>
+        <button onClick={this.showAverage.bind(this)}>Gennemsnit</button>
+        <button onClick={this.showStandby.bind(this)}>Standbyforbrug</button>
+        <button onClick={this.showLastYear.bind(this)}>Sidste år</button>
+        <h1>Responsive</h1>
         <div className="overflow">
           <div className="float">
             <BarChart data={chart1} {...this.state} />
@@ -39,6 +60,7 @@ export default class extends React.Component {
             <BarChart data={chart3} margins={{left: 70, right: 20, top: 20, bottom: 20}} {...this.state} />
           </div>
         </div>
+        <h1>Fixed</h1>
         <BarChart data={chart1} {...this.state} width="500" height="500" />
       </div>
     )

@@ -7,3 +7,7 @@ g.lastYear rect {
 g.current rect {
   fill: blue;
 }
+
+g.standby rect {
+  fill: yellow;
+}

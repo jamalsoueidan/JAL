@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import Area from './area'
 import Axis from './axis'
-import { Current, LastYear, Text, Average } from './overlays'
+import { Current, LastYear, Text, Average, Standby } from './overlays'
 
 import * as d3 from 'd3'
 
@@ -28,6 +28,8 @@ class SVG extends React.Component {
     for(var i = data.length-1; i >= 0; i--) {
         reverse.push(data[i]);
     }
+    this.min = d3.min(data, d => parseFloat(d._value))
+    this.average = parseFloat(this.consumption['_average'])
     this.data = reverse;
   }
 
@@ -72,14 +74,21 @@ class SVG extends React.Component {
     let scaleX = d3.scaleLinear().range([0, areaWidth]).domain([0, this.max]).nice();
     let scaleY = d3.scaleBand().range([areaHeight, 0]).domain(this.data.map(function(d) { return d._label; })).padding(0.1)
 
+    let overLayAttributes = {
+      data: this.data,
+      scaleX: scaleX,
+      scaleY: scaleY
+    }
+
     return(
       <Area top={margins.top} right={margins.right} bottom={margins.bottom} left={margins.left}>
         <Axis scale={scaleX} orient="bottom" transform={"translate(0," + areaHeight + ")"} ticks={ticks} />
         <Axis scale={scaleY} orient="left"/>
-        <Current data={this.data} scaleX={scaleX} scaleY={scaleY} />
-        <LastYear data={this.data} scaleX={scaleX} scaleY={scaleY} hide={this.props.hideLastYear} />
-        <Average data={this.consumption._average} scaleX={scaleX} scaleY={scaleY} height={areaHeight} hide={this.props.hideAverage}/>
-        <Text data={this.data} scaleX={scaleX} scaleY={scaleY} hide={this.props.hideText} />
+        <Current {...overLayAttributes} />
+        <LastYear hide={this.props.hideLastYear} {...overLayAttributes} />
+        <Standby hide={this.props.hideStandby} min={this.min} {...overLayAttributes} />
+        <Average height={areaHeight} hide={this.props.hideAverage} {...overLayAttributes} data={this.average} />
+        <Text hide={this.props.hideText} {...overLayAttributes} />
       </Area>
     )
   }
@@ -94,6 +103,7 @@ SVG.propTypes = {
   hideAverage: PropTypes.bool,
   hideText: PropTypes.bool,
   hideLastYear: PropTypes.bool,
+  hideStandby: PropTypes.bool,
   data: PropTypes.object.isRequired
 }
 
@@ -110,6 +120,7 @@ SVG.defaultProps = {
   hideAverage: true,
   hideText: true,
   hideLastYear: true,
+  hideStandby: true,
   responsive: true
 }
 

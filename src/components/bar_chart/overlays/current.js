@@ -5,7 +5,7 @@ export default class extends React.Component {
     let { scaleY, scaleX, data } = this.props
 
     const nodes = data.map((d,i) =>
-      <rect className="rect" key={i} x="0" height={scaleY.bandwidth()} y={scaleY(d._label)} width={scaleX(d._value)}></rect>
+      <rect key={i} x="0" height={scaleY.bandwidth()} y={scaleY(d._label)} width={scaleX(d._value)}></rect>
     )
 
     return(
