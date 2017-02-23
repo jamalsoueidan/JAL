@@ -2,6 +2,7 @@ import React from 'react'
 import Area from './area'
 import Axis from './axis'
 import Rect from './rect'
+import Text from './text'
 
 import * as d3 from 'd3'
 import * as json from './data'
@@ -21,6 +22,7 @@ class SVG extends React.Component {
           <Axis transform={"translate(0," + innerHeight + ")"} scale={scaleX} orient="bottom"/>
           <Axis scale={scaleY} orient="left"/>
           <Rect data={json.data} scaleX={scaleX} scaleY={scaleY} />
+          <Text data={json.data} scaleX={scaleX} scaleY={scaleY} />
         </Area>
       </svg>
     )
