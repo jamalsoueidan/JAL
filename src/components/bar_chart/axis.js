@@ -23,6 +23,11 @@ export default class Axis extends React.Component {
         break;
     }
 
+    let ticks = this.props.ticks
+    if(ticks) {
+      axis = axis.ticks(ticks)
+    }
+
     d3.select(node).call(axis)
   }
 

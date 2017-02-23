@@ -29,8 +29,18 @@ export default class extends React.Component {
   render() {
     return(
       <div>
-      <button onClick={this.addValues.bind(this)}>Values</button>
-      <BarChart data={sampleData} domain={domain} {...this.state} />
+        <button onClick={this.addValues.bind(this)}>Values</button>
+        <div className="overflow">
+          <div className="float">
+            <BarChart data={sampleData} domain={domain} {...this.state} width="100%" height="100%" />
+          </div>
+          <div className="float">
+            <BarChart data={sampleData} domain={domain} {...this.state} width="100%" height="100%" />
+          </div>
+          <div className="float">
+            <BarChart data={sampleData} domain={domain} {...this.state} width="100%" height="100%" />
+          </div>
+        </div>
       </div>
     )
   }
