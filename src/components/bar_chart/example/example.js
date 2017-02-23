@@ -14,15 +14,15 @@ export default class extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      showValues: false,
-      showAverage: false
+      hideText: true,
+      hideLine: true
     }
   }
 
   addValues() {
     this.setState({
-      showValues: !this.state.showValues,
-      showAverage: !this.state.showAverage
+      hideText: !this.state.hideText,
+      hideLine: !this.state.hideLine
     })
   }
 
