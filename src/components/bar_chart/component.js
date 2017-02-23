@@ -1,29 +1,27 @@
-import d3Chart from './chart'
+import SVG from './svg'
 import React from 'react'
 import ReactDOM from 'react-dom'
-
+import * as data from './data.js'
 
 export default class extends React.Component {
+  constructor(props) {
+    super(props)
+    this.svg = new SVG({
+      width: 600,
+      height: 600
+    }, data);
+  }
+
   componentDidMount() {
-    d3Chart.create(ReactDOM.findDOMNode(this), {
-      width: '100%',
-      height: '300px'
-    }, this.getChartState());
+    this.svg.enter(ReactDOM.findDOMNode(this), data);
   }
 
   componentDidUpdate() {
-    d3Chart.update(ReactDOM.findDOMNode(this), this.getChartState());
-  }
-
-  getChartState() {
-    return {
-      data: this.props.data,
-      domain: this.props.domain
-    };
+    this.svg.update(ReactDOM.findDOMNode(this), data);
   }
 
   componentWillUnmount() {
-    d3Chart.destroy(ReactDOM.findDOMNode(this));
+    this.svg.exist(ReactDOM.findDOMNode(this));
   }
 
   render() {
