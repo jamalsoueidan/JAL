@@ -11,3 +11,11 @@ div.float {
 div.overflow {
   height: 50%;
 }
+
+svg.el g.current rect {
+  fill: black;
+}
+
+svg.heat g.current rect {
+  fill: red;
+}

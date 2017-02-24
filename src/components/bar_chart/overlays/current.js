@@ -9,7 +9,7 @@ export default class extends React.Component {
     )
 
     return(
-      <g className="current">
+      <g className="current" transform="translate(1,0)">
         {nodes}
       </g>
     )

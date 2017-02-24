@@ -32,6 +32,7 @@ export default class Axis extends React.Component {
   }
 
   render() {
+    if(this.props.hide) return null;
     return(<g className="axis" ref="axis" transform={this.props.transform}></g>)
   }
 }

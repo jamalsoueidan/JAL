@@ -7,11 +7,11 @@ export default class extends React.Component {
     if(hide) return null;
 
     const nodes = data.map((d,i) =>
-      <rect key={i} x="0" height={scaleY.bandwidth()-2} y={scaleY(d._label)+1} width={(d._value ? scaleX(min) : 0)}></rect>
+      <rect key={i} x="1" height={scaleY.bandwidth()-2} y={scaleY(d._label)+1} width={(d._value ? scaleX(min)-2 : 0)}></rect>
     )
 
     return(
-      <g className="standby">
+      <g className="standby" transform="translate(1,0)">
         {nodes}
       </g>
     )

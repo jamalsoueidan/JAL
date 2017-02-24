@@ -55,7 +55,7 @@ class SVG extends React.Component {
   render() {
     let { className, width, height } = this.props
     return(
-      <svg width={width} height={height} className={className}>
+      <svg width={width} height={height} className={"svg " + className}>
         {this.renderArea()}
       </svg>
     )
@@ -80,15 +80,17 @@ class SVG extends React.Component {
       scaleY: scaleY
     }
 
+    let { hideText, hideLastYear, hideAverage, hideStandby, hideAxisX, hideAxisY } = this.props
+
     return(
       <Area top={margins.top} right={margins.right} bottom={margins.bottom} left={margins.left}>
-        <Axis scale={scaleX} orient="bottom" transform={"translate(0," + areaHeight + ")"} ticks={ticks} />
-        <Axis scale={scaleY} orient="left"/>
+        <Axis scale={scaleX} orient="bottom" transform={"translate(0," + areaHeight + ")"} ticks={ticks} hide={hideAxisX}/>
+        <Axis scale={scaleY} orient="left" hide={hideAxisY}/>
         <Current {...overLayAttributes} />
-        <LastYear hide={this.props.hideLastYear} {...overLayAttributes} />
-        <Standby hide={this.props.hideStandby} min={this.min} {...overLayAttributes} />
-        <Average height={areaHeight} hide={this.props.hideAverage} {...overLayAttributes} data={this.average} />
-        <Text hide={this.props.hideText} {...overLayAttributes} />
+        <LastYear hide={hideLastYear} {...overLayAttributes} />
+        <Standby hide={hideStandby} min={this.min} {...overLayAttributes} />
+        <Average height={areaHeight} hide={hideAverage} {...overLayAttributes} data={this.average} />
+        <Text hide={hideText} {...overLayAttributes} />
       </Area>
     )
   }
@@ -104,6 +106,8 @@ SVG.propTypes = {
   hideText: PropTypes.bool,
   hideLastYear: PropTypes.bool,
   hideStandby: PropTypes.bool,
+  hideAxisX: PropTypes.bool,
+  hideAxisY: PropTypes.bool,
   data: PropTypes.object.isRequired
 }
 
@@ -121,6 +125,8 @@ SVG.defaultProps = {
   hideText: true,
   hideLastYear: true,
   hideStandby: true,
+  hideAxisX: false,
+  hideAxisY: false,
   responsive: true
 }
 

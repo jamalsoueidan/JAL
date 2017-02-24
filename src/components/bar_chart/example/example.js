@@ -42,6 +42,9 @@ export default class extends React.Component {
   }
 
   render() {
+
+    let margin = {left: 70, right: 20, top: 5, bottom: 5};
+
     return(
       <div>
         <button onClick={this.showValues.bind(this)}>Sæjleværdier</button>
@@ -51,13 +54,13 @@ export default class extends React.Component {
         <h1>Responsive</h1>
         <div className="overflow">
           <div className="float">
-            <BarChart data={chart1} {...this.state} />
+            <BarChart className="el" data={chart1} margins={margin} {...this.state} hideAxisX />
           </div>
           <div className="float">
-            <BarChart data={chart2} {...this.state} />
+            <BarChart className="water" data={chart2} margins={margin} {...this.state} hideAxisX />
           </div>
           <div className="float">
-            <BarChart data={chart3} margins={{left: 70, right: 20, top: 20, bottom: 20}} {...this.state} />
+            <BarChart className="heat" data={chart3} margins={margin} {...this.state} hideAxisX />
           </div>
         </div>
         <h1>Fixed</h1>
