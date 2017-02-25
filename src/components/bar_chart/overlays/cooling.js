@@ -25,20 +25,19 @@ export default class Cooling extends React.Component {
 
     let from = parseFloat(cooling.getAttr('_scale_bottom_value'))
     let to = parseFloat(cooling.getAttr('_scale_top_value'))
+    let coolingScaleX = d3.scaleLinear().range([0, data.consumption.top]).domain([from, to])
+    let coolingBars = cooling.bars.filter(d => d._value)
 
-    let coolingScaleX = d3.scaleLinear().range([0, 9.0]).domain([from, to])
+    let deletedBars = cooling.bars.length - coolingBars.length
 
     let line = d3.line()
                  .curve(d3.curveCardinal)
                  .x( d => scaleX(coolingScaleX(parseFloat(d._value))))
-                 .y( (d,i) => {
-                    if(i === 0) return scaleY(bars[i]._label)+scaleY.bandwidth()
-                    return (scaleY(bars[i]._label)+scaleY.bandwidth()/2)
-                 });
+                 .y( (d,i) => scaleY(bars[i+deletedBars]._label)+scaleY.bandwidth()/2);
 
     d3.select(node)
       .append('path')
-      .datum(cooling.bars)
+      .datum(coolingBars)
       .attr("fill", "none")
       .attr("stroke", "steelblue")
       .attr("stroke-linejoin", "round")
@@ -46,16 +45,14 @@ export default class Cooling extends React.Component {
       .attr("stroke-width", 1.5)
       .attr("d", line);
 
-    d3.select(node).selectAll("circle")
-      .data(cooling.bars)
+    d3.select(node)
+      .selectAll("circle")
+      .data(coolingBars)
       .enter()
       .append("circle")
-      .attr("cx", d => scaleX(coolingScaleX(parseFloat(d._value)));
-      })
-      .attr("cy", (d,i) => {
-        return scaleY(bars[i]._label)+scaleY.bandwidth()/2
-      })
-      .attr("r", 2.5)
+      .attr("cx", d => scaleX(coolingScaleX(parseFloat(d._value))))
+      .attr("cy", (d,i) => scaleY(bars[i+deletedBars]._label)+scaleY.bandwidth()/2 )
+      .attr("r", 1.5)
       .style("fill", "red");
   }
 

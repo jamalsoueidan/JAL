@@ -31,7 +31,6 @@ export default class Overlay {
     }
 
     getAttr(name) {
-      console.log(this.data);
       return this.data[name]
     }
 }

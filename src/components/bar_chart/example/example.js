@@ -2,7 +2,7 @@ import React from 'react';
 import BarChart from 'bar_chart'
 import chart1 from './data.js'
 import chart2 from './data1.js'
-import chart3 from './data2.js'
+import day from './day.js'
 import time from './time.js'
 
 require('./stylesheet.css')
@@ -58,10 +58,10 @@ export default class extends React.Component {
             <BarChart className="el" data={time} {...this.state} />
           </div>
           <div className="float">
-            <BarChart className="water" data={chart2} margins={margin} {...this.state} hideAxisX />
+            <BarChart className="water" data={day} {...this.state} />
           </div>
           <div className="float">
-            <BarChart className="heat" data={chart3} margins={margin} {...this.state} hideAxisX />
+            <BarChart className="heat" data={chart2} margins={margin} {...this.state} hideAxisX />
           </div>
         </div>
         <h1>Fixed</h1>
