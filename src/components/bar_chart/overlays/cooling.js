@@ -7,6 +7,9 @@ export default class Cooling extends React.Component {
   }
 
   componentDidUpdate() {
+    let node  = this.refs.cooling;
+    d3.select(node).select('path').remove();
+    d3.select(node).selectAll('circle').remove();
     this.renderPath();
   }
 
@@ -20,25 +23,40 @@ export default class Cooling extends React.Component {
     let consumption = data.consumption;
     let bars = consumption.bars
 
-    //let top = parseFloat(cooling.getAttr('_evaluation_value').substr(0, 5))
-    //let coolingScaleX = d3.scaleLinear().range([0, 9.0]).domain([0, cooling.max])
+    let from = parseFloat(cooling.getAttr('_scale_bottom_value'))
+    let to = parseFloat(cooling.getAttr('_scale_top_value'))
 
-    let line = d3.line().curve(d3.curveMonotoneX)
-                        .x( d => {
-                          return scaleX(parseFloat(d._value))
-                        })
-                        .y( d => {
-                          return (scaleY(d._label)+scaleY.bandwidth()/2)
-                        });
+    let coolingScaleX = d3.scaleLinear().range([0, 9.0]).domain([from, to])
+
+    let line = d3.line()
+                 .curve(d3.curveCardinal)
+                 .x( d => scaleX(coolingScaleX(parseFloat(d._value))))
+                 .y( (d,i) => {
+                    if(i === 0) return scaleY(bars[i]._label)+scaleY.bandwidth()
+                    return (scaleY(bars[i]._label)+scaleY.bandwidth()/2)
+                 });
+
     d3.select(node)
       .append('path')
-      .datum(bars)
+      .datum(cooling.bars)
       .attr("fill", "none")
       .attr("stroke", "steelblue")
       .attr("stroke-linejoin", "round")
       .attr("stroke-linecap", "round")
       .attr("stroke-width", 1.5)
       .attr("d", line);
+
+    d3.select(node).selectAll("circle")
+      .data(cooling.bars)
+      .enter()
+      .append("circle")
+      .attr("cx", d => scaleX(coolingScaleX(parseFloat(d._value)));
+      })
+      .attr("cy", (d,i) => {
+        return scaleY(bars[i]._label)+scaleY.bandwidth()/2
+      })
+      .attr("r", 2.5)
+      .style("fill", "red");
   }
 
   render() {
