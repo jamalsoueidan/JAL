@@ -10,7 +10,10 @@ export default class Text extends React.Component {
     let bandwidth = parseInt(scaleY.bandwidth())
     let fontSize =  bandwidth + "px"
 
-    const nodes = data.bar.map((d,i) =>
+    let consumption = data.consumption;
+    let bars = consumption.bars
+
+    const nodes = bars.map((d,i) =>
       <text key={i} x={scaleX(d._value)+4} y={scaleY(d._label)} dy=".8em" fontSize={fontSize}>{d._value || "?"}</text>
     )
 

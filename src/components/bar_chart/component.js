@@ -4,7 +4,7 @@ import * as d3 from 'd3'
 import Area from './area'
 import Axis from './axis'
 import Data from './data'
-import { Current, LastYear, Text, Average, Standby } from './overlays'
+import { Current, LastYear, Text, Average, Standby, Cooling } from './overlays'
 
 require('./stylesheet.css')
 
@@ -60,8 +60,8 @@ class SVG extends React.Component {
       width: width - margins.left - margins.right
     }
 
-    let scaleX = d3.scaleLinear().range([0, area.width]).domain([0, this.data.top]).nice();
-    let scaleY = d3.scaleBand().range([area.height, 0]).domain(this.data.bar.map(function(d) { return d._label; })).padding(0.1)
+    let scaleX = d3.scaleLinear().range([0, area.width]).domain([0, this.data.consumption.top]).nice();
+    let scaleY = d3.scaleBand().range([area.height, 0]).domain(this.data.consumption.bars.map(function(d) { return d._label; })).padding(0.1)
 
     let overLayAttributes = {
       data: this.data,
@@ -78,7 +78,7 @@ class SVG extends React.Component {
         <Axis scale={scaleY} orient="left" hide={hideAxisY}/>
         <Current {...overLayAttributes} />
         <LastYear hide={hideLastYear} {...overLayAttributes} />
-        <Standby hide={hideStandby} {...overLayAttributes} />
+        <Standby hide={hideStandby} min={this.min} {...overLayAttributes} />
         <Average hide={hideAverage} {...overLayAttributes} />
         <Text hide={hideText} {...overLayAttributes} />
       </Area>

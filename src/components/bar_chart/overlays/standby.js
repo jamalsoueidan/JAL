@@ -7,8 +7,11 @@ export default class extends React.Component {
     if(hide) return null;
     if(!data.standby) return null;
 
-    const nodes = data.bar.map((d,i) =>
-      <rect key={i} x="0" height={scaleY.bandwidth()-2} y={scaleY(d._label)+1} width={(d._value ? scaleX(data.min)-1 : 0)}></rect>
+    let consumption = data.consumption;
+    let bars = consumption.bars
+
+    const nodes = bars.map((d,i) =>
+      <rect key={i} x="0" height={scaleY.bandwidth()-2} y={scaleY(d._label)+1} width={(d._value ? scaleX(consumption.min)-1 : 0)}></rect>
     )
 
     return(
