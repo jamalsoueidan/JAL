@@ -2,12 +2,16 @@ import React from 'react';
 
 export default class Text extends React.Component {
   render() {
-    let { scaleX, scaleY, hide } = this.props
+    let { scaleX, scaleY, hide, data } = this.props
 
     if(hide) return null;
 
-    const nodes = this.props.data.map((d,i) =>
-      <text key={i} x={scaleX(d._value)} y={scaleY(d._label)+(scaleY.bandwidth()/2)} dy="3px" fontSize="12px">{d._value || "?"}</text>
+    // set fontSize
+    let bandwidth = parseInt(scaleY.bandwidth())
+    let fontSize =  bandwidth + "px"
+
+    const nodes = data.bar.map((d,i) =>
+      <text key={i} x={scaleX(d._value)+4} y={scaleY(d._label)} dy=".8em" fontSize={fontSize}>{d._value || "?"}</text>
     )
 
     return(

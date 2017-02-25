@@ -1,10 +1,10 @@
 import React, { PropTypes } from 'react'
 import ReactDOM from 'react-dom'
+import * as d3 from 'd3'
 import Area from './area'
 import Axis from './axis'
+import Data from './data'
 import { Current, LastYear, Text, Average, Standby } from './overlays'
-
-import * as d3 from 'd3'
 
 require('./stylesheet.css')
 
@@ -17,20 +17,7 @@ class SVG extends React.Component {
       height: props.height,
       ticks: 30
     }
-    this.setData();
-  }
-
-  setData() {
-    this.consumption = this.props.data["ebutler"]['body']['graph']['consumption']
-    this.max = parseFloat(this.consumption['_top'])
-    let data = this.consumption['bar'];
-    let reverse = []
-    for(var i = data.length-1; i >= 0; i--) {
-        reverse.push(data[i]);
-    }
-    this.min = d3.min(data, d => parseFloat(d._value))
-    this.average = parseFloat(this.consumption['_average'])
-    this.data = reverse;
+    this.data = new Data(props.data)
   }
 
   onResize() {
@@ -68,28 +55,31 @@ class SVG extends React.Component {
     if(width === "100%" ) return null;
 
     let { margins } = this.props
-    let areaHeight = height - margins.top - margins.bottom;
-    let areaWidth = width - margins.left - margins.right;
+    let area = {
+      height: height - margins.top - margins.bottom,
+      width: width - margins.left - margins.right
+    }
 
-    let scaleX = d3.scaleLinear().range([0, areaWidth]).domain([0, this.max]).nice();
-    let scaleY = d3.scaleBand().range([areaHeight, 0]).domain(this.data.map(function(d) { return d._label; })).padding(0.1)
+    let scaleX = d3.scaleLinear().range([0, area.width]).domain([0, this.data.max]).nice();
+    let scaleY = d3.scaleBand().range([area.height, 0]).domain(this.data.bar.map(function(d) { return d._label; })).padding(0.1)
 
     let overLayAttributes = {
       data: this.data,
       scaleX: scaleX,
-      scaleY: scaleY
+      scaleY: scaleY,
+      area: area
     }
 
     let { hideText, hideLastYear, hideAverage, hideStandby, hideAxisX, hideAxisY } = this.props
 
     return(
       <Area top={margins.top} right={margins.right} bottom={margins.bottom} left={margins.left}>
-        <Axis scale={scaleX} orient="bottom" transform={"translate(0," + areaHeight + ")"} ticks={ticks} hide={hideAxisX}/>
+        <Axis scale={scaleX} orient="bottom" transform={"translate(0," + area.height + ")"} ticks={ticks} hide={hideAxisX}/>
         <Axis scale={scaleY} orient="left" hide={hideAxisY}/>
         <Current {...overLayAttributes} />
         <LastYear hide={hideLastYear} {...overLayAttributes} />
-        <Standby hide={hideStandby} min={this.min} {...overLayAttributes} />
-        <Average height={areaHeight} hide={hideAverage} {...overLayAttributes} data={this.average} />
+        <Standby hide={hideStandby} {...overLayAttributes} />
+        <Average hide={hideAverage} {...overLayAttributes} />
         <Text hide={hideText} {...overLayAttributes} />
       </Area>
     )

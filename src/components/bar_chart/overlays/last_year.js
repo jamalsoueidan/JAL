@@ -6,7 +6,7 @@ export default class extends React.Component {
 
     if(hide) return null;
 
-    const nodes = data.map((d,i) =>
+    const nodes = data.bar.map((d,i) =>
       <rect key={i} x="0" height={scaleY.bandwidth()/2} y={scaleY(d._label)} width={scaleX(d._value)*1.5}></rect>
     )
 
