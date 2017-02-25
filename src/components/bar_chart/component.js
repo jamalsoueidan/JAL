@@ -60,7 +60,7 @@ class SVG extends React.Component {
       width: width - margins.left - margins.right
     }
 
-    let scaleX = d3.scaleLinear().range([0, area.width]).domain([0, this.data.max]).nice();
+    let scaleX = d3.scaleLinear().range([0, area.width]).domain([0, this.data.top]).nice();
     let scaleY = d3.scaleBand().range([area.height, 0]).domain(this.data.bar.map(function(d) { return d._label; })).padding(0.1)
 
     let overLayAttributes = {

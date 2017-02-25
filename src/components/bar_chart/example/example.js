@@ -3,6 +3,7 @@ import BarChart from 'bar_chart'
 import chart1 from './data.js'
 import chart2 from './data1.js'
 import chart3 from './data2.js'
+import time from './time.js'
 
 require('./stylesheet.css')
 
@@ -54,7 +55,7 @@ export default class extends React.Component {
         <h1>Responsive</h1>
         <div className="overflow">
           <div className="float">
-            <BarChart className="el" data={chart1} margins={margin} {...this.state} hideAxisX />
+            <BarChart className="el" data={time} {...this.state} />
           </div>
           <div className="float">
             <BarChart className="water" data={chart2} margins={margin} {...this.state} hideAxisX />

@@ -5,9 +5,10 @@ export default class extends React.Component {
     let { scaleY, scaleX, data, hide } = this.props
 
     if(hide) return null;
+    if(!data.standby) return null;
 
     const nodes = data.bar.map((d,i) =>
-      <rect key={i} x="1" height={scaleY.bandwidth()-2} y={scaleY(d._label)+1} width={(d._value ? scaleX(data.min)-2 : 0)}></rect>
+      <rect key={i} x="0" height={scaleY.bandwidth()-2} y={scaleY(d._label)+1} width={(d._value ? scaleX(data.min)-1 : 0)}></rect>
     )
 
     return(
