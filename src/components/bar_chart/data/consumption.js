@@ -6,14 +6,6 @@ export default class Consumption extends Overlay {
     return parseFloat(this.data['_top'])
   }
 
-  get min() {
-    return d3.min(this.bars, d => parseFloat(d._value))
-  }
-
-  get max() {
-    return d3.max(this.bars, d => parseFloat(d._value))
-  }
-
   get average() {
     return parseFloat(this.data['_average'])
   }

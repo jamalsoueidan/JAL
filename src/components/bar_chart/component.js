@@ -77,6 +77,7 @@ class SVG extends React.Component {
         <Axis scale={scaleX} orient="bottom" transform={"translate(0," + area.height + ")"} ticks={ticks} hide={hideAxisX}/>
         <Axis scale={scaleY} orient="left" hide={hideAxisY}/>
         <Current {...overLayAttributes} />
+        <Cooling hide={hideLastYear} {...overLayAttributes} />
         <LastYear hide={hideLastYear} {...overLayAttributes} />
         <Standby hide={hideStandby} min={this.min} {...overLayAttributes} />
         <Average hide={hideAverage} {...overLayAttributes} />

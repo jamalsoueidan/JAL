@@ -12,18 +12,27 @@ export default class Cooling extends React.Component {
 
   renderPath() {
     let node  = this.refs.cooling;
-    let { scaleY, scaleX, data } = this.props
+    let { scaleY, scaleX, area, data } = this.props
 
-    //let coolingScaleX = d3.scaleLinear().range([0, area.width]).domain([0, this.data.top]).nice();
+    let cooling = data.cooling;
+    if(!cooling) return null;
+
+    let consumption = data.consumption;
+    let bars = consumption.bars
+
+    //let top = parseFloat(cooling.getAttr('_evaluation_value').substr(0, 5))
+    //let coolingScaleX = d3.scaleLinear().range([0, 9.0]).domain([0, cooling.max])
 
     let line = d3.line().curve(d3.curveMonotoneX)
-                        .x(function(d) {
-                          return scaleX(d._value)
+                        .x( d => {
+                          return scaleX(parseFloat(d._value))
                         })
-                        .y(function(d) { return scaleY(d._label) });
+                        .y( d => {
+                          return (scaleY(d._label)+scaleY.bandwidth()/2)
+                        });
     d3.select(node)
       .append('path')
-      .datum(data.cooling)
+      .datum(bars)
       .attr("fill", "none")
       .attr("stroke", "steelblue")
       .attr("stroke-linejoin", "round")
