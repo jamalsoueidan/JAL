@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Example from 'bar_chart/example'
+import Example from 'list/example'
 
 export default class extends React.Component {
   render() {
