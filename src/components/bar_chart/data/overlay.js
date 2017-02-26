@@ -4,6 +4,7 @@ export default class Overlay {
     constructor(data) {
       this.data = data;
       this._bars = this.reverse(this.data['bar'])
+      this._extend = d3.extent(this._bars, d => parseFloat(d._value));
     }
 
     reverse(data) {
@@ -23,11 +24,11 @@ export default class Overlay {
     }
 
     get min() {
-      return d3.min(this.bars, d => parseFloat(d._value))
+      return this._extend[0]
     }
 
     get max() {
-      return d3.max(this.bars, d => parseFloat(d._value))
+      return this._extend[1]
     }
 
     getAttr(name) {

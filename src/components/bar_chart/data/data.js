@@ -2,6 +2,8 @@ import * as d3 from 'd3'
 import Overlay from './overlay'
 import Consumption from './consumption'
 
+const OVERLAYS = [{ name: 'cooling', id: 6 }, { name: 'standby', id: 3 }, { name: 'last_year', id: 5 }]
+
 export default class Data {
   constructor(data) {
     this._ebutler = data['ebutler']
@@ -16,6 +18,11 @@ export default class Data {
     let _overlay = this._overlays['overlay'].find(o => parseInt(o['_id']) === id )
     if(!_overlay) return null;
     return new Overlay(_overlay);
+  }
+
+  getOverlay(name) {
+    let _overlay = OVERLAYS.find(o => o.name === name)
+    return findOverlay(_overlay.id)
   }
 
   get consumption() {
