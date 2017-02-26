@@ -2,6 +2,15 @@
 
 Renderer list with items!
 
-![](https://github.com/jamalsoueidan/react-application-library/blob/master/src/components/bar_chart/screenshot.png?raw=true)
-
 ## Examples
+
+```jsx
+<List data={data} itemRenderer={(item) => item}/>
+
+<List>
+  <Item className="header">
+    Header
+  </Item>
+  <List className="items" data={data} itemRenderer={(item) => item} />
+</List>
+```
