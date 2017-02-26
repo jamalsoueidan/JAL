@@ -15,7 +15,7 @@ export default class extends React.Component {
     )
 
     return(
-      <g className="standby" transform="translate(1,0)">
+      <g className="overlay standby" transform="translate(1,0)">
         {nodes}
       </g>
     )

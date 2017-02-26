@@ -5,17 +5,41 @@ html, body, div{
 div.float {
   float: left;
   height: 100%;
-  width: 32%;
+  width: 50%;
 }
 
 div.overflow {
-  height: 60%;
+  height: 80%;
 }
 
 svg.el g.current rect {
-  fill: black;
+  fill: #FBEE71;
+  stroke-width:.4;
+  stroke:#D9B24E;
+}
+
+svg.water g.current rect {
+  fill: #87C0E4;
+  stroke-width: .4;
+  stroke: #6595D1;
 }
 
 svg.heat g.current rect {
-  fill: red;
+  fill: #F39B73;
+  stroke-width: .4;
+  stroke: #EC685E;
+}
+
+g.current rect:hover {
+  fill: grey !important;
+}
+
+svg g.overlay {
+  cursor: pointer;
+}
+
+.buttons {
+  position: fixed;
+  right: 10px;
+  top: 10px;
 }

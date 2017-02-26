@@ -4,7 +4,7 @@ import * as d3 from 'd3'
 import Area from './area'
 import Axis from './axis'
 import Data from './data'
-import { Current, LastYear, Text, Average, Standby, Cooling } from './overlays'
+import { Current, LastYear, Text, Average, Standby, Cooling, Temperatur } from './overlays'
 
 require('./stylesheet.css')
 
@@ -54,10 +54,10 @@ class SVG extends React.Component {
     // wait until we calculate width and height
     if(width === "100%" ) return null;
 
-    let { margins } = this.props
+    let { marginLeft, marginTop, marginBottom, marginRight } = this.props
     let area = {
-      height: height - margins.top - margins.bottom,
-      width: width - margins.left - margins.right
+      height: height - marginTop - marginBottom,
+      width: width - marginLeft - marginRight
     }
 
     let scaleX = d3.scaleLinear().range([0, area.width]).domain([0, this.data.consumption.top]).nice();
@@ -70,14 +70,15 @@ class SVG extends React.Component {
       area: area
     }
 
-    let { hideText, hideLastYear, hideAverage, hideStandby, hideAxisX, hideAxisY } = this.props
+    let { hideText, hideLastYear, hideAverage, hideCooling, hideTemperature, hideStandby, hideAxisX, hideAxisY } = this.props
 
     return(
-      <Area top={margins.top} right={margins.right} bottom={margins.bottom} left={margins.left}>
+      <Area top={marginTop} right={marginRight} bottom={marginBottom} left={marginLeft}>
         <Axis scale={scaleX} orient="bottom" transform={"translate(0," + area.height + ")"} ticks={ticks} hide={hideAxisX}/>
         <Axis scale={scaleY} orient="left" hide={hideAxisY}/>
         <Current {...overLayAttributes} />
-        <Cooling hide={hideLastYear} {...overLayAttributes} />
+        <Cooling hide={hideCooling} {...overLayAttributes} />
+        <Temperatur hide={hideTemperature} {...overLayAttributes} />
         <LastYear hide={hideLastYear} {...overLayAttributes} />
         <Standby hide={hideStandby} min={this.min} {...overLayAttributes} />
         <Average hide={hideAverage} {...overLayAttributes} />
@@ -91,12 +92,17 @@ SVG.propTypes = {
   responsive: PropTypes.bool,
   width: PropTypes.string,
   height: PropTypes.string,
-  margins: PropTypes.object,
+  marginLeft: PropTypes.number,
+  marginRight: PropTypes.number,
+  marginTop: PropTypes.number,
+  marginBottom: PropTypes.number,
   className: PropTypes.string,
   hideAverage: PropTypes.bool,
   hideText: PropTypes.bool,
   hideLastYear: PropTypes.bool,
   hideStandby: PropTypes.bool,
+  hideCooling: PropTypes.bool,
+  hideTemperature: PropTypes.bool,
   hideAxisX: PropTypes.bool,
   hideAxisY: PropTypes.bool,
   data: PropTypes.object.isRequired
@@ -105,17 +111,17 @@ SVG.propTypes = {
 SVG.defaultProps = {
   width: "100%",
   height: "100%",
-  margins: {
-    left: 40,
-    right: 20,
-    top: 20,
-    bottom: 20
-  },
+  marginLeft: 40,
+  marginRight: 15,
+  marginTop: 5,
+  marginBottom: 20,
   className: "svg",
   hideAverage: true,
   hideText: true,
   hideLastYear: true,
   hideStandby: true,
+  hideCooling: true,
+  hideTemperature: false,
   hideAxisX: false,
   hideAxisY: false,
   responsive: true

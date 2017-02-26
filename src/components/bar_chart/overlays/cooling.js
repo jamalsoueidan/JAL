@@ -15,7 +15,8 @@ export default class Cooling extends React.Component {
 
   renderPath() {
     let node  = this.refs.cooling;
-    let { scaleY, scaleX, area, data } = this.props
+    let { scaleY, scaleX, area, data, hide } = this.props
+    if(hide) return null;
 
     let cooling = data.cooling;
     if(!cooling) return null;
@@ -34,6 +35,7 @@ export default class Cooling extends React.Component {
                  .curve(d3.curveCardinal)
                  .x( d => scaleX(coolingScaleX(parseFloat(d._value))))
                  .y( (d,i) => scaleY(bars[i+deletedBars]._label)+scaleY.bandwidth()/2);
+
 
     d3.select(node)
       .append('path')
@@ -59,7 +61,7 @@ export default class Cooling extends React.Component {
   render() {
     if(!this.props.data.cooling) return null;
     return(
-      <g className="cooling" transform="translate(1,0)" ref="cooling"></g>
+      <g className="overlay cooling" transform="translate(1,0)" ref="cooling"></g>
     )
   }
 }

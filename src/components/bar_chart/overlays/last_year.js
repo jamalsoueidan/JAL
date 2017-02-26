@@ -16,7 +16,7 @@ export default class extends React.Component {
     )
 
     return(
-      <g className="lastYear" transform="translate(1,0)">
+      <g className="overlay lastYear" transform="translate(1,0)">
         {nodes}
       </g>
     )

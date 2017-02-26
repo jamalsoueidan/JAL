@@ -14,7 +14,8 @@ export default class extends React.Component {
       hideText: true,
       hideAverage: true,
       hideLastYear: true,
-      hideStandby: true
+      hideStandby: true,
+      hideCooling: true
     }
   }
 
@@ -42,26 +43,32 @@ export default class extends React.Component {
     })
   }
 
+  showCooling() {
+    this.setState({
+      hideCooling: !this.state.hideCooling
+    })
+  }
+
   render() {
-
-    let margin = {left: 70, right: 20, top: 5, bottom: 5};
-
     return(
       <div>
-        <button onClick={this.showValues.bind(this)}>Sæjleværdier</button>
-        <button onClick={this.showAverage.bind(this)}>Gennemsnit</button>
-        <button onClick={this.showStandby.bind(this)}>Standbyforbrug</button>
-        <button onClick={this.showLastYear.bind(this)}>Sidste år</button>
+        <div className="buttons">
+          <button onClick={this.showValues.bind(this)}>Sæjleværdier</button>
+          <button onClick={this.showAverage.bind(this)}>Gennemsnit</button>
+          <button onClick={this.showStandby.bind(this)}>Standbyforbrug</button>
+          <button onClick={this.showLastYear.bind(this)}>Sidste år</button>
+          <button onClick={this.showCooling.bind(this)}>Afkøling</button>
+        </div>
         <h1>Responsive</h1>
         <div className="overflow">
           <div className="float">
             <BarChart className="el" data={time} {...this.state} />
           </div>
           <div className="float">
-            <BarChart className="water" data={day} {...this.state} />
+            <BarChart className="water" data={day} {...this.state} marginLeft={45} />
           </div>
           <div className="float">
-            <BarChart className="heat" data={chart2} margins={margin} {...this.state} hideAxisX />
+            <BarChart className="heat" data={chart2} marginLeft={45} {...this.state} hideAxisX />
           </div>
         </div>
         <h1>Fixed</h1>

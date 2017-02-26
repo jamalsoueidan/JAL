@@ -20,6 +20,7 @@ export default class Data {
     return new Overlay(_overlay);
   }
 
+  // TODO: check if overlay exists
   getOverlay(name) {
     let _overlay = OVERLAYS.find(o => o.name === name)
     return findOverlay(_overlay.id)
@@ -27,6 +28,11 @@ export default class Data {
 
   get consumption() {
     return this._consumption;
+  }
+
+  get temperature() {
+    if(this._temperature) return this._temperature;
+    return this._temperature = this.findOverlay(7)
   }
 
   get cooling() {
