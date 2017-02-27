@@ -16,9 +16,19 @@ class List extends React.Component {
 
   render() {
     return(
-      <div className="list">{this.children}</div>
+      <div className={this.props.className}>{this.children}</div>
     )
   }
+}
+
+List.propTypes = {
+  className: React.PropTypes.string,
+  itemRenderer: React.PropTypes.func,
+  data: React.PropTypes.array
+}
+
+List.defaultProps = {
+  className: "list"
 }
 
 export default List

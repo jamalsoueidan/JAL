@@ -6,4 +6,13 @@ class Item extends React.Component {
   }
 }
 
+Item.propTypes = {
+  className: React.PropTypes.string,
+  children: React.PropTypes.element.isRequired
+}
+
+Item.defaultProps = {
+  className: "item"
+}
+
 export default Item
