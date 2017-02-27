@@ -2,6 +2,8 @@
 
 Renderer list with items!
 
+![](https://github.com/jamalsoueidan/react-application-library/blob/master/src/components/list/screenshot.png?raw=true)
+
 ## Examples
 
 ```jsx

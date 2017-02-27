@@ -7,8 +7,7 @@ class Item extends React.Component {
 }
 
 Item.propTypes = {
-  className: React.PropTypes.string,
-  children: React.PropTypes.element.isRequired
+  className: React.PropTypes.string
 }
 
 Item.defaultProps = {

@@ -3,13 +3,15 @@ import { List, Item } from 'list'
 
 require('./stylesheet.css')
 
-const data = [1,2,3,4,5,6]
+const data = ["item", "item", "item"]
 
 export default class extends React.Component {
   render() {
     return(
       <div>
         <List data={data}/>
+
+        <List data={data} itemRenderer={(item) => <div>{item}</div>} />
 
         <List>
           <Item className="header">
