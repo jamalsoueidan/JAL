@@ -8,9 +8,7 @@ class List extends React.Component {
 
     let { data, itemRenderer } = this.props;
     if(data) {
-      return data.map( (d,i) => {
-        return(<Item key={i}>test</Item>)
-      })
+      return data.map((item, index) => <Item key={index}>{itemRenderer(item)}</Item>)
     }
   }
 
@@ -28,7 +26,8 @@ List.propTypes = {
 }
 
 List.defaultProps = {
-  className: "list"
+  className: "list",
+  itemRenderer: (data) => data
 }
 
 export default List

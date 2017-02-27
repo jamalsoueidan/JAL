@@ -9,13 +9,13 @@ export default class extends React.Component {
   render() {
     return(
       <div>
-        <List data={data} itemRenderer={(item) => item}/>
+        <List data={data}/>
 
         <List>
           <Item className="header">
             Header
           </Item>
-          <List className="items" data={data} itemRenderer={(item) => item} />
+          <List className="items" data={data} itemRenderer={(item) => <span className="testerne">{item}</span>} />
         </List>
       </div>
     )
