@@ -7,6 +7,8 @@ Renderer list with items!
 ```jsx
 <List data={data}/>
 
+<List data={data} itemRenderer={(item) => <div>{item}</div>} />
+
 <List>
   <Item className="header">
     Header
