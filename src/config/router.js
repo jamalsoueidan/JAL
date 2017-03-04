@@ -5,26 +5,23 @@ import browserPlugin from 'router5/plugins/browser';
 import transitionPath from 'router5.transition-path';
 import store from './store'
 
-const dispatch = (state, action) => {
-  return new Promise((resolve, reject) => {
+const ensureDataLoaded = (state, action) => new Promise(resolve => {
+  const listener = () => {
     if(store.getState()[state]) {
       resolve();
-      return;
+      unsubscribe();
+      return true;
     }
-
-    const unsubscribe = store.subscribe(() => {
-      if(store.getState()[state]) {
-        unsubscribe();
-        resolve();
-      }
-    })
-
+    return false;
+  }
+  const unsubscribe = store.subscribe(listener)
+  if (!listener()) {
     store.dispatch(action)
-  })
-}
+  }
+})
 
 const routes = [
-  { name: 'application', path: '/', onEnter: (router, store) => dispatch('user', {type: 'add', text: 'jamal'})},
+  { name: 'application', path: '/', onEnter: (store) => ensureDataLoaded('user', {type: 'add', text: 'jamal'})},
   { name: 'application.id', path: '12' }
 ];
 
@@ -39,11 +36,11 @@ const findRouteByName = (routes, routeName) => {
   return routes.find(route => route.name === routeName)
 }
 
-const customMiddleware = (routes) => (router, dependencies) => (toState, fromState, next) => {
+const customMiddleware = (routes) => (router, dependencies) => (toState, fromState) => {
   const { toActivate } = transitionPath(toState, fromState)
   const onEnterPromises = toActivate.map(routeName => findRouteByName(routes, routeName))
                          .filter(route => typeof route.onEnter === "function")
-                         .map(route => route.onEnter(router, dependencies.store))
+                         .map(route => route.onEnter(dependencies.store))
 
   return Promise.all(onEnterPromises)
 };
