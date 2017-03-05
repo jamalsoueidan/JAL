@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dropdown, DropdownManager } from 'dropdown'
+import { Dropdown, DropdownManager } from 'components/dropdown'
 
 require('./stylesheet.css')
 
@@ -63,7 +63,7 @@ export default class extends React.Component {
   }
 
   componentWillUnmount() {
-    DropdownManager.getInstance().removeListener('show', this.show.bind(this))
+    DropdownManager.getInstance().removeAllListeners('show')
     document.removeEventListener('click', this.onClick, false)
   }
 

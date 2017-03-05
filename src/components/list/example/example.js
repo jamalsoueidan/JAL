@@ -1,12 +1,14 @@
 import React from 'react'
-import { List, Item } from 'list'
+import { List, Item } from 'components/list'
+import { routeNode } from 'react-router5';
 
 require('./stylesheet.css')
 
 const data = ["item", "item", "item"]
 
-export default class extends React.Component {
+class Example extends React.Component {
   render() {
+    const { route } = this.props;
     return(
       <div>
         <List data={data}/>
@@ -17,9 +19,13 @@ export default class extends React.Component {
           <Item className="header">
             Header
           </Item>
-          <List className="items" data={data} itemRenderer={(item) => <span className="testerne">{item}</span>} />
+          <List className="items" data={data} itemRenderer={(item) => {
+            <span className="testerne">{item}</span>
+          }}/>
         </List>
       </div>
     )
   }
 }
+
+export default routeNode('')(Example);
