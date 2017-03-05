@@ -1,5 +1,5 @@
 import React from 'react'
-import { List, Item } from 'list'
+import { List, Item } from 'components/list'
 import { routeNode } from 'react-router5';
 
 require('./stylesheet.css')

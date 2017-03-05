@@ -47,6 +47,7 @@
     "react-router5": "^4.0.1",
     "redux": "^3.6.0",
     "redux-logger": "^2.8.2",
+    "redux-router5": "^4.2.3",
     "router5": "^4.5.1",
     "router5.transition-path": "^4.0.1"
   }

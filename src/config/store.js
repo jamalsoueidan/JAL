@@ -1,11 +1,11 @@
-import {createStore, combineReducers, applyMiddleware} from 'redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { router5Middleware, router5Reducer } from 'redux-router5';
 import createLogger from 'redux-logger';
+import router from './router'
 
-const reducer = (state = false, action) => {
-  if(action.type == "add") {
-    return [action.text]
-  }
-  return state;
-}
+const createStoreWithMiddleware = applyMiddleware(router5Middleware(router))(createStore);
+const store = createStoreWithMiddleware(combineReducers({router: router5Reducer}));
 
-export default createStore(combineReducers({user: reducer}), applyMiddleware(createLogger()));
+window.store = store;
+
+export default store;

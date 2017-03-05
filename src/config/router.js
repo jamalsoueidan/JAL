@@ -2,49 +2,25 @@ import createRouter from 'router5';
 import loggerPlugin from 'router5/plugins/logger';
 import listenersPlugin from 'router5/plugins/listeners';
 import browserPlugin from 'router5/plugins/browser';
-import transitionPath from 'router5.transition-path';
-import store from './store'
+import { onEnterMiddleware, ensureDataLoaded } from './routerMiddlewares/on_enter.js'
 
-const ensureDataLoaded = (state, action) => new Promise(resolve => {
-  const listener = () => {
-    if(store.getState()[state]) {
-      resolve();
-      unsubscribe();
-      return true;
-    }
-    return false;
-  }
-  const unsubscribe = store.subscribe(listener)
-  if (!listener()) {
-    store.dispatch(action)
-  }
-})
+import BarchartExample from 'components/barchart/example'
+import DropdownExample from 'components/dropdown/example'
+import ListExample from 'components/list/example'
 
 const routes = [
-  { name: 'application', path: '/', onEnter: (store) => ensureDataLoaded('user', {type: 'add', text: 'jamal'})},
-  { name: 'application.id', path: '12' }
+  { name: 'application', path: '/'},
+  { name: 'application.barchart', path: 'barchart', component: BarchartExample },
+  { name: 'application.dropdown', path: 'dropdown', component: DropdownExample },
+  { name: 'application.list', path: 'list', component: ListExample }
 ];
 
 const router = createRouter(routes, {
-  defaultRoute: 'application.id'
+  defaultRoute: 'application'
 })
 .usePlugin(browserPlugin({useHash: true}))
 .usePlugin(listenersPlugin())
-.setDependencies({ store });
 
-const findRouteByName = (routes, routeName) => {
-  return routes.find(route => route.name === routeName)
-}
+window.router = router
 
-const customMiddleware = (routes) => (router, dependencies) => (toState, fromState) => {
-  const { toActivate } = transitionPath(toState, fromState)
-  const onEnterPromises = toActivate.map(routeName => findRouteByName(routes, routeName))
-                         .filter(route => typeof route.onEnter === "function")
-                         .map(route => route.onEnter(dependencies.store))
-
-  return Promise.all(onEnterPromises)
-};
-
-router.useMiddleware(customMiddleware(routes));
-
-export default router
+export { router as default, routes }

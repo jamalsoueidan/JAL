@@ -52,7 +52,7 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.jsx', '.sass'],
-    modules: [r(__dirname, './src/components'), 'node_modules']
+    modules: [r(__dirname, './src'), 'node_modules']
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),

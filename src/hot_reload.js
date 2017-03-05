@@ -12,9 +12,9 @@ const start = () => {
       ReactDOM.render(
           <AppContainer>
             <Provider store={store}>
-              <RouterProvider router={ router }>
+              <RouterProvider router={router}>
                 <Application />
-                </RouterProvider>
+              </RouterProvider>
             </Provider>
           </AppContainer>,
           document.getElementById('application')

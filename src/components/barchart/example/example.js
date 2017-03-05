@@ -1,5 +1,5 @@
 import React from 'react';
-import BarChart from 'bar_chart'
+import BarChart from 'components/barchart'
 import chart1 from './data.js'
 import chart2 from './data1.js'
 import day from './day.js'
@@ -51,7 +51,7 @@ export default class extends React.Component {
 
   render() {
     return(
-      <div>
+      <div className="barchartExample">
         <div className="buttons">
           <button onClick={this.showValues.bind(this)}>Sæjleværdier</button>
           <button onClick={this.showAverage.bind(this)}>Gennemsnit</button>
