@@ -2,7 +2,7 @@
 
 BarChart with customization
 
-![](https://github.com/jamalsoueidan/react-application-library/blob/master/src/components/bar_chart/screenshot.png?raw=true)
+![](https://github.com/jamalsoueidan/react-application-library/blob/master/src/components/barchart/screenshot.png?raw=true)
 
 ## Why did I build this?
 
