@@ -16,6 +16,7 @@ export default class Table extends React.Component {
 
     this.onScrollPosition = this.onScrollPosition.bind(this)
     this.onMouseWheel = this.onMouseWheel.bind(this)
+    this.onResize = this.onResize.bind(this)
   }
 
   onMouseWheel(wheelDirection) {
@@ -28,12 +29,24 @@ export default class Table extends React.Component {
     }
   }
 
-  componentDidMount() {
+  calculateRowHeight() {
     const node = findDOMNode(this);
     const rowsPerPage = this.props.rowsPerPage
     const rowHeight = node.clientHeight / rowsPerPage
-    console.log(node.clientHeight, rowsPerPage, rowHeight)
     this.setState({rowHeight})
+  }
+
+  componentDidMount() {
+    this.calculateRowHeight();
+    window.addEventListener("resize", this.onResize);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.onResize);
+  }
+
+  onResize() {
+    this.calculateRowHeight();
   }
 
   onScrollPosition(scrollPosition) {
