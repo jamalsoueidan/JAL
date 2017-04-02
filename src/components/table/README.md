@@ -4,6 +4,8 @@ This is optimized table list, which only renderer what is visible, and reuse the
 
 [Demo Codepen](http://codepen.io/jamalsoueidan/pen/peqyRb?editors=0110)
 
+![](https://github.com/jamalsoueidan/react-application-library/blob/master/src/components/table/screenshot.png?raw=true)
+
 ## Examples
 
 ```js
