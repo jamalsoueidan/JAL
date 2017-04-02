@@ -30,7 +30,7 @@ export default class Table extends React.Component {
     console.log(node.offsetHeight, rowsPerPage, rowHeight)
     // TODO: Fix this issue with rowHeight becoming 13.4 with 400px as example!
     const checkMistake = (rowHeight + "").split(".")
-    if(checkMistake[1] !== "5") {
+    if(checkMistake[1] && checkMistake[1] !== "5") {
       console.error(`${rowHeight} is not acceptable in css, please change height of the table, it must be .5 and not .1, .2, .3 etc.`)
     }
     this.setState({rowHeight})
