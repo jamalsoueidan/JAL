@@ -1,6 +1,8 @@
 import React from 'react'
+import { findDOMNode } from 'react-dom'
+import Resize from './resize'
 
-export default class Column extends React.Component {
+class Column extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -36,12 +38,48 @@ export default class Column extends React.Component {
     return 0;
   }
 
-  shouldComponentUpdate() {
-    return false;
+  onResize(totalMovement) {
+    if(!totalMovement) {
+      this.width = findDOMNode(this).clientWidth;
+      return;
+    }
+    let width = this.width;
+    width += totalMovement;
+    this.setState({width})
+  }
+
+  get renderResize() {
+    const { showResize } = this.props;
+    
+    if(!showResize) {
+      return;
+    }
+
+    return(<Resize onResize={this.onResize.bind(this)} />)
   }
 
   render() {
     const { item } = this.props;
-    return(<td onClick={this.onClick.bind(this)}>{item.displayName}</td>)
+    const { width } = this.state
+    return(
+      <td style={{width}} onClick={this.onClick.bind(this)}>
+        <div>{item.displayName}</div>
+        {this.renderResize}
+      </td>
+    )
+  }
+
+  componentDidMount() {
+    this.width = findDOMNode(this).clientWidth
   }
 }
+
+Column.propTypes = {
+  showResize: React.PropTypes.bool
+};
+
+Column.defaultProps = {
+  showResize: true
+};
+
+export default Column

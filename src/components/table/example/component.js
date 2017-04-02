@@ -33,7 +33,7 @@ const headRenderer = (props) => (item) => {
       <Column item={item[0]} {...props} />
       <Column item={item[1]} {...props} />
       <Column item={item[2]} {...props} />
-      <Column item={item[3]} {...props} />
+      <Column item={item[3]} {...props} showResize={false} />
     </tr>
   )
 }
@@ -92,7 +92,7 @@ export default class Example extends React.Component {
   }
 
   get renderperPage() {
-    const perPage = [10,15,20,25];
+    const perPage = [5, 10,15,40];
     return perPage.map(perPage =>
       <button key={perPage} onClick={this.onPerPageClick.bind(this, perPage)}>perPage {perPage}</button>
     )
