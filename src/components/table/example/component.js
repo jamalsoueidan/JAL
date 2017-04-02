@@ -1,6 +1,8 @@
 import React from 'react'
 import Table from 'components/table'
 
+require('./stylesheet.css')
+
 const items = [];
 for(var i=0; i<100; i++) {
   items.push({id: i, name: "jamal " + i, random: Math.random()*i})
@@ -27,7 +29,7 @@ export default class Example extends React.Component {
     super(props)
     this.state = {
       page: 0,
-      rowsPerPage: 20
+      rowsPerPage: 10
     }
   }
 
@@ -58,7 +60,9 @@ export default class Example extends React.Component {
   render() {
     return(
       <div>
-        <Table items={items} itemRenderer={itemRenderer} rowsPerPage={this.state.rowsPerPage} page={this.state.page} />
+        <div className="border">
+          <Table items={items} itemRenderer={itemRenderer} rowsPerPage={this.state.rowsPerPage} page={this.state.page} />
+        </div>
         {this.renderRowsPerPage} <br />
         {this.renderPages}
       </div>

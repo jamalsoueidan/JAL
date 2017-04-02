@@ -27,6 +27,7 @@ export default class Table extends React.Component {
     const node = findDOMNode(this);
     const rowsPerPage = this.props.rowsPerPage
     const rowHeight = (node.offsetHeight / rowsPerPage)
+    console.log(node.offsetHeight, rowsPerPage, rowHeight)
     // TODO: Fix this issue with rowHeight becoming 13.4 with 400px as example!
     const checkMistake = (rowHeight + "").split(".")
     if(checkMistake[1] !== "5") {
