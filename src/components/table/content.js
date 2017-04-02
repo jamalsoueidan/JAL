@@ -5,6 +5,7 @@ export default class Content extends React.Component {
   constructor(props) {
     super(props)
     this.data = props.data;
+    this.state = {sort: {}}
     this.onMouseWheelHandler = this.onMouseWheelHandler.bind(this)
   }
 
@@ -24,9 +25,13 @@ export default class Content extends React.Component {
     onMouseWheel(wheelDelta)
   }
 
-  get tbody() {
-    const { scrollPosition, rowHeight, data, rowRenderer, perPage, selected } = this.props;
+  sort(callback) {
+    this.setState({sort: callback});
+  }
 
+  get tbody() {
+    const { scrollPosition, rowHeight, rowRenderer, perPage, selected } = this.props;
+    const data = this.data;
     let from = Math.floor(scrollPosition/rowHeight);
     let to = perPage+from;
 
@@ -40,7 +45,7 @@ export default class Content extends React.Component {
   get thead() {
     const { columns, rowRenderer, rowHeight } = this.props;
     if(!columns) return;
-    return rowRenderer({type: 'thead', rowHeight})(columns)
+    return rowRenderer({type: 'thead', rowHeight, sort: this.sort.bind(this)})(columns)
   }
 
   render() {
@@ -62,5 +67,12 @@ export default class Content extends React.Component {
     this.scrollToSelected()
     const node = findDOMNode(this);
     node.addEventListener("mousewheel", this.onMouseWheelHandler);
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if(nextState.sort !== this.state.sort) {
+      const sort = nextState.sort
+      this.data.sort(sort);
+    }
   }
 }

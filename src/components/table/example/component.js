@@ -1,13 +1,10 @@
 import React from 'react'
 import Table from 'components/table'
+import Column from './column'
+
 import data from './data'
 
 require('./stylesheet.css')
-
-/*const data = [];
-for(var i=0; i<500; i++) {
-  data.push({id: i, name: "jamal " + i, random: Math.random()*i})
-}*/
 
 const columns = [
   {
@@ -15,15 +12,15 @@ const columns = [
     displayName: '#'
   },
   {
-    attribute: 'name',
+    attribute: 'first_name',
     displayName: 'first name'
   },
   {
-    attribute: 'random',
+    attribute: 'last_name',
     displayName: 'last name'
   },
   {
-    attribute: 'random',
+    attribute: 'gender',
     displayName: 'gender'
   }
 ]
@@ -33,10 +30,10 @@ const headRenderer = (props) => (item) => {
 
   return(
     <tr key="thead" style={style}>
-      <td>{item[0].displayName}</td>
-      <td>{item[1].displayName}</td>
-      <td>{item[2].displayName}</td>
-      <td>{item[2].displayName}</td>
+      <Column item={item[0]} {...props} />
+      <Column item={item[1]} {...props} />
+      <Column item={item[2]} {...props} />
+      <Column item={item[3]} {...props} />
     </tr>
   )
 }
