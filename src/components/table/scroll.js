@@ -21,13 +21,26 @@ export default class Scroll extends React.Component {
     node.addEventListener('scroll', this.onScroll)
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
+    this.onContentWheelScroll();
+    if(prevProps.scrollPosition !==this.props.scrollPosition) {
+      this.onManualScrollPosition();
+    }
+  }
+
+  onContentWheelScroll() {
     const { wheelDirection, rowHeight } = this.props;
     const node = findDOMNode(this);
     if(wheelDirection<0)
-      node.scrollTop += rowHeight * 1.5;
+      node.scrollTop += rowHeight * 2.5;
     if(wheelDirection>0)
-      node.scrollTop -= rowHeight * 1.5;
+      node.scrollTop -= rowHeight * 2.5;
+  }
+
+  onManualScrollPosition() {
+    const { scrollPosition } = this.props;
+    const node = findDOMNode(this);
+    node.scrollTop = scrollPosition
   }
 
   onScroll(evt) {

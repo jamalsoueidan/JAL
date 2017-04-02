@@ -4,10 +4,20 @@ import { findDOMNode } from 'react-dom'
 export default class Content extends React.Component {
   constructor(props) {
     super(props)
+    this.items = props.items;
     this.onMouseWheelHandler = this.onMouseWheelHandler.bind(this)
   }
 
+  /* This method is called when select props is set */
+  scrollToSelected() {
+    const { select, onScrollPosition, rowHeight } = this.props
+    const keys = Object.keys(select);
+    const index = this.items.findIndex((item) => keys.every(key => select[key] === item[key]))
+    onScrollPosition(index * rowHeight)
+  }
+
   componentDidMount() {
+    this.scrollToSelected()
     const node = findDOMNode(this);
     node.addEventListener("mousewheel", this.onMouseWheelHandler);
   }
@@ -15,15 +25,18 @@ export default class Content extends React.Component {
   onMouseWheelHandler(evt) {
     evt.preventDefault();
     const onMouseWheel = this.props.onMouseWheel;
-	  const delta = Math.max(-1, Math.min(1, (evt.wheelDelta || -evt.detail)));
-    onMouseWheel(delta)
+	  const wheelDelta = Math.max(-1, Math.min(1, (evt.wheelDelta || -evt.detail)));
+    onMouseWheel(wheelDelta)
   }
 
   get body() {
     const { scrollPosition, rowHeight, items, itemRenderer, rowsPerPage } = this.props;
-    const from = Math.floor(scrollPosition/rowHeight);
-    const to = rowsPerPage+from;
-    //console.log("scrollPosition", scrollPosition, "from", from, "to", to, "rowsPerPage", rowsPerPage)
+    let from = Math.floor(scrollPosition/rowHeight);
+    let to = rowsPerPage+from;
+    if(to>items.length) {
+      from = items.length - rowsPerPage;
+      to = items.lenght;
+    }
     return items.slice(from, to).map(itemRenderer)
   }
 

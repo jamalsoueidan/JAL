@@ -7,9 +7,11 @@ for(var i=0; i<100; i++) {
 }
 
 const itemRenderer = (rowHeight) => (item) => (
-  <tr key={item.id} style={{height: `${rowHeight}px`}}><td>{item.name}</td></tr>
+  <tr key={item.id} style={{height: `${rowHeight}px`, lineHeight: `${rowHeight}px`}}>
+    <td>{item.name}</td>
+  </tr>
 )
 
 export default () => (
-  <Table items={items} itemRenderer={itemRenderer} rowsPerPage={30} />
+  <Table items={items} itemRenderer={itemRenderer} rowsPerPage={30} select={{id: 48}} />
 )
