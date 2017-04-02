@@ -13,40 +13,62 @@ export default class Scroll extends React.Component {
     this.state = {}
   }
 
+  get node() {
+    return findDOMNode(this);
+  }
+
   componentDidMount() {
-    const node = findDOMNode(this);
+    this.calculateScrollWith();
+    this.gotoPage();
+    this.node.addEventListener('scroll', this.onScroll)
+  }
+
+  gotoPage() {
+    const { page, rowsPerPage, rowHeight } = this.props;
+    if(page > 0) {
+      this.node.scrollTop = ((page - 1) * rowsPerPage) * rowHeight;
+    }
+  }
+
+  calculateScrollWith() {
+    const node = this.node
     const width = node.offsetWidth - node.clientWidth;
     const style = this.state.style
     this.setState({style: {...style, width}})
-    node.addEventListener('scroll', this.onScroll)
+  }
+
+  componentWillUnmount() {
+    this.node.removeEventListener('scroll', this.onScroll)
   }
 
   componentDidUpdate(prevProps) {
     this.onContentWheelScroll();
-    if(prevProps.scrollPosition !==this.props.scrollPosition) {
+
+    if(prevProps.scrollPosition !== this.props.scrollPosition) {
       this.onManualScrollPosition();
+    }
+    
+    if(prevProps.page !== this.props.page) {
+      this.gotoPage();
     }
   }
 
   onContentWheelScroll() {
     const { wheelDirection, rowHeight } = this.props;
-    const node = findDOMNode(this);
     if(wheelDirection<0)
-      node.scrollTop += rowHeight * 2.5;
+      this.node.scrollTop += rowHeight * 2.5;
     if(wheelDirection>0)
-      node.scrollTop -= rowHeight * 2.5;
+      this.node.scrollTop -= rowHeight * 2.5;
   }
 
   onManualScrollPosition() {
     const { scrollPosition } = this.props;
-    const node = findDOMNode(this);
-    node.scrollTop = scrollPosition
+    this.node.scrollTop = scrollPosition
   }
 
   onScroll(evt) {
-    const node = findDOMNode(this);
     const onScrollPosition = this.props.onScrollPosition;
-    onScrollPosition(node.scrollTop)
+    onScrollPosition(this.node.scrollTop)
   }
 
   render() {

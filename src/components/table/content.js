@@ -10,9 +10,10 @@ export default class Content extends React.Component {
 
   /* This method is called when select props is set */
   scrollToSelected() {
-    const { select, onScrollPosition, rowHeight } = this.props
-    const keys = Object.keys(select);
-    const index = this.items.findIndex((item) => keys.every(key => select[key] === item[key]))
+    const { selected, onScrollPosition, rowHeight } = this.props
+    if(!selected) return;
+    const keys = Object.keys(selected);
+    const index = this.items.findIndex((item) => keys.every(key => selected[key] === item[key]))
     onScrollPosition(index * rowHeight)
   }
 

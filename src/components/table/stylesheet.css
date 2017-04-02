@@ -7,7 +7,7 @@ html, body {
 .table {
   display: flex;
   flex-direction: row;
-  height: 400px;
+  height: 405px;
   width: 50%;
   overflow: hidden;
   border: 1px solid #000;

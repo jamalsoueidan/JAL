@@ -32,7 +32,7 @@ export default class Table extends React.Component {
   calculateRowHeight() {
     const node = findDOMNode(this);
     const rowsPerPage = this.props.rowsPerPage
-    const rowHeight = node.offsetHeight / rowsPerPage
+    const rowHeight = (node.offsetHeight / rowsPerPage)
     // TODO: Fix this issue with rowHeight becoming 13.4 with 400px as example!
     const checkMistake = (rowHeight + "").split(".")
     if(checkMistake[1] !== "5") {
@@ -59,7 +59,7 @@ export default class Table extends React.Component {
   }
 
   renderContent(rowHeight) {
-    const {items, itemRenderer, rowsPerPage, select} = this.props;
+    const {items, itemRenderer, rowsPerPage, selected} = this.props;
     const {scrollPosition} = this.state;
 
     return(
@@ -68,23 +68,25 @@ export default class Table extends React.Component {
         onMouseWheel={this.onMouseWheel}
         onScrollPosition={this.onScrollPosition}
         items={items}
-        itemRenderer={itemRenderer(rowHeight)}
+        itemRenderer={itemRenderer(rowHeight, selected)}
         rowHeight={rowHeight}
-        select={select}
+        selected={selected}
         rowsPerPage={rowsPerPage} />
     )
   }
 
   renderScroll(rowHeight) {
-    const {items} = this.props;
+    const {items, page, rowsPerPage} = this.props;
     const {wheelDirection, scrollPosition} = this.state;
 
     return(
       <Scroll
         scrollPosition={scrollPosition}
         wheelDirection={wheelDirection}
+        rowsPerPage={rowsPerPage}
         onScrollPosition={this.onScrollPosition}
         itemsLength={items.length}
+        page={page}
         rowHeight={rowHeight} />
     )
   }
