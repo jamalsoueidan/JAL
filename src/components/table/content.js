@@ -29,6 +29,7 @@ export default class Content extends React.Component {
 
     let from = Math.floor(scrollPosition/rowHeight);
     let to = perPage+from;
+
     if(to>data.length) {
       from = data.length - perPage;
       to = data.lenght;

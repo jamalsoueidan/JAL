@@ -26,10 +26,9 @@ export default class Scroll extends React.Component {
 
   calculateScrollWith() {
     const node = this.node
-    // IE doesn't scroll if the width is scrollWidth, the fake content must be visible!
+    // IE doesn't scroll if there is not avaible content for scroll, so fake content must have atleast 1.5px
     const IEFIX = 1.5;
     const width = node.offsetWidth - node.clientWidth + IEFIX;
-    console.log(width)
     this.setState({width})
   }
 

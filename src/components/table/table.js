@@ -23,17 +23,26 @@ export default class Table extends React.Component {
     this.setState({wheelDirection})
   }
 
+  get perPage() {
+    const { perPage, columns } = this.props
+    if(columns) return perPage + 1; // if we have thead then +1 perPage
+    return perPage;
+  }
+
+  get dataLength() {
+    const { data, columns } = this.props
+    if(columns) return data.length + 1; // if we have thead then +1 perPage
+    return data.length;
+  }
+
   calculateRowHeight() {
     const node = findDOMNode(this);
-    let perPage = this.props.perPage
-    const columns = this.props.columns;
-    if(columns) perPage += 1;
-    const rowHeight = (node.offsetHeight / perPage)
-    console.log(node.offsetHeight, perPage, rowHeight)
+    const rowHeight = (node.offsetHeight / this.perPage)
     // TODO: Fix this issue with rowHeight becoming 13.4 with 400px as example!
     const checkMistake = (rowHeight + "").split(".")
     if(checkMistake[1] && checkMistake[1] !== "5") {
       console.error(`${rowHeight} is not acceptable in css, please change height of the table, it must be .5 and not .1, .2, .3 etc.`)
+      console.error("You can actually figure out what the best height for table, by saying 11 rows x 10 perPage = 440pixel")
     }
     this.setState({rowHeight})
   }
@@ -65,16 +74,16 @@ export default class Table extends React.Component {
   }
 
   renderScroll(rowHeight) {
-    const {data, page, perPage} = this.props;
+    const page = this.props.page;
     const {wheelDirection, scrollPosition} = this.state;
 
     return(
       <Scroll
         scrollPosition={scrollPosition}
         wheelDirection={wheelDirection}
-        perPage={perPage}
+        perPage={this.perPage}
         onScrollPosition={this.onScrollPosition}
-        dataLength={data.length}
+        dataLength={this.dataLength}
         page={page}
         rowHeight={rowHeight} />
     )
