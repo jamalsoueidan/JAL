@@ -3,7 +3,7 @@ import { findDOMNode } from 'react-dom'
 
 const FakeContent = ({itemsLength, rowHeight}) => {
   const height = itemsLength * rowHeight;
-  return(<div className="fakeContent" style={{height: height + "px"}}></div>)
+  return(<div className="fakeContent" style={{height: height + "px", backgroundColor: "#ff0040", visibility: "hidden"}}></div>)
 }
 
 export default class Scroll extends React.Component {
@@ -17,12 +17,6 @@ export default class Scroll extends React.Component {
     return findDOMNode(this);
   }
 
-  componentDidMount() {
-    this.calculateScrollWith();
-    this.gotoPage();
-    this.node.addEventListener('scroll', this.onScroll)
-  }
-
   gotoPage() {
     const { page, rowsPerPage, rowHeight } = this.props;
     if(page > 0) {
@@ -32,26 +26,13 @@ export default class Scroll extends React.Component {
 
   calculateScrollWith() {
     const node = this.node
-    const width = node.offsetWidth - node.clientWidth;
-    const style = this.state.style
-    this.setState({style: {...style, width}})
+    // IE doesn't scroll if the width is scrollWidth, the fake content must be visible!
+    const IEFIX = 1.5;
+    const width = node.offsetWidth - node.clientWidth + IEFIX;
+    console.log(width)
+    this.setState({width})
   }
 
-  componentWillUnmount() {
-    this.node.removeEventListener('scroll', this.onScroll)
-  }
-
-  componentDidUpdate(prevProps) {
-    this.onContentWheelScroll();
-
-    if(prevProps.scrollPosition !== this.props.scrollPosition) {
-      this.onManualScrollPosition();
-    }
-    
-    if(prevProps.page !== this.props.page) {
-      this.gotoPage();
-    }
-  }
 
   onContentWheelScroll() {
     const { wheelDirection, rowHeight } = this.props;
@@ -80,5 +61,27 @@ export default class Scroll extends React.Component {
         <FakeContent itemsLength={itemsLength} rowHeight={rowHeight}/>
       </div>
     )
+  }
+
+  componentDidMount() {
+    this.calculateScrollWith();
+    this.gotoPage();
+    this.node.addEventListener('scroll', this.onScroll)
+  }
+
+  componentDidUpdate(prevProps) {
+    this.onContentWheelScroll();
+
+    if(prevProps.scrollPosition !== this.props.scrollPosition) {
+      this.onManualScrollPosition();
+    }
+
+    if(prevProps.page !== this.props.page) {
+      this.gotoPage();
+    }
+  }
+
+  componentWillUnmount() {
+    this.node.removeEventListener('scroll', this.onScroll)
   }
 }

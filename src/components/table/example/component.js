@@ -3,7 +3,7 @@ import Table from 'components/table'
 
 const items = [];
 for(var i=0; i<100; i++) {
-  items.push({id: i, name: "jamal " + i})
+  items.push({id: i, name: "jamal " + i, random: Math.random()*i})
 }
 
 const itemRenderer = (rowHeight, selected) => (item) => {
@@ -15,7 +15,9 @@ const itemRenderer = (rowHeight, selected) => (item) => {
 
   return(
     <tr key={item.id} style={style}>
+      <td>{item.id}</td>
       <td>{item.name}</td>
+      <td>{item.random}</td>
     </tr>
   )
 }
@@ -45,7 +47,6 @@ export default class Example extends React.Component {
     return(
       <div>
         <Table items={items} itemRenderer={itemRenderer} rowsPerPage={30} page={this.state.page} />
-        {this.renderPages}
       </div>
     )
   }
