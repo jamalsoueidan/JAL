@@ -23,12 +23,6 @@ export default class Table extends React.Component {
     this.setState({wheelDirection})
   }
 
-  componentDidUpdate(prevProp, prevState) {
-    if(prevState.wheelDirection!==this.state.wheelDirection) {
-      this.setState({wheelDirection: null})
-    }
-  }
-
   calculateRowHeight() {
     const node = findDOMNode(this);
     const rowsPerPage = this.props.rowsPerPage
@@ -39,15 +33,6 @@ export default class Table extends React.Component {
       console.error(`${rowHeight} is not acceptable in css, please change height of the table, it must be .5 and not .1, .2, .3 etc.`)
     }
     this.setState({rowHeight})
-  }
-
-  componentDidMount() {
-    this.calculateRowHeight();
-    window.addEventListener("resize", this.onResize);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener("resize", this.onResize);
   }
 
   onResize() {
@@ -100,5 +85,24 @@ export default class Table extends React.Component {
         {rowHeight && this.renderScroll(rowHeight) }
       </div>
     )
+  }
+
+  componentDidMount() {
+    this.calculateRowHeight();
+    window.addEventListener("resize", this.onResize);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if(prevState.wheelDirection!==this.state.wheelDirection) {
+      this.setState({wheelDirection: null})
+    }
+
+    if(prevProps.rowsPerPage!=this.props.rowsPerPage) {
+      this.calculateRowHeight();
+    }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.onResize);
   }
 }

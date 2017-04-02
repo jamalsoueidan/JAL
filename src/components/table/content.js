@@ -17,12 +17,6 @@ export default class Content extends React.Component {
     onScrollPosition(index * rowHeight)
   }
 
-  componentDidMount() {
-    this.scrollToSelected()
-    const node = findDOMNode(this);
-    node.addEventListener("mousewheel", this.onMouseWheelHandler);
-  }
-
   onMouseWheelHandler(evt) {
     evt.preventDefault();
     const onMouseWheel = this.props.onMouseWheel;
@@ -51,5 +45,11 @@ export default class Content extends React.Component {
         </table>
       </div>
     )
+  }
+
+  componentDidMount() {
+    this.scrollToSelected()
+    const node = findDOMNode(this);
+    node.addEventListener("mousewheel", this.onMouseWheelHandler);
   }
 }

@@ -26,7 +26,8 @@ export default class Example extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      page: 0
+      page: 0,
+      rowsPerPage: 20
     }
   }
 
@@ -34,8 +35,12 @@ export default class Example extends React.Component {
     this.setState({page})
   }
 
+  onPerPageClick(rowsPerPage) {
+    this.setState({rowsPerPage})
+  }
+
   get renderPages() {
-    const totalPages = Math.ceil(items.length / 30) + 1;
+    const totalPages = Math.ceil(items.length / this.state.rowsPerPage) + 1;
     let _ = [];
     for(var i=1; i<totalPages; i++) {
       _.push(<button key={i} onClick={this.onPageClick.bind(this, i)}>Page {i}</button>)
@@ -43,10 +48,19 @@ export default class Example extends React.Component {
     return _
   }
 
+  get renderRowsPerPage() {
+    const rowsPerPage = [10,15,20,25];
+    return rowsPerPage.map(perPage =>
+      <button key={perPage} onClick={this.onPerPageClick.bind(this, perPage)}>rowsPerPage {perPage}</button>
+    )
+  }
+
   render() {
     return(
       <div>
-        <Table items={items} itemRenderer={itemRenderer} rowsPerPage={30} page={this.state.page} />
+        <Table items={items} itemRenderer={itemRenderer} rowsPerPage={this.state.rowsPerPage} page={this.state.page} />
+        {this.renderRowsPerPage} <br />
+        {this.renderPages}
       </div>
     )
   }
