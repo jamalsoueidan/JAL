@@ -25,9 +25,9 @@ export default class Table extends React.Component {
 
   calculateRowHeight() {
     const node = findDOMNode(this);
-    const rowsPerPage = this.props.rowsPerPage
-    const rowHeight = (node.offsetHeight / rowsPerPage)
-    console.log(node.offsetHeight, rowsPerPage, rowHeight)
+    const perPage = this.props.perPage
+    const rowHeight = (node.offsetHeight / perPage)
+    console.log(node.offsetHeight, perPage, rowHeight)
     // TODO: Fix this issue with rowHeight becoming 13.4 with 400px as example!
     const checkMistake = (rowHeight + "").split(".")
     if(checkMistake[1] && checkMistake[1] !== "5") {
@@ -45,7 +45,7 @@ export default class Table extends React.Component {
   }
 
   renderContent(rowHeight) {
-    const {items, itemRenderer, rowsPerPage, selected} = this.props;
+    const {data, rowRenderer, perPage, selected} = this.props;
     const {scrollPosition} = this.state;
 
     return(
@@ -53,25 +53,25 @@ export default class Table extends React.Component {
         scrollPosition={scrollPosition}
         onMouseWheel={this.onMouseWheel}
         onScrollPosition={this.onScrollPosition}
-        items={items}
-        itemRenderer={itemRenderer(rowHeight, selected)}
+        data={data}
+        rowRenderer={rowRenderer(rowHeight, selected)}
         rowHeight={rowHeight}
         selected={selected}
-        rowsPerPage={rowsPerPage} />
+        perPage={perPage} />
     )
   }
 
   renderScroll(rowHeight) {
-    const {items, page, rowsPerPage} = this.props;
+    const {data, page, perPage} = this.props;
     const {wheelDirection, scrollPosition} = this.state;
 
     return(
       <Scroll
         scrollPosition={scrollPosition}
         wheelDirection={wheelDirection}
-        rowsPerPage={rowsPerPage}
+        perPage={perPage}
         onScrollPosition={this.onScrollPosition}
-        itemsLength={items.length}
+        dataLength={data.length}
         page={page}
         rowHeight={rowHeight} />
     )
@@ -98,7 +98,7 @@ export default class Table extends React.Component {
       this.setState({wheelDirection: null})
     }
 
-    if(prevProps.rowsPerPage!=this.props.rowsPerPage) {
+    if(prevProps.perPage!=this.props.perPage) {
       this.calculateRowHeight();
     }
   }

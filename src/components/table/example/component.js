@@ -3,12 +3,27 @@ import Table from 'components/table'
 
 require('./stylesheet.css')
 
-const items = [];
+const data = [];
 for(var i=0; i<500; i++) {
-  items.push({id: i, name: "jamal " + i, random: Math.random()*i})
+  data.push({id: i, name: "jamal " + i, random: Math.random()*i})
 }
 
-const itemRenderer = (rowHeight, selected) => (item) => {
+const columns = [
+  {
+    attribute: 'id',
+    displayName: '#'
+  },
+  {
+    attribute: 'name',
+    displayName: 'Navn'
+  },
+  {
+    attribute: 'random',
+    displayName: 'R A N D O M'
+  }
+]
+
+const rowRenderer = (rowHeight, selected) => (item) => {
   let style = {height: `${rowHeight}px`, lineHeight: `${rowHeight}px`}
 
   if(selected && selected.id === item.id) {
@@ -29,7 +44,7 @@ export default class Example extends React.Component {
     super(props)
     this.state = {
       page: 1,
-      rowsPerPage: 10
+      perPage: 10
     }
   }
 
@@ -40,15 +55,15 @@ export default class Example extends React.Component {
   }
 
   get totalPages() {
-    return Math.ceil(items.length / this.state.rowsPerPage) + 1;
+    return Math.ceil(data.length / this.state.perPage) + 1;
   }
 
-  onPerPageClick(rowsPerPage) {
-    this.setState({rowsPerPage, page: 1})
+  onPerPageClick(perPage) {
+    this.setState({perPage, page: 1})
   }
 
   get renderPages() {
-    const totalPages = Math.ceil(items.length / this.state.rowsPerPage) + 1;
+    const totalPages = Math.ceil(data.length / this.state.perPage) + 1;
     let _ = [];
     for(var i=1; i<totalPages; i++) {
       _.push(<button key={i} onClick={this.onPageClick.bind(this, i)}>Page {i}</button>)
@@ -56,10 +71,10 @@ export default class Example extends React.Component {
     return _
   }
 
-  get renderRowsPerPage() {
-    const rowsPerPage = [10,15,20,25];
-    return rowsPerPage.map(perPage =>
-      <button key={perPage} onClick={this.onPerPageClick.bind(this, perPage)}>rowsPerPage {perPage}</button>
+  get renderperPage() {
+    const perPage = [10,15,20,25];
+    return perPage.map(perPage =>
+      <button key={perPage} onClick={this.onPerPageClick.bind(this, perPage)}>perPage {perPage}</button>
     )
   }
 
@@ -83,9 +98,9 @@ export default class Example extends React.Component {
     return(
       <div>
         <div className="border">
-          <Table items={items} itemRenderer={itemRenderer} rowsPerPage={this.state.rowsPerPage} page={this.state.page} />
+          <Table data={data} rowRenderer={rowRenderer} perPage={this.state.perPage} page={this.state.page} />
         </div>
-        {this.renderRowsPerPage} <br />
+        {this.renderperPage} <br />
         {this.renderPaginate}
       </div>
     )

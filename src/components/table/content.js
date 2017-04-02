@@ -4,7 +4,7 @@ import { findDOMNode } from 'react-dom'
 export default class Content extends React.Component {
   constructor(props) {
     super(props)
-    this.items = props.items;
+    this.data = props.data;
     this.onMouseWheelHandler = this.onMouseWheelHandler.bind(this)
   }
 
@@ -13,7 +13,7 @@ export default class Content extends React.Component {
     const { selected, onScrollPosition, rowHeight } = this.props
     if(!selected) return;
     const keys = Object.keys(selected);
-    const index = this.items.findIndex((item) => keys.every(key => selected[key] === item[key]))
+    const index = this.data.findIndex((item) => keys.every(key => selected[key] === item[key]))
     onScrollPosition(index * rowHeight)
   }
 
@@ -25,14 +25,14 @@ export default class Content extends React.Component {
   }
 
   get body() {
-    const { scrollPosition, rowHeight, items, itemRenderer, rowsPerPage } = this.props;
+    const { scrollPosition, rowHeight, data, rowRenderer, perPage } = this.props;
     let from = Math.floor(scrollPosition/rowHeight);
-    let to = rowsPerPage+from;
-    if(to>items.length) {
-      from = items.length - rowsPerPage;
-      to = items.lenght;
+    let to = perPage+from;
+    if(to>data.length) {
+      from = data.length - perPage;
+      to = data.lenght;
     }
-    return items.slice(from, to).map(itemRenderer)
+    return data.slice(from, to).map(rowRenderer)
   }
 
   render() {

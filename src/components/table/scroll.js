@@ -1,8 +1,8 @@
 import React from 'react'
 import { findDOMNode } from 'react-dom'
 
-const FakeContent = ({itemsLength, rowHeight}) => {
-  const height = itemsLength * rowHeight;
+const FakeContent = ({dataLength, rowHeight}) => {
+  const height = dataLength * rowHeight;
   return(<div className="fakeContent" style={{height: height + "px", backgroundColor: "#ff0040", visibility: "hidden"}}></div>)
 }
 
@@ -18,9 +18,9 @@ export default class Scroll extends React.Component {
   }
 
   gotoPage() {
-    const { page, rowsPerPage, rowHeight } = this.props;
+    const { page, perPage, rowHeight } = this.props;
     if(page > 0) {
-      this.node.scrollTop = ((page - 1) * rowsPerPage) * rowHeight;
+      this.node.scrollTop = ((page - 1) * perPage) * rowHeight;
     }
   }
 
@@ -54,11 +54,11 @@ export default class Scroll extends React.Component {
 
   render() {
     const {width} = this.state;
-    const {itemsLength, rowHeight} = this.props
+    const {dataLength, rowHeight} = this.props
 
     return(
       <div className="scroll" style={{width}}>
-        <FakeContent itemsLength={itemsLength} rowHeight={rowHeight}/>
+        <FakeContent dataLength={dataLength} rowHeight={rowHeight}/>
       </div>
     )
   }
