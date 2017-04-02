@@ -39,6 +39,7 @@ export default class Content extends React.Component {
 
   get thead() {
     const { columns, rowRenderer, rowHeight } = this.props;
+    if(!columns) return;
     return rowRenderer({type: 'thead', rowHeight})(columns)
   }
 
