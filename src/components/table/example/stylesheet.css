@@ -14,3 +14,16 @@ tr {
   right: 10px;
   padding: 10px;
 }
+
+
+thead {
+  tr {
+    td {
+      background-color: #ccc;
+
+      &:first-child {
+        width: 50px;
+      }
+    }
+  }
+}

@@ -1,12 +1,13 @@
 import React from 'react'
 import Table from 'components/table'
+import data from './data'
 
 require('./stylesheet.css')
 
-const data = [];
+/*const data = [];
 for(var i=0; i<500; i++) {
   data.push({id: i, name: "jamal " + i, random: Math.random()*i})
-}
+}*/
 
 const columns = [
   {
@@ -15,26 +16,48 @@ const columns = [
   },
   {
     attribute: 'name',
-    displayName: 'Navn'
+    displayName: 'first name'
   },
   {
     attribute: 'random',
-    displayName: 'R A N D O M'
+    displayName: 'last name'
+  },
+  {
+    attribute: 'random',
+    displayName: 'gender'
   }
 ]
 
-const rowRenderer = (rowHeight, selected) => (item) => {
-  let style = {height: `${rowHeight}px`, lineHeight: `${rowHeight}px`}
+const headRenderer = (props) => (item) => {
+  let style = {height: `${props.rowHeight}px`, lineHeight: `${props.rowHeight}px`}
 
-  if(selected && selected.id === item.id) {
+  return(
+    <tr key="thead" style={style}>
+      <td>{item[0].displayName}</td>
+      <td>{item[1].displayName}</td>
+      <td>{item[2].displayName}</td>
+      <td>{item[2].displayName}</td>
+    </tr>
+  )
+}
+
+const rowRenderer = (props) => (item) => {
+  if(props.type === "thead") {
+    return headRenderer(props)(item)
+  }
+
+  let style = {height: `${props.rowHeight}px`, lineHeight: `${props.rowHeight}px`}
+
+  if(props.selected && props.selected.id === item.id) {
     style["backgroundColor"] = "#ff0040"
   }
 
   return(
     <tr key={item.id} style={style}>
       <td>{item.id}</td>
-      <td>{item.name}</td>
-      <td>{item.random}</td>
+      <td>{item.first_name}</td>
+      <td>{item.last_name}</td>
+      <td>{item.gender}</td>
     </tr>
   )
 }
@@ -85,8 +108,9 @@ export default class Example extends React.Component {
   get renderPaginate() {
     return(
       <div className="paginate">
-        Current page: {this.state.page}<br />
-        Total pages: {this.totalPages-1}<br />
+        Total pages: <strong>{this.totalPages-1}</strong><br />
+        Total rows: <strong>{data.length}</strong><br />
+        Current page: <strong>{this.state.page}</strong><br />
         <button onClick={this.onPageClick.bind(this, (this.state.page-1))}>Prev</button>
         <button onClick={this.onPageClick.bind(this, this.state.page+1)}>Next</button><br />
         <input type="text" onChange={this.onChangeInput.bind(this)} />
@@ -98,7 +122,7 @@ export default class Example extends React.Component {
     return(
       <div>
         <div className="border">
-          <Table data={data} rowRenderer={rowRenderer} perPage={this.state.perPage} page={this.state.page} />
+          <Table data={data} columns={columns} rowRenderer={rowRenderer} perPage={this.state.perPage} page={this.state.page} />
         </div>
         {this.renderperPage} <br />
         {this.renderPaginate}

@@ -24,23 +24,32 @@ export default class Content extends React.Component {
     onMouseWheel(wheelDelta)
   }
 
-  get body() {
-    const { scrollPosition, rowHeight, data, rowRenderer, perPage } = this.props;
+  get tbody() {
+    const { scrollPosition, rowHeight, data, rowRenderer, perPage, selected } = this.props;
+
     let from = Math.floor(scrollPosition/rowHeight);
     let to = perPage+from;
     if(to>data.length) {
       from = data.length - perPage;
       to = data.lenght;
     }
-    return data.slice(from, to).map(rowRenderer)
+    return data.slice(from, to).map(rowRenderer({type: 'tbody', rowHeight, selected}))
+  }
+
+  get thead() {
+    const { columns, rowRenderer, rowHeight } = this.props;
+    return rowRenderer({type: 'thead', rowHeight})(columns)
   }
 
   render() {
     return(
       <div className="content">
         <table>
+          <thead>
+            {this.thead}
+          </thead>
           <tbody>
-            {this.body}
+            {this.tbody}
           </tbody>
         </table>
       </div>

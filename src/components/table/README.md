@@ -20,3 +20,9 @@ export default () => (
   <Table data={data} rowRenderer={rowRenderer} perPage={30} />
 )
 ```
+
+## Features
+
+- Validates columns and data columns is same!
+- Customize so it works with API calls while scrolling!
+- ...
