@@ -11,7 +11,9 @@ export default class Table extends React.Component {
     this.state = {
       scrollPosition: 0,
       wheelDirection: null,
-      rowHeight: null
+      rowHeight: null,
+      fakeRowHeight: 10,
+      tableHeight: 0
     }
 
     this.onScrollPosition = this.onScrollPosition.bind(this)
@@ -44,7 +46,7 @@ export default class Table extends React.Component {
       console.error(`${rowHeight} is not acceptable in css, please change height of the table, it must be .5 and not .1, .2, .3 etc.`)
       console.error("You can actually figure out what the best height for table, by saying 11 rows x 10 perPage = 440pixel")
     }
-    this.setState({rowHeight})
+    this.setState({rowHeight, tableHeight: node.offsetHeight})
   }
 
   onResize() {
@@ -55,9 +57,9 @@ export default class Table extends React.Component {
     this.setState({scrollPosition})
   }
 
-  renderContent(rowHeight) {
+  renderContent() {
     const {data, rowRenderer, perPage, selected, columns} = this.props;
-    const {scrollPosition} = this.state;
+    const {scrollPosition, rowHeight, fakeRowHeight} = this.state;
 
     return(
       <Content
@@ -69,13 +71,14 @@ export default class Table extends React.Component {
         rowRenderer={rowRenderer}
         rowHeight={rowHeight}
         selected={selected}
-        perPage={perPage} />
+        perPage={perPage}
+        fakeRowHeight={fakeRowHeight} />
     )
   }
 
-  renderScroll(rowHeight) {
+  renderScroll() {
     const page = this.props.page;
-    const {wheelDirection, scrollPosition} = this.state;
+    const {wheelDirection, scrollPosition, fakeRowHeight, tableHeight} = this.state;
 
     return(
       <Scroll
@@ -85,17 +88,18 @@ export default class Table extends React.Component {
         onScrollPosition={this.onScrollPosition}
         dataLength={this.dataLength}
         page={page}
-        rowHeight={rowHeight} />
+        tableHeight={tableHeight}
+        fakeRowHeight={fakeRowHeight} />
     )
   }
 
   render() {
-    const { rowHeight } = this.state
+    const {rowHeight} = this.state;
 
     return(
       <div className="table">
-        {rowHeight && this.renderContent(rowHeight) }
-        {rowHeight && this.renderScroll(rowHeight) }
+        {rowHeight && this.renderContent() }
+        {rowHeight && this.renderScroll() }
       </div>
     )
   }

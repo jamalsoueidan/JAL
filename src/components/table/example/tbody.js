@@ -2,8 +2,8 @@ import React from 'react'
 
 class TBody extends React.Component {
   render() {
-    const { rowHeight, item, selected } = this.props;
-    let style = {height: `${rowHeight}px`, lineHeight: `${rowHeight}px`}
+    const { item, selected } = this.props;
+    let style = this.props.style;
 
     if(selected && selected.id === item.id) {
       style["backgroundColor"] = "#ff0040"

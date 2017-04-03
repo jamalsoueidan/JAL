@@ -3,7 +3,13 @@ import Table from 'components/table'
 import THead from './thead'
 import TBody from './tbody'
 
-import data from './data'
+//import data from './data'
+
+let data = [];
+
+for(var i=1;i<100;i++) {
+  data.push({id: i, first_name: "jamal", last_name: "jamal", gender: 'men'})
+}
 
 require('./stylesheet.css')
 

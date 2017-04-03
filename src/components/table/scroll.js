@@ -1,8 +1,8 @@
 import React from 'react'
 import { findDOMNode } from 'react-dom'
 
-const FakeContent = ({dataLength, rowHeight}) => {
-  const height = dataLength * rowHeight;
+const FakeContent = ({height}) => {
+  console.log(height)
   return(<div className="fakeContent" style={{height: height + "px", backgroundColor: "#ff0040", visibility: "hidden"}}></div>)
 }
 
@@ -18,9 +18,9 @@ export default class Scroll extends React.Component {
   }
 
   gotoPage() {
-    const { page, perPage, rowHeight } = this.props;
+    const { page, perPage, fakeRowHeight } = this.props;
     if(page > 0) {
-      this.node.scrollTop = ((page - 1) * perPage) * rowHeight;
+      this.node.scrollTop = ((page - 1) * perPage) * fakeRowHeight;
     }
   }
 
@@ -34,11 +34,11 @@ export default class Scroll extends React.Component {
 
 
   onContentWheelScroll() {
-    const { wheelDirection, rowHeight } = this.props;
+    const { wheelDirection, fakeRowHeight } = this.props;
     if(wheelDirection<0)
-      this.node.scrollTop += rowHeight * 2.5;
+      this.node.scrollTop += fakeRowHeight;
     if(wheelDirection>0)
-      this.node.scrollTop -= rowHeight * 2.5;
+      this.node.scrollTop -= fakeRowHeight;
   }
 
   onManualScrollPosition() {
@@ -51,13 +51,17 @@ export default class Scroll extends React.Component {
     onScrollPosition(this.node.scrollTop)
   }
 
+  get calculateFakeHeight() {
+    const {dataLength, fakeRowHeight} = this.props
+    return dataLength * fakeRowHeight;
+  }
+
   render() {
     const {width} = this.state;
-    const {dataLength, rowHeight} = this.props
 
     return(
       <div className="scroll" style={{width}}>
-        <FakeContent dataLength={dataLength} rowHeight={rowHeight}/>
+        <FakeContent height={this.calculateFakeHeight}/>
       </div>
     )
   }
