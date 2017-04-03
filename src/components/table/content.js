@@ -13,6 +13,7 @@ export default class Content extends React.Component {
   scrollToSelected() {
     const { selected, onScrollPosition, rowHeight } = this.props
     if(!selected) return;
+    console.log("table", selected)
     const keys = Object.keys(selected);
     const index = this.data.findIndex((item) => keys.every(key => selected[key] === item[key]))
     onScrollPosition(index * rowHeight)
@@ -31,6 +32,13 @@ export default class Content extends React.Component {
 
   get tbody() {
     const { scrollPosition, rowHeight, rowRenderer, perPage, selected } = this.props;
+
+    if(this.data.length===0) {
+      return rowRenderer({
+        type: 'tbody', rowHeight, selected
+      })()
+    }
+
     const data = this.data;
     let from = Math.ceil(scrollPosition/rowHeight);
     let to = perPage+from;
@@ -38,6 +46,7 @@ export default class Content extends React.Component {
       from = data.length - perPage;
       to = data.lenght;
     }
+
     return data.slice(from, to).map(rowRenderer({type: 'tbody', rowHeight, selected}))
   }
 
@@ -73,8 +82,10 @@ export default class Content extends React.Component {
       const sort = nextState.sort
       this.data.sort(sort);
     }
+  }
 
-    if(nextProps.selected!=this.props.selected) {
+  componentDidUpdate(prevProps) {
+    if(prevProps.selected!==this.props.selected) {
       this.scrollToSelected()
     }
   }
