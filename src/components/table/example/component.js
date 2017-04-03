@@ -1,6 +1,7 @@
 import React from 'react'
 import Table from 'components/table'
-import Column from './column'
+import THead from './thead'
+import TBody from './tbody'
 
 import data from './data'
 
@@ -25,38 +26,12 @@ const columns = [
   }
 ]
 
-const headRenderer = (props) => (item) => {
-  let style = {height: `${props.rowHeight}px`, lineHeight: `${props.rowHeight}px`}
-
-  return(
-    <tr key="thead" style={style}>
-      <Column item={item[0]} {...props} />
-      <Column item={item[1]} {...props} />
-      <Column item={item[2]} {...props} />
-      <Column item={item[3]} {...props} showResize={false} />
-    </tr>
-  )
-}
-
-const rowRenderer = (props) => (item) => {
+const rowRenderer = (item, props) => {
   if(props.type === "thead") {
-    return headRenderer(props)(item)
+    return <THead item={item} {...props} />
+  } else {
+    return <TBody key={item.id} item={item} {...props} />
   }
-
-  let style = {height: `${props.rowHeight}px`, lineHeight: `${props.rowHeight}px`}
-
-  if(props.selected && props.selected.id === item.id) {
-    style["backgroundColor"] = "#ff0040"
-  }
-
-  return(
-    <tr key={item.id} style={style}>
-      <td>{item.id}</td>
-      <td>{item.first_name}</td>
-      <td>{item.last_name}</td>
-      <td>{item.gender}</td>
-    </tr>
-  )
 }
 
 export default class Example extends React.Component {

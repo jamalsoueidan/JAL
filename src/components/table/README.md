@@ -1,8 +1,10 @@
 # Table
 
-This is optimized table list, which only renderer what is visible, and reuse the data that are already rendered.
+This is simple table component, but can handle huge dataset. [Try codepen](http://codepen.io/jamalsoueidan/pen/peqyRb?editors=0110)
 
-[Demo Codepen](http://codepen.io/jamalsoueidan/pen/peqyRb?editors=0110)
+It was designed to be extensible, if you need more features, you can use build them.
+
+We provided you with example sorting, paginate, dragdrop, etc.
 
 ![](https://github.com/jamalsoueidan/react-application-library/blob/master/src/components/table/screenshot.png?raw=true)
 

@@ -10,6 +10,7 @@ class Column extends React.Component {
       b: 1
     }
   }
+  
   onClick() {
     const { sort } = this.props;
     if(this.state.a>0) {
@@ -50,7 +51,7 @@ class Column extends React.Component {
 
   get renderResize() {
     const { showResize } = this.props;
-    
+
     if(!showResize) {
       return;
     }

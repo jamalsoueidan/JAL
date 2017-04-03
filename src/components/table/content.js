@@ -13,7 +13,6 @@ export default class Content extends React.Component {
   scrollToSelected() {
     const { selected, onScrollPosition, rowHeight } = this.props
     if(!selected) return;
-    console.log("table", selected)
     const keys = Object.keys(selected);
     const index = this.data.findIndex((item) => keys.every(key => selected[key] === item[key]))
     onScrollPosition(index * rowHeight)
@@ -32,11 +31,12 @@ export default class Content extends React.Component {
 
   get tbody() {
     const { scrollPosition, rowHeight, rowRenderer, perPage, selected } = this.props;
+    const style = {height: `${rowHeight}px`, lineHeight: `${rowHeight}px`};
 
     if(this.data.length===0) {
-      return rowRenderer({
-        type: 'tbody', rowHeight, selected
-      })()
+      return rowRenderer(null, {
+        type: 'thead', style
+      })
     }
 
     const data = this.data;
@@ -47,13 +47,13 @@ export default class Content extends React.Component {
       to = data.lenght;
     }
 
-    return data.slice(from, to).map(rowRenderer({type: 'tbody', rowHeight, selected}))
+    return data.slice(from, to).map(item => rowRenderer(item, {type: 'tbody', style, selected}));
   }
 
   get thead() {
     const { columns, rowRenderer, rowHeight } = this.props;
     if(!columns) return;
-    return rowRenderer({type: 'thead', rowHeight, sort: this.sort.bind(this)})(columns)
+    return rowRenderer(columns, {type: 'thead', rowHeight, sort: this.sort.bind(this)})
   }
 
   render() {
