@@ -9,7 +9,7 @@ export default class Content extends React.Component {
     this.onMouseWheelHandler = this.onMouseWheelHandler.bind(this)
   }
 
-  /* This method is called when select props is set */
+  /* This method is called when "select" props is set */
   scrollToSelected() {
     const { selected, onScrollPosition, rowHeight } = this.props
     if(!selected) return;
@@ -32,9 +32,8 @@ export default class Content extends React.Component {
   get tbody() {
     const { scrollPosition, rowHeight, rowRenderer, perPage, selected } = this.props;
     const data = this.data;
-    let from = Math.floor(scrollPosition/rowHeight);
+    let from = Math.ceil(scrollPosition/rowHeight);
     let to = perPage+from;
-
     if(to>data.length) {
       from = data.length - perPage;
       to = data.lenght;
@@ -73,6 +72,10 @@ export default class Content extends React.Component {
     if(nextState.sort !== this.state.sort) {
       const sort = nextState.sort
       this.data.sort(sort);
+    }
+
+    if(nextProps.selected!=this.props.selected) {
+      this.scrollToSelected()
     }
   }
 }
