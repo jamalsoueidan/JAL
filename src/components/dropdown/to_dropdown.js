@@ -9,8 +9,8 @@ const style = {
 }
 export default (WrapperComponent) => {
   return class extends React.Component {
-    constructor() {
-      super(...arguments)
+    constructor(props) {
+      super(props)
       this.state = { style }
     }
 

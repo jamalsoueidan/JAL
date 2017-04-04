@@ -5,32 +5,32 @@ export default class Content extends React.Component {
   constructor(props) {
     super(props)
     this.data = props.data;
-    this.state = {sort: {}}
-    this.onMouseWheelHandler = this.onMouseWheelHandler.bind(this)
+    this.state = {
+      columns: props.columns
+    }
   }
 
-  /* This method is called when "select" props is set */
+  /* This method is called when "selected" props is set */
   scrollToSelected() {
-    const { selected, onScrollPosition, rowHeight } = this.props
+    const { selected, rowIndexToScrollPosition, rowHeight } = this.props
     if(!selected) return;
     const keys = Object.keys(selected);
     const index = this.data.findIndex((item) => keys.every(key => selected[key] === item[key]))
-    onScrollPosition(index * rowHeight)
-  }
-
-  onMouseWheelHandler(evt) {
-    evt.preventDefault();
-    const onMouseWheel = this.props.onMouseWheel;
-	  const wheelDelta = Math.max(-1, Math.min(1, (evt.wheelDelta || -evt.detail)));
-    onMouseWheel(wheelDelta)
+    rowIndexToScrollPosition(index)
   }
 
   sort(callback) {
     this.setState({sort: callback});
   }
 
+  filter(columns) {
+    console.log("here we go")
+    this.setState({columns})
+  }
+
   get tbody() {
-    const { scrollPosition, rowHeight, rowRenderer, perPage, selected } = this.props;
+    const { rowPosition, rowHeight, rowRenderer, perPage, selected } = this.props;
+    const columns = this.state.columns;
     const style = {height: `${rowHeight}px`, lineHeight: `${rowHeight}px`};
 
     if(this.data.length===0) {
@@ -40,20 +40,21 @@ export default class Content extends React.Component {
     }
 
     const data = this.data;
-    let from = Math.ceil(scrollPosition/rowHeight);
+    let from = Math.ceil( rowPosition );
     let to = perPage+from;
-    if(to>data.length) {
+    if(to>=data.length) {
       from = data.length - perPage;
-      to = data.lenght;
+      to = data.length;
     }
 
-    return data.slice(from, to).map(item => rowRenderer(item, {type: 'tbody', style, selected}));
+    return data.slice(from, to).map(item => rowRenderer(item, {type: 'tbody', style, selected, columns}));
   }
 
   get thead() {
-    const { columns, rowRenderer, rowHeight } = this.props;
+    const { rowRenderer, rowHeight } = this.props;
+    const columns = this.state.columns;
     if(!columns) return;
-    return rowRenderer(columns, {type: 'thead', rowHeight, sort: this.sort.bind(this)})
+    return rowRenderer(null, {type: 'thead', rowHeight, sort: this.sort.bind(this), filter: this.filter.bind(this), columns})
   }
 
   render() {
@@ -73,14 +74,12 @@ export default class Content extends React.Component {
 
   componentDidMount() {
     this.scrollToSelected()
-    const node = findDOMNode(this);
-    node.addEventListener("mousewheel", this.onMouseWheelHandler);
   }
 
   componentWillUpdate(nextProps, nextState) {
     if(nextState.sort !== this.state.sort) {
       const sort = nextState.sort
-      this.data.sort(sort);
+      this.data = this.data.sort(sort);
     }
   }
 

@@ -1,3 +1,5 @@
+$border: #a8a8a8;
+
 body {
   padding: 10px;
 }
@@ -11,35 +13,81 @@ tr {
   box-sizing: border-box;
 }
 
-
-.paginate {
+.positionRight {
   position: absolute;
   top: 10px;
   right: 10px;
   padding: 10px;
 }
 
-
 thead {
   tr {
     td {
-      background-color: #ccc;
+      background: linear-gradient(to bottom, #f7f7f7 0%, #efefef 13%, #e6e6e6 100%);
+      border-bottom: 1px solid $border;
+      border-right: 1px solid $border;
       position: relative;
-      
-      &:first-child {
-        width: 50px;
+
+      div.displayName {
+        padding-left: 5px;
+        cursor: pointer;
+        display: inline-block;
       }
 
+      .resize {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        cursor: e-resize;
+        border-left: 1px solid $border;
+        width: 5px;
+        height: 100%;
+        z-index: 100000;
+      }
+
+      .filter {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        cursor: pointer;
+        border-left: 1px solid $border;
+        width: 24px;
+        height: 100%;
+        z-index: 100000;
+        padding: 0px 2px;
+        box-sizing: border-box;
+
+        .filter-image {
+          height: 100%;
+          width: 100%;
+        }
+
+        .filter-list {
+          width: 200px;
+          position: relative;
+          top: 0px;
+          right: 180px;
+          background-color: #fff;
+          border: 1px solid $border;
+
+          label, input {
+            cursor: pointer;
+          }
+
+          label {
+            display: block;
+          }
+
+          div {
+            height: 24px;
+            line-height: 24px;
+          }
+        }
+      }
     }
   }
 }
 
-.resize {
-  position: absolute;
-  top: 10px;
-  right: 0px;
-  cursor: e-resize;
-  background-color: #ff0040;
-  width: 20px;
-  height: 20px;
+tbody {
+  tr:nth-child(even) {background: #f2f7ff}
 }

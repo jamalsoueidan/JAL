@@ -1,16 +1,17 @@
 import React from 'react'
 import { findDOMNode } from 'react-dom'
 import Resize from './resize'
+import Filter from './filter'
 
 class Column extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      a: -1,
-      b: 1
+      a: 1,
+      b: -1
     }
   }
-  
+
   onClick() {
     const { sort } = this.props;
     if(this.state.a>0) {
@@ -39,33 +40,38 @@ class Column extends React.Component {
     return 0;
   }
 
-  onResize(totalMovement) {
-    if(!totalMovement) {
-      this.width = findDOMNode(this).clientWidth;
-      return;
-    }
-    let width = this.width;
-    width += totalMovement;
+  onResize(clientX) {
+    const width = clientX - findDOMNode(this).offsetLeft
     this.setState({width})
   }
 
   get renderResize() {
     const { showResize } = this.props;
-
-    if(!showResize) {
-      return;
-    }
-
+    if(!showResize) return;
     return(<Resize onResize={this.onResize.bind(this)} />)
+  }
+
+  get renderFilter() {
+    const { showFilter, columns, filter } = this.props;
+    if(!showFilter) return;
+    return(<Filter columns={columns} filter={filter} />)
+  }
+
+  get style() {
+    const { style } = this.props;
+    const { width } = this.state
+    if(!width) return style;
+    return { ...style, width };
   }
 
   render() {
     const { item } = this.props;
-    const { width } = this.state
+
     return(
-      <td style={{width}} onClick={this.onClick.bind(this)}>
-        <div>{item.displayName}</div>
+      <td style={this.style}>
+        <div className="displayName" onClick={this.onClick.bind(this)}>{item.displayName}</div>
         {this.renderResize}
+        {this.renderFilter}
       </td>
     )
   }

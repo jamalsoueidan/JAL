@@ -1,6 +1,6 @@
 module.exports = {
   plugins: {
-    'postcss-nested': {},
+    'precss': {},
     'postcss-import': {},
     'postcss-cssnext': {
       browsers: ['last 2 versions', '> 5%'],

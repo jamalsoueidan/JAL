@@ -7,7 +7,6 @@ export default class Resize extends React.Component {
     this.onMouseMove = this.onMouseMove.bind(this)
     this.onMouseUp = this.onMouseUp.bind(this)
     this.onMouseDown = this.onMouseDown.bind(this)
-    this.onMouseOut = this.onMouseOut.bind(this)
   }
 
   get node() {
@@ -15,33 +14,26 @@ export default class Resize extends React.Component {
   }
 
   onMouseDown(evt) {
-    this.startX = evt.clientX;
     evt.preventDefault();
     evt.stopPropagation();
-    this.node.addEventListener('mousemove', this.onMouseMove, false)
-    this.node.addEventListener('mouseup', this.onMouseUp, false)
-    this.node.addEventListener('mouseout', this.onMouseOut, false)
+    this.startX = evt.clientX;
+    window.addEventListener('mousemove', this.onMouseMove, false);
+    window.addEventListener('mouseup', this.onMouseUp, false);
   }
 
   onMouseMove(evt) {
-    const movement = evt.clientX - this.startX;
-    this.props.onResize(movement)
-  }
-
-  onMouseOut() {
-    this.onMouseUp();
+    if(!evt.clientX && isNan(evt.clientX)) return;
+    this.props.onResize(evt.clientX)
   }
 
   onMouseUp(evt) {
-    this.props.onResize() // tell the parent component we are done this round!
-    this.node.removeEventListener('mousemove', this.onMouseMove, false)
-    this.node.removeEventListener('mouseup', this.onMouseUp, false)
-    this.node.removeEventListener('mouseout', this.onMouseOut, false)
+    window.removeEventListener('mousemove', this.onMouseMove, false);
+    window.removeEventListener('mouseup', this.onMouseUp, false);
   }
 
   render() {
     return(
-      <div className="resize" onClick={(evt) => evt.stopPropagation()}></div>
+      <div className="resize"></div>
     )
   }
 
