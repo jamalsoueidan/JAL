@@ -55,12 +55,13 @@ export default class Table extends React.Component {
     this.calculateRowHeight();
   }
 
-  /*gotoPage() {
-    const { page, perPage, fakeRowHeight } = this.props;
-    if(page > 0) {
-      this.node.scrollTop = ((page - 1) * perPage) * fakeRowHeight;
+  gotoPage() {
+    const { currentPage, perPage } = this.props;
+    if(currentPage > 0) {
+      const scrollToPosition = ((currentPage - 1) * perPage) * this.state.fakeRowHeight;
+      this.setState({scrollToPosition});
     }
-  }*/
+  }
 
 
   onMouseWheel(evt) {
@@ -106,7 +107,7 @@ export default class Table extends React.Component {
   renderScroll() {
     const {scrollToPosition, scrollMovement, fakeRowHeight} = this.state;
 
-    // create empty element inside scroll component, so we get fake horizontal scroll! 
+    // create empty element inside scroll component, so we get fake horizontal scroll!
     const fakeHeight = this.dataLength * fakeRowHeight;
 
     return(
@@ -131,6 +132,7 @@ export default class Table extends React.Component {
 
   componentDidMount() {
     this.calculateRowHeight();
+    this.gotoPage();
     window.addEventListener("resize", this.onResize);
     this.node.addEventListener("mousewheel", this.onMouseWheel);
   }
@@ -142,6 +144,10 @@ export default class Table extends React.Component {
 
     if(prevProps.perPage!=this.props.perPage) {
       this.calculateRowHeight();
+    }
+
+    if(prevProps.currentPage!=this.props.currentPage) {
+      this.gotoPage();
     }
   }
 

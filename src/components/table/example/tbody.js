@@ -2,7 +2,7 @@ import React from 'react'
 
 class TBody extends React.Component {
   render() {
-    const { item, selected } = this.props;
+    const { item, selected, columns } = this.props;
     let style = this.props.style;
 
     if(selected && selected.id === item.id) {
@@ -11,10 +11,9 @@ class TBody extends React.Component {
 
     return(
       <tr style={style}>
-        <td>{item.id}</td>
-        <td>{item.first_name}</td>
-        <td>{item.last_name}</td>
-        <td>{item.gender}</td>
+        {columns.filter(c=>c.visibility).map(c => {
+          return(<td key={c.attribute}>{item[c.attribute]}</td>)
+        })}
       </tr>
     )
   }

@@ -10,27 +10,31 @@ require('./stylesheet.css')
 const columns = [
   {
     attribute: 'id',
-    displayName: '#'
+    displayName: '#',
+    visibility: false
   },
   {
     attribute: 'first_name',
-    displayName: 'First Name'
+    displayName: 'First Name',
+    visibility: true
   },
   {
     attribute: 'last_name',
-    displayName: 'Last Name'
+    displayName: 'Last Name',
+    visibility: true
   },
   {
     attribute: 'gender',
-    displayName: 'Gender'
+    displayName: 'Gender',
+    visibility: true
   }
 ]
 
 const rowRenderer = (item, props) => {
   if(props.type === "thead") {
-    return <THead item={item} {...props} />
+    return <THead columns={props.columns} {...props} />
   } else {
-    return <TBody key={item.id} item={item} {...props} />
+    return <TBody key={item.id} item={item} columns={props.columns} {...props} />
   }
 }
 
@@ -79,13 +83,21 @@ export default class Example extends React.Component {
 
   get renderPaginate() {
     return(
-      <div className="paginate">
-        Total pages: <strong>{this.totalPages-1}</strong><br />
-        Total rows: <strong>{data.length}</strong><br />
-        Current page: <strong>{this.state.page}</strong><br />
-        <button onClick={this.onPageClick.bind(this, (this.state.page-1))}>Prev</button>
-        <button onClick={this.onPageClick.bind(this, this.state.page+1)}>Next</button><br />
-        <input type="text" onChange={this.onChangeInput.bind(this)} />
+      <div className="positionRight">
+        <div className="paginate">
+          Total pages: <strong>{this.totalPages-1}</strong><br />
+          Total rows: <strong>{data.length}</strong><br />
+          Current page: <strong>{this.state.page}</strong><br />
+          <button onClick={this.onPageClick.bind(this, (this.state.page-1))}>Prev</button>
+          <button onClick={this.onPageClick.bind(this, this.state.page+1)}>Next</button><br />
+          <input type="text" onChange={this.onChangeInput.bind(this)} />
+        </div>
+        <div className="filtering">
+          <h2>Filtering</h2>
+          {columns.map(c=> {
+            return(<div key={c.attribute}><input type="checkbox" name={c.attribute} onChange={() => c.visibility = !c.visibility} checked={(c.visibility ? "checked" : "")}/>{c.displayName}</div>)
+          })}
+        </div>
       </div>
     )
   }
@@ -94,7 +106,7 @@ export default class Example extends React.Component {
     return(
       <div>
         <div className="border">
-          <Table data={data} columns={columns} rowRenderer={rowRenderer} perPage={this.state.perPage} page={this.state.page} selected={{id: 70}}/>
+          <Table data={data} columns={columns} rowRenderer={rowRenderer} perPage={this.state.perPage} currentPage={this.state.page} />
         </div>
         {this.renderperPage} <br />
         {this.renderPaginate}

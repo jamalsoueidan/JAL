@@ -22,7 +22,7 @@ export default class Content extends React.Component {
   }
 
   get tbody() {
-    const { rowPosition, rowHeight, fakeRowHeight, rowRenderer, perPage, selected } = this.props;
+    const { rowPosition, rowHeight, rowRenderer, perPage, selected, columns } = this.props;
     const style = {height: `${rowHeight}px`, lineHeight: `${rowHeight}px`};
 
     if(this.data.length===0) {
@@ -39,13 +39,13 @@ export default class Content extends React.Component {
       to = data.length;
     }
 
-    return data.slice(from, to).map(item => rowRenderer(item, {type: 'tbody', style, selected}));
+    return data.slice(from, to).map(item => rowRenderer(item, {type: 'tbody', style, selected, columns}));
   }
 
   get thead() {
     const { columns, rowRenderer, rowHeight } = this.props;
     if(!columns) return;
-    return rowRenderer(columns, {type: 'thead', rowHeight, sort: this.sort.bind(this)})
+    return rowRenderer(null, {type: 'thead', rowHeight, sort: this.sort.bind(this), columns})
   }
 
   render() {
@@ -70,9 +70,7 @@ export default class Content extends React.Component {
   componentWillUpdate(nextProps, nextState) {
     if(nextState.sort !== this.state.sort) {
       const sort = nextState.sort
-      console.log("lets sort", this.data[0])
       this.data = this.data.sort(sort);
-      console.log("lets sort", this.data[0])
     }
   }
 
