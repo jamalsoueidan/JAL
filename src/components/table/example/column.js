@@ -39,13 +39,8 @@ class Column extends React.Component {
     return 0;
   }
 
-  onResize(totalMovement) {
-    if(!totalMovement) {
-      this.width = findDOMNode(this).clientWidth;
-      return;
-    }
-    let width = this.width;
-    width += totalMovement;
+  onResize(clientX) {
+    const width = clientX - findDOMNode(this).offsetLeft;
     this.setState({width})
   }
 

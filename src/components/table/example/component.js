@@ -3,13 +3,7 @@ import Table from 'components/table'
 import THead from './thead'
 import TBody from './tbody'
 
-//import data from './data'
-
-let data = [];
-
-for(var i=1;i<100;i++) {
-  data.push({id: i, first_name: "jamal", last_name: "jamal", gender: 'men'})
-}
+import data from './data'
 
 require('./stylesheet.css')
 
@@ -20,15 +14,15 @@ const columns = [
   },
   {
     attribute: 'first_name',
-    displayName: 'first name'
+    displayName: 'First Name'
   },
   {
     attribute: 'last_name',
-    displayName: 'last name'
+    displayName: 'Last Name'
   },
   {
     attribute: 'gender',
-    displayName: 'gender'
+    displayName: 'Gender'
   }
 ]
 
