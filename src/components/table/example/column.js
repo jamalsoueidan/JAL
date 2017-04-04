@@ -6,11 +6,11 @@ class Column extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      a: -1,
-      b: 1
+      a: 1,
+      b: -1
     }
   }
-  
+
   onClick() {
     const { sort } = this.props;
     if(this.state.a>0) {
@@ -64,7 +64,7 @@ class Column extends React.Component {
     const { width } = this.state
     return(
       <td style={{width}} onClick={this.onClick.bind(this)}>
-        <div>{item.displayName}</div>
+        <div className="displayName">{item.displayName}</div>
         {this.renderResize}
       </td>
     )

@@ -25,7 +25,7 @@ export default class Scroll extends React.Component {
     this.setState({width})
   }
 
-  onContentWheelScroll() {
+  onWheelScroll() {
     const { scrollMovement } = this.props;
     this.node.scrollTop -= scrollMovement;
   }
@@ -62,7 +62,7 @@ export default class Scroll extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    this.onContentWheelScroll();
+    this.onWheelScroll();
 
     if(prevProps.scrollToPosition !== this.props.scrollToPosition) {
       this.onPropScrollToPosition();

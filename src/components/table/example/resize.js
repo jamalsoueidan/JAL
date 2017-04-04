@@ -15,6 +15,7 @@ export default class Resize extends React.Component {
   }
 
   onMouseDown(evt) {
+    this.props.onResize()
     this.startX = evt.clientX;
     evt.preventDefault();
     evt.stopPropagation();

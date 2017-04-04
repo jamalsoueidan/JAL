@@ -5,10 +5,10 @@ export default class Content extends React.Component {
   constructor(props) {
     super(props)
     this.data = props.data;
-    this.state = {sort: {}}
+    this.state = {}
   }
 
-  /* This method is called when "select" props is set */
+  /* This method is called when "selected" props is set */
   scrollToSelected() {
     const { selected, rowIndexToScrollPosition, rowHeight } = this.props
     if(!selected) return;
@@ -70,7 +70,9 @@ export default class Content extends React.Component {
   componentWillUpdate(nextProps, nextState) {
     if(nextState.sort !== this.state.sort) {
       const sort = nextState.sort
-      this.data.sort(sort);
+      console.log("lets sort", this.data[0])
+      this.data = this.data.sort(sort);
+      console.log("lets sort", this.data[0])
     }
   }
 
