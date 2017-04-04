@@ -7,9 +7,9 @@ class THead extends React.Component {
     const style = {height: `${rowHeight}px`, lineHeight: `${rowHeight}px`}
 
     return(
-      <tr key="thead" style={style}>
+      <tr key="thead">
         {columns.filter(c=>c.visibility).map((c, index, array) => {
-          let props = {}
+          let props = {style: style}
 
           if(index === (array.length-1)) {
             props.columns = columns;

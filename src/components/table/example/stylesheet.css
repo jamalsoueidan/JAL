@@ -50,11 +50,17 @@ thead {
         position: absolute;
         top: 0px;
         right: 0px;
-        cursor: e-resize;
+        cursor: pointer;
         border-left: 1px solid $border;
-        width: 10px;
+        width: 24px;
         height: 100%;
         z-index: 100000;
+
+        .link {
+          img {
+            
+          }
+        }
 
         .dropdown, .link {
           border: 0px;

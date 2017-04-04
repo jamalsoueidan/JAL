@@ -58,9 +58,10 @@ class Column extends React.Component {
   }
 
   get style() {
+    const { style } = this.props;
     const { width } = this.state
-    if(!width) return {};
-    return {width}
+    if(!width) return style;
+    return { ...style, width };
   }
 
   render() {
