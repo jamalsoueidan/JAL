@@ -3,7 +3,7 @@ import Column from './column'
 
 class THead extends React.Component {
   render() {
-    const { rowHeight, sort, columns } = this.props;
+    const { rowHeight, sort, columns, filter } = this.props;
     const style = {height: `${rowHeight}px`, lineHeight: `${rowHeight}px`}
 
     return(
@@ -17,7 +17,7 @@ class THead extends React.Component {
             props.showResize = false;
           }
 
-          return(<Column key={c.attribute} item={c} sort={sort} {...props} />)
+          return(<Column key={c.attribute} item={c} sort={sort} filter={filter} {...props} />)
         })}
       </tr>
     )

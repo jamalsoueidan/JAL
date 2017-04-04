@@ -43,7 +43,8 @@ export default class Example extends React.Component {
     super(props)
     this.state = {
       page: 1,
-      perPage: 10
+      perPage: 10,
+      columns
     }
   }
 
@@ -77,9 +78,22 @@ export default class Example extends React.Component {
     )
   }
 
-  onChangeInput(evt) {
-    this.onPageClick(evt.target.value);
+  onChange(column) {
+    const { columns } = this.state;
+    if(column.visibility && columns.filter(c => c.visibility).length===1) {
+      return;
+    }
+
+    const newColumns = [...columns].map(c => {
+      if(c.attribute === column.attribute) {
+        c.visibility = (c.visibility ? false : true);
+      }
+      return c;
+    })
+
+    this.setState({columns: newColumns})
   }
+
 
   get renderPaginate() {
     return(
@@ -90,12 +104,11 @@ export default class Example extends React.Component {
           Current page: <strong>{this.state.page}</strong><br />
           <button onClick={this.onPageClick.bind(this, (this.state.page-1))}>Prev</button>
           <button onClick={this.onPageClick.bind(this, this.state.page+1)}>Next</button><br />
-          <input type="text" onChange={this.onChangeInput.bind(this)} />
         </div>
         <div className="filtering">
           <h2>Filtering</h2>
           {columns.map(c=> {
-            return(<div key={c.attribute}><input type="checkbox" name={c.attribute} onChange={() => c.visibility = !c.visibility} checked={(c.visibility ? "checked" : "")}/>{c.displayName}</div>)
+            return(<div key={c.attribute}><label htmlFor={c.attribute}><input id={c.attribute} type="checkbox" name={c.attribute} checked={c.visibility} onChange={this.onChange.bind(this, c)} />{c.displayName}</label></div>)
           })}
         </div>
       </div>
@@ -106,7 +119,7 @@ export default class Example extends React.Component {
     return(
       <div>
         <div className="border">
-          <Table data={data} columns={columns} rowRenderer={rowRenderer} perPage={this.state.perPage} currentPage={this.state.page} />
+          <Table data={data} columns={this.state.columns} rowRenderer={rowRenderer} perPage={this.state.perPage} currentPage={this.state.page} />
         </div>
         {this.renderperPage} <br />
         {this.renderPaginate}

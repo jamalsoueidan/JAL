@@ -13,7 +13,6 @@ tr {
   box-sizing: border-box;
 }
 
-
 .positionRight {
   position: absolute;
   top: 10px;
@@ -41,7 +40,7 @@ thead {
         right: 0px;
         cursor: e-resize;
         border-left: 1px solid $border;
-        width: 10px;
+        width: 5px;
         height: 100%;
         z-index: 100000;
       }
@@ -55,21 +54,34 @@ thead {
         width: 24px;
         height: 100%;
         z-index: 100000;
+        padding: 0px 2px;
+        box-sizing: border-box;
 
-        .link {
-          img {
-            
-          }
+        .filter-image {
+          height: 100%;
+          width: 100%;
         }
 
-        .dropdown, .link {
-          border: 0px;
-        }
-
-        .dropdown {
+        .filter-list {
+          width: 200px;
+          position: relative;
+          top: 0px;
+          right: 180px;
           background-color: #fff;
-          border: 1px solid #000;
-          width: 150px;
+          border: 1px solid $border;
+
+          label, input {
+            cursor: pointer;
+          }
+
+          label {
+            display: block;
+          }
+
+          div {
+            height: 24px;
+            line-height: 24px;
+          }
         }
       }
     }

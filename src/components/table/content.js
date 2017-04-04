@@ -5,7 +5,9 @@ export default class Content extends React.Component {
   constructor(props) {
     super(props)
     this.data = props.data;
-    this.state = {}
+    this.state = {
+      columns: props.columns
+    }
   }
 
   /* This method is called when "selected" props is set */
@@ -21,8 +23,14 @@ export default class Content extends React.Component {
     this.setState({sort: callback});
   }
 
+  filter(columns) {
+    console.log("here we go")
+    this.setState({columns})
+  }
+
   get tbody() {
-    const { rowPosition, rowHeight, rowRenderer, perPage, selected, columns } = this.props;
+    const { rowPosition, rowHeight, rowRenderer, perPage, selected } = this.props;
+    const columns = this.state.columns;
     const style = {height: `${rowHeight}px`, lineHeight: `${rowHeight}px`};
 
     if(this.data.length===0) {
@@ -43,9 +51,10 @@ export default class Content extends React.Component {
   }
 
   get thead() {
-    const { columns, rowRenderer, rowHeight } = this.props;
+    const { rowRenderer, rowHeight } = this.props;
+    const columns = this.state.columns;
     if(!columns) return;
-    return rowRenderer(null, {type: 'thead', rowHeight, sort: this.sort.bind(this), columns})
+    return rowRenderer(null, {type: 'thead', rowHeight, sort: this.sort.bind(this), filter: this.filter.bind(this), columns})
   }
 
   render() {

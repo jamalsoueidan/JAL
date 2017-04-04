@@ -52,9 +52,9 @@ class Column extends React.Component {
   }
 
   get renderFilter() {
-    const { showFilter, columns } = this.props;
+    const { showFilter, columns, filter } = this.props;
     if(!showFilter) return;
-    return(<Filter columns={columns} />)
+    return(<Filter columns={columns} filter={filter} />)
   }
 
   get style() {
