@@ -86,21 +86,19 @@ export default class Table extends React.Component {
 
   renderContent() {
     const {data, rowRenderer, perPage, selected, columns} = this.props;
-    const {scrollPosition, rowHeight, rowPosition, fakeRowHeight} = this.state;
+    const {scrollPosition, rowHeight, rowPosition} = this.state;
 
     return(
       <Content
         rowIndexToScrollPosition={this.rowIndexToScrollPosition}
         columns={columns}
         scrollPosition={scrollPosition}
-        onScrollPosition={this.onScrollPosition}
         data={data}
         rowRenderer={rowRenderer}
         rowHeight={rowHeight}
         selected={selected}
         perPage={perPage}
-        rowPosition={rowPosition}
-        fakeRowHeight={fakeRowHeight} />
+        rowPosition={rowPosition} />
     )
   }
 

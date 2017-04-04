@@ -14,28 +14,26 @@ export default class Resize extends React.Component {
   }
 
   onMouseDown(evt) {
-    this.props.onResize()
-    this.startX = evt.clientX;
     evt.preventDefault();
     evt.stopPropagation();
+    this.startX = evt.clientX;
     window.addEventListener('mousemove', this.onMouseMove, false);
     window.addEventListener('mouseup', this.onMouseUp, false);
   }
 
   onMouseMove(evt) {
-    if(!evt.clientX) return;
+    if(!evt.clientX && isNan(evt.clientX)) return;
     this.props.onResize(evt.clientX)
   }
 
   onMouseUp(evt) {
-    this.props.onResize() // tell the parent component we are done this round!
     window.removeEventListener('mousemove', this.onMouseMove, false);
     window.removeEventListener('mouseup', this.onMouseUp, false);
   }
 
   render() {
     return(
-      <div className="resize" onClick={(evt) => evt.stopPropagation()}></div>
+      <div className="resize"></div>
     )
   }
 

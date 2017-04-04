@@ -31,6 +31,8 @@ thead {
 
       div.displayName {
         padding-left: 5px;
+        cursor: pointer;
+        display: inline-block;
       }
 
       .resize {
@@ -42,6 +44,27 @@ thead {
         width: 10px;
         height: 100%;
         z-index: 100000;
+      }
+
+      .filter {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        cursor: e-resize;
+        border-left: 1px solid $border;
+        width: 10px;
+        height: 100%;
+        z-index: 100000;
+
+        .dropdown, .link {
+          border: 0px;
+        }
+
+        .dropdown {
+          background-color: #fff;
+          border: 1px solid #000;
+          width: 150px;
+        }
       }
     }
   }
