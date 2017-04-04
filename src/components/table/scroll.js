@@ -30,7 +30,7 @@ export default class Scroll extends React.Component {
     this.node.scrollTop -= scrollMovement;
   }
 
-  onPropScrollPosition() {
+  onPropScrollToPosition() {
     const { scrollToPosition } = this.props;
     const scrollHeight = this.node.scrollHeight;
     const scrollMaxPosition = scrollHeight - this.node.offsetHeight;
@@ -57,15 +57,15 @@ export default class Scroll extends React.Component {
 
   componentDidMount() {
     this.calculateScrollWith();
-    this.onPropScrollPosition();
+    this.onPropScrollToPosition();
     this.node.addEventListener('scroll', this.onScroll)
   }
 
   componentDidUpdate(prevProps) {
     this.onContentWheelScroll();
 
-    if(prevProps.scrollPosition !== this.props.scrollPosition) {
-      this.onPropScrollPosition();
+    if(prevProps.scrollToPosition !== this.props.scrollToPosition) {
+      this.onPropScrollToPosition();
     }
   }
 

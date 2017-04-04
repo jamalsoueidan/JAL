@@ -105,6 +105,8 @@ export default class Table extends React.Component {
 
   renderScroll() {
     const {scrollToPosition, scrollMovement, fakeRowHeight} = this.state;
+
+    // create empty element inside scroll component, so we get fake horizontal scroll! 
     const fakeHeight = this.dataLength * fakeRowHeight;
 
     return(

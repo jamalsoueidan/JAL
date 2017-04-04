@@ -5,9 +5,9 @@ class TBody extends React.Component {
     const { item, selected } = this.props;
     let style = this.props.style;
 
-    /*if(selected && selected.id === item.id) {
-      style["backgroundColor"] = "#ff0040"
-    }*/
+    if(selected && selected.id === item.id) {
+      style = { ...style, backgroundColor: "#ff0040" }
+    }
 
     return(
       <tr style={style}>
