@@ -1,16 +1,9 @@
-# Table
+import React from 'react'
+import data from './data'
+import Table from 'components/table'
 
-This is simple table component, but can handle huge dataset. [Try codepen](http://codepen.io/jamalsoueidan/pen/peqyRb?editors=0110)
+require('./stylesheet.css')
 
-It was designed to be extensible, if you need more features, you can use build them.
-
-We provided you with example sorting, paginate, filtering in TableX, etc.
-
-![](https://github.com/jamalsoueidan/react-application-library/blob/master/src/components/table/screenshot.png?raw=true)
-
-## Examples
-
-```js
 const columns = [
   {
     attribute: 'id',
@@ -51,10 +44,3 @@ export default () => (
     <Table data={data} rowRenderer={rowRenderer} perPage={15} columns={columns} />
   </div>
 )
-```
-
-## Features
-
-- Validates columns and data columns is same!
-- Customize so it works with API calls while scrolling!
-- ...

@@ -18,4 +18,8 @@ List renderer items
 
 - [Table](https://github.com/jamalsoueidan/react-application-library/tree/master/src/components/table)
 
-Optimized for performance renderer items 
+Optimized for performance renderer items, simple table!
+
+- [TableX](https://github.com/jamalsoueidan/react-application-library/tree/master/src/components/table_x)
+
+This is build on our previous table with sorting, resize columns, filtering columns, paginate, etc.

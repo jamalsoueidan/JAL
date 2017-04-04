@@ -1,11 +1,6 @@
 import React from 'react'
-import Table from 'components/table'
-import THead from './thead'
-import TBody from './tbody'
-
 import data from './data'
-
-require('./stylesheet.css')
+import TableX from 'components/table_x'
 
 const columns = [
   {
@@ -29,14 +24,6 @@ const columns = [
     visibility: true
   }
 ]
-
-const rowRenderer = (item, props) => {
-  if(props.type === "thead") {
-    return <THead columns={props.columns} {...props} />
-  } else {
-    return <TBody key={item.id} item={item} columns={props.columns} {...props} />
-  }
-}
 
 export default class Example extends React.Component {
   constructor(props) {
@@ -119,7 +106,7 @@ export default class Example extends React.Component {
     return(
       <div>
         <div className="border">
-          <Table data={data} columns={this.state.columns} rowRenderer={rowRenderer} perPage={this.state.perPage} currentPage={this.state.page} />
+          <TableX data={data} columns={this.state.columns} perPage={this.state.perPage} currentPage={this.state.page} />
         </div>
         {this.renderperPage} <br />
         {this.renderPaginate}
