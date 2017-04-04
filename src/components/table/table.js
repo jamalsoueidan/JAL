@@ -1,6 +1,7 @@
 import React from 'react'
 import Scroll from './scroll'
 import Content from './content'
+import { Scale } from 'utils'
 import { findDOMNode } from 'react-dom'
 
 require('./stylesheet.css')
@@ -10,6 +11,7 @@ export default class Table extends React.Component {
     super(props);
     this.state = {
       scrollPosition: 0,
+      rowPosition: 0,
       wheelDirection: null,
       rowHeight: null,
       fakeRowHeight: 10,
@@ -53,13 +55,19 @@ export default class Table extends React.Component {
     this.calculateRowHeight();
   }
 
-  onScrollPosition(scrollPosition) {
-    this.setState({scrollPosition})
+  onScrollPosition(scrollPosition, scrollTopPosition) {
+    console.log("dataLEngth", this.props.data.length)
+    const scale = new Scale().domain(0, scrollTopPosition).range(0, 99);
+    this.setState({rowPosition: scale(scrollPosition)})
+  }
+
+  onRowPosition(rowPosition) {
+    this.setState({rowPosition})
   }
 
   renderContent() {
     const {data, rowRenderer, perPage, selected, columns} = this.props;
-    const {scrollPosition, rowHeight, fakeRowHeight} = this.state;
+    const {scrollPosition, rowHeight, rowPosition, fakeRowHeight} = this.state;
 
     return(
       <Content
@@ -72,6 +80,7 @@ export default class Table extends React.Component {
         rowHeight={rowHeight}
         selected={selected}
         perPage={perPage}
+        rowPosition={rowPosition}
         fakeRowHeight={fakeRowHeight} />
     )
   }
@@ -87,9 +96,7 @@ export default class Table extends React.Component {
         perPage={this.perPage}
         onScrollPosition={this.onScrollPosition}
         dataLength={this.dataLength}
-        page={page}
-        tableHeight={tableHeight}
-        fakeRowHeight={fakeRowHeight} />
+        page={page} />
     )
   }
 

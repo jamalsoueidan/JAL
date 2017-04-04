@@ -30,7 +30,7 @@ export default class Content extends React.Component {
   }
 
   get tbody() {
-    const { scrollPosition, rowHeight, fakeRowHeight, rowRenderer, perPage, selected } = this.props;
+    const { rowPosition, rowHeight, fakeRowHeight, rowRenderer, perPage, selected } = this.props;
     const style = {height: `${rowHeight}px`, lineHeight: `${rowHeight}px`};
 
     if(this.data.length===0) {
@@ -40,13 +40,14 @@ export default class Content extends React.Component {
     }
 
     const data = this.data;
-    let from = Math.ceil( scrollPosition / fakeRowHeight );
+    let from = Math.ceil( rowPosition );
     let to = perPage+from;
-    console.log(scrollPosition, from, to)
-    if(to>data.length) {
+    console.log(rowPosition, from, to)
+    if(to>=data.length) {
       from = data.length - perPage;
-      to = data.lenght;
+      to = data.length;
     }
+    console.log("new", from, to)
 
     return data.slice(from, to).map(item => rowRenderer(item, {type: 'tbody', style, selected}));
   }
