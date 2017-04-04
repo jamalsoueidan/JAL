@@ -100,7 +100,7 @@ export default class Example extends React.Component {
     return(
       <div>
         <div className="border">
-          <Table data={data} columns={columns} rowRenderer={rowRenderer} perPage={this.state.perPage} page={this.state.page} />
+          <Table data={data} columns={columns} rowRenderer={rowRenderer} perPage={this.state.perPage} page={this.state.page} selected={{id: 70}}/>
         </div>
         {this.renderperPage} <br />
         {this.renderPaginate}

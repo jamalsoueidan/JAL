@@ -6,23 +6,15 @@ export default class Content extends React.Component {
     super(props)
     this.data = props.data;
     this.state = {sort: {}}
-    this.onMouseWheelHandler = this.onMouseWheelHandler.bind(this)
   }
 
   /* This method is called when "select" props is set */
   scrollToSelected() {
-    const { selected, onScrollPosition, rowHeight } = this.props
+    const { selected, rowIndexToScrollPosition, rowHeight } = this.props
     if(!selected) return;
     const keys = Object.keys(selected);
     const index = this.data.findIndex((item) => keys.every(key => selected[key] === item[key]))
-    onScrollPosition(index * rowHeight)
-  }
-
-  onMouseWheelHandler(evt) {
-    evt.preventDefault();
-    const onMouseWheel = this.props.onMouseWheel;
-	  const wheelDelta = Math.max(-1, Math.min(1, (evt.wheelDelta || -evt.detail)));
-    onMouseWheel(wheelDelta)
+    rowIndexToScrollPosition(index)
   }
 
   sort(callback) {
@@ -42,12 +34,10 @@ export default class Content extends React.Component {
     const data = this.data;
     let from = Math.ceil( rowPosition );
     let to = perPage+from;
-    console.log(rowPosition, from, to)
     if(to>=data.length) {
       from = data.length - perPage;
       to = data.length;
     }
-    console.log("new", from, to)
 
     return data.slice(from, to).map(item => rowRenderer(item, {type: 'tbody', style, selected}));
   }
@@ -75,8 +65,6 @@ export default class Content extends React.Component {
 
   componentDidMount() {
     this.scrollToSelected()
-    const node = findDOMNode(this);
-    node.addEventListener("mousewheel", this.onMouseWheelHandler);
   }
 
   componentWillUpdate(nextProps, nextState) {

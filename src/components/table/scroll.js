@@ -1,7 +1,6 @@
 import React from 'react'
 import { findDOMNode } from 'react-dom'
-
-const fakeRowHeight = 10;
+import { Scale } from 'utils'
 
 const FakeContent = ({height}) => {
   return(<div className="fakeContent" style={{height: height + "px", backgroundColor: "#ff0040", visibility: "hidden"}}></div>)
@@ -18,13 +17,6 @@ export default class Scroll extends React.Component {
     return findDOMNode(this);
   }
 
-  gotoPage() {
-    const { page, perPage } = this.props;
-    if(page > 0) {
-      this.node.scrollTop = ((page - 1) * perPage) * fakeRowHeight;
-    }
-  }
-
   calculateScrollWith() {
     const node = this.node
     // IE doesn't scroll if there is not avaible content for scroll, so fake content must have atleast 1.5px
@@ -34,42 +26,38 @@ export default class Scroll extends React.Component {
   }
 
   onContentWheelScroll() {
-    const { wheelDirection } = this.props;
-    if(wheelDirection<0)
-      this.node.scrollTop += fakeRowHeight;
-    if(wheelDirection>0)
-      this.node.scrollTop -= fakeRowHeight;
+    const { scrollMovement } = this.props;
+    this.node.scrollTop -= scrollMovement;
   }
 
-  onManualScrollPosition() {
-    const { scrollPosition } = this.props;
-    this.node.scrollTop = scrollPosition
+  onPropScrollPosition() {
+    const { scrollToPosition } = this.props;
+    const scrollHeight = this.node.scrollHeight;
+    const scrollMaxPosition = scrollHeight - this.node.offsetHeight;
+    const scale = new Scale().domain(0, this.node.scrollHeight).range(0, scrollMaxPosition);
+    this.node.scrollTop = scale(scrollToPosition);
   }
 
   onScroll(evt) {
-    const  { onScrollPosition, dataLength } = this.props;
-    const scrollTotalHeight = this.node.scrollHeight-this.node.offsetHeight;
-    onScrollPosition(this.node.scrollTop, scrollTotalHeight)
-  }
-
-  get calculateFakeHeight() {
-    const {dataLength } = this.props
-    return dataLength * fakeRowHeight;
+    const  { scrollPositionToRowIndex } = this.props;
+    const scrollMaxPosition = this.node.scrollHeight - this.node.offsetHeight;
+    scrollPositionToRowIndex(this.node.scrollTop, scrollMaxPosition)
   }
 
   render() {
     const {width} = this.state;
+    const {fakeHeight} = this.props;
 
     return(
       <div className="scroll" style={{width}}>
-        <FakeContent height={this.calculateFakeHeight}/>
+        <FakeContent height={fakeHeight}/>
       </div>
     )
   }
 
   componentDidMount() {
     this.calculateScrollWith();
-    this.gotoPage();
+    this.onPropScrollPosition();
     this.node.addEventListener('scroll', this.onScroll)
   }
 
@@ -77,11 +65,7 @@ export default class Scroll extends React.Component {
     this.onContentWheelScroll();
 
     if(prevProps.scrollPosition !== this.props.scrollPosition) {
-      this.onManualScrollPosition();
-    }
-
-    if(prevProps.page !== this.props.page) {
-      this.gotoPage();
+      this.onPropScrollPosition();
     }
   }
 

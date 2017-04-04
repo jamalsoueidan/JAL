@@ -10,21 +10,18 @@ export default class Table extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      scrollPosition: 0,
+      scrollToPosition: 0,
+      scrollMovement: 0,
       rowPosition: 0,
-      wheelDirection: null,
       rowHeight: null,
       fakeRowHeight: 10,
       tableHeight: 0
     }
 
-    this.onScrollPosition = this.onScrollPosition.bind(this)
+    this.rowIndexToScrollPosition = this.rowIndexToScrollPosition.bind(this)
+    this.scrollPositionToRowIndex = this.scrollPositionToRowIndex.bind(this)
     this.onMouseWheel = this.onMouseWheel.bind(this)
     this.onResize = this.onResize.bind(this)
-  }
-
-  onMouseWheel(wheelDirection) {
-    this.setState({wheelDirection})
   }
 
   get perPage() {
@@ -39,30 +36,51 @@ export default class Table extends React.Component {
     return data.length;
   }
 
+  get node() {
+    return findDOMNode(this);
+  }
+
   calculateRowHeight() {
-    const node = findDOMNode(this);
-    const rowHeight = (node.offsetHeight / this.perPage)
+    const rowHeight = (this.node.offsetHeight / this.perPage)
     // TODO: Fix this issue with rowHeight becoming 13.4 with 400px as example!
     const checkMistake = (rowHeight + "").split(".")
     if(checkMistake[1] && checkMistake[1] !== "5") {
       console.error(`${rowHeight} is not acceptable in css, please change height of the table, it must be .5 and not .1, .2, .3 etc.`)
       console.error("You can actually figure out what the best height for table, by saying 11 rows x 10 perPage = 440pixel")
     }
-    this.setState({rowHeight, tableHeight: node.offsetHeight})
+    this.setState({rowHeight, tableHeight: this.node.offsetHeight})
   }
 
   onResize() {
     this.calculateRowHeight();
   }
 
-  onScrollPosition(scrollPosition, scrollTopPosition) {
-    console.log("dataLEngth", this.props.data.length)
-    const scale = new Scale().domain(0, scrollTopPosition).range(0, 99);
-    this.setState({rowPosition: scale(scrollPosition)})
+  /*gotoPage() {
+    const { page, perPage, fakeRowHeight } = this.props;
+    if(page > 0) {
+      this.node.scrollTop = ((page - 1) * perPage) * fakeRowHeight;
+    }
+  }*/
+
+
+  onMouseWheel(evt) {
+    evt.preventDefault();
+    const wheelDelta = Math.max(-1, Math.min(1, (evt.wheelDelta || -evt.detail)));
+    let scrollMovement = this.state.fakeRowHeight
+    if(wheelDelta<0) {
+      scrollMovement -= scrollMovement*2
+    }
+    this.setState({scrollMovement})
   }
 
-  onRowPosition(rowPosition) {
-    this.setState({rowPosition})
+  rowIndexToScrollPosition(rowIndex) {
+    const scrollToPosition = rowIndex * this.state.fakeRowHeight;
+    this.setState({scrollToPosition})
+  }
+
+  scrollPositionToRowIndex(scrollPosition, scrollMaxPosition) {
+    const scale = new Scale().domain(0, scrollMaxPosition).range(0, this.props.data.length-this.props.perPage);
+    this.setState({rowPosition: scale(scrollPosition)})
   }
 
   renderContent() {
@@ -71,9 +89,9 @@ export default class Table extends React.Component {
 
     return(
       <Content
+        rowIndexToScrollPosition={this.rowIndexToScrollPosition}
         columns={columns}
         scrollPosition={scrollPosition}
-        onMouseWheel={this.onMouseWheel}
         onScrollPosition={this.onScrollPosition}
         data={data}
         rowRenderer={rowRenderer}
@@ -86,17 +104,15 @@ export default class Table extends React.Component {
   }
 
   renderScroll() {
-    const page = this.props.page;
-    const {wheelDirection, scrollPosition, fakeRowHeight, tableHeight} = this.state;
+    const {scrollToPosition, scrollMovement, fakeRowHeight} = this.state;
+    const fakeHeight = this.dataLength * fakeRowHeight;
 
     return(
       <Scroll
-        scrollPosition={scrollPosition}
-        wheelDirection={wheelDirection}
-        perPage={this.perPage}
-        onScrollPosition={this.onScrollPosition}
-        dataLength={this.dataLength}
-        page={page} />
+        scrollToPosition={scrollToPosition}
+        scrollMovement={scrollMovement}
+        fakeHeight={fakeHeight}
+        scrollPositionToRowIndex={this.scrollPositionToRowIndex} />
     )
   }
 
@@ -114,11 +130,12 @@ export default class Table extends React.Component {
   componentDidMount() {
     this.calculateRowHeight();
     window.addEventListener("resize", this.onResize);
+    this.node.addEventListener("mousewheel", this.onMouseWheel);
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(prevState.wheelDirection!==this.state.wheelDirection) {
-      this.setState({wheelDirection: null})
+    if(prevState.scrollMovement!==this.state.scrollMovement) {
+      this.setState({scrollMovement: null})
     }
 
     if(prevProps.perPage!=this.props.perPage) {
@@ -128,5 +145,6 @@ export default class Table extends React.Component {
 
   componentWillUnmount() {
     window.removeEventListener("resize", this.onResize);
+    this.node.removeEventListener("mousewheel", this.onMouseWheel);
   }
 }
