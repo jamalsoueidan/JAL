@@ -9,12 +9,14 @@ import DropdownExample from 'components/dropdown/example'
 import ListExample from 'components/list/example'
 import TableExample from 'components/table/example'
 import TableXExample from 'components/table_x/example'
+import SplitExample from 'components/split/example'
 
 const routes = [
   { name: 'application', path: '/'},
   { name: 'application.barchart', path: 'barchart', component: BarchartExample },
   { name: 'application.dropdown', path: 'dropdown', component: DropdownExample },
   { name: 'application.list', path: 'list', component: ListExample },
+  { name: 'application.split', path: 'split', component: SplitExample },
   { name: 'application.table', path: 'table', component: TableExample },
   { name: 'application.tableX', path: 'tablex', component: TableXExample }
 ];

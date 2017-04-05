@@ -46,9 +46,10 @@ class Application extends React.Component {
           <ul>
             <li><LinkTo name="application.barchart">Barchart</LinkTo></li>
             <li><LinkTo name="application.dropdown">Dropdown</LinkTo></li>
+            <li><LinkTo name="application.list">List</LinkTo></li>
+            <li><LinkTo name="application.split">Split</LinkTo></li>
             <li><LinkTo name="application.table">Table</LinkTo></li>
             <li><LinkTo name="application.tableX">Table X</LinkTo></li>
-            <li><LinkTo name="application.list">List</LinkTo></li>
           </ul>
         )
       }
