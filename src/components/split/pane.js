@@ -5,7 +5,7 @@ import { findDOMNode } from 'react-dom'
 class Pane extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { style: { width: "30%" }};
+    this.state = { style: { flex: "1 1 auto" }};
   }
 
    onMove(clientX, index) {
@@ -14,7 +14,7 @@ class Pane extends React.Component {
     let width = (this.width+clientX);
     const style = this.state.style;
     if(validateWidth(width)) {
-      this.setState({style: { width}})
+      this.setState({style: { width, flex: "none"}})
     }
   }
 
