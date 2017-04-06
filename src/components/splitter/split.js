@@ -1,8 +1,12 @@
 import React from 'react'
 import Pane from './pane'
 import { findDOMNode } from 'react-dom'
+import cn from 'classNames'
 
 require('./stylesheet.css')
+
+const ROW_DIRECTION = "row"
+const COLUMN_DIRECTION = "column"
 
 class Split extends React.Component {
   constructor(props) {
@@ -13,14 +17,16 @@ class Split extends React.Component {
 
 
   get renderPanes() {
-    const { direction } = this.props;
+
     return this.props.children.map((c, index, arr) => {
       const pane = this.state.panes[index];
+
       const style = {
-        [(direction !== "column" ? "width" : "height")]: `${pane.length}%`
+        [(this.isRowDirection ? "width" : "height")]: `${pane.length}%`,
+        flexDirection: this.direction,
       }
 
-      return(<Pane key={index} index={index} style={style} resizeHandler={this.onResize.bind(this)}>{c}</Pane>)
+      return(<Pane key={index} className={this.direction} index={index} style={style} resizeHandler={this.onResize.bind(this)}>{c}</Pane>)
     })
   }
 
@@ -34,7 +40,9 @@ class Split extends React.Component {
       currentPane.startLength = currentPane.length;
       nextPane.startLength = nextPane.length;
     } else {
-      const length = to - element.left; //get current width
+      const elementPosition = ( this.isRowDirection ? element.left : element.top ) // get pane x or y position depending on direction
+      const clientLength = ( this.isRowDirection ? to.clientX : to.clientY ) // get mouse x or y position depending on direction
+      const length = clientLength - elementPosition; // set new height or width depending on direction
       currentPane.length = (length / this.state.totalLength) * 100; // convert to percent
       nextPane.length = (currentPane.startLength - currentPane.length) + nextPane.startLength // move the unfilled space to the next pane
       if(currentPane.length<4 || nextPane.length<4) return;
@@ -46,10 +54,18 @@ class Split extends React.Component {
     }})
   }
 
-  componentDidMount() {
+  get direction() {
     const { direction } = this.props;
+    if(direction) return direction;
+    return ROW_DIRECTION;
+  }
 
-    const totalLength = findDOMNode(this)[(direction !== "column" ? "clientWidth" : "clientHeight")];
+  get isRowDirection() {
+    return this.direction !== COLUMN_DIRECTION
+  }
+
+  componentDidMount() {
+    const totalLength = findDOMNode(this)[(this.isRowDirection ? "clientWidth" : "clientHeight")];
     const length = 100 / this.props.children.length
     const panes = {}
     this.props.children.forEach((c, index) => {
@@ -62,9 +78,9 @@ class Split extends React.Component {
   }
 
   render() {
-    const { direction } = this.props;
+    const classNames = cn("split", this.direction)
     return(
-      <div className="split" style={{flexDirection: direction}}>
+      <div className={classNames} style={{flexDirection: this.direction}}>
         {this.state.panes && this.renderPanes}
       </div>
     )

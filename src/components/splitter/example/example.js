@@ -8,10 +8,15 @@ class Example extends React.Component {
     return(
       <div className="example">
         <Splitter direction="row">
-          <div>1</div>
-          <div>2</div>
-          <div>3</div>
-          <div>4</div>
+          <div>row 1</div>
+          <div>row 2</div>
+          <Splitter direction="column">
+            <div>column 1</div>
+            <div>column 2</div>
+            <div>column 3</div>
+            <div>column 4</div>
+          </Splitter>
+          <div>row 4</div>
         </Splitter>
       </div>
     )

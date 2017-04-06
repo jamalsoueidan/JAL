@@ -21,13 +21,13 @@ class Resizer extends React.Component {
   onMouseDown(evt) {
     evt.preventDefault();
     evt.stopPropagation();
-    this.from = evt.clientX;
+    this.from = {clientX: evt.clientX, clientY: evt.clientY }
     window.addEventListener('mousemove', this.onMouseMove, false);
     window.addEventListener('mouseup', this.onMouseUp, false);
   }
 
   onMouseMove(evt) {
-    const to = evt.clientX
+    const to = { clientX: evt.clientX, clientY: evt.clientY }
     this.props.onMove(this.from, to)
   }
 
