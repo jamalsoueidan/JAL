@@ -15,7 +15,6 @@ class Pane extends React.Component {
 
   render() {
     const { showResizer, style} = this.props;
-    console.log("newStyle", style)
     return(
       <div className="pane" style={style}>
         <div className="pane-content">{this.props.children}</div>

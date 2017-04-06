@@ -19,7 +19,7 @@ class Split extends React.Component {
       return(<Pane key={index} index={index} style={style} resizeHandler={this.onResize.bind(this)}>{c}</Pane>)
     })
   }
-  
+
   // TODO: Figure out another way!
   onResize(moves, index) {
     if(!moves) {
@@ -27,7 +27,6 @@ class Split extends React.Component {
         p.original = p.width
         return p;
       })
-      console.log(panes)
       this.setState({panes})
       return;
     }
