@@ -8,9 +8,10 @@ class Pane extends React.Component {
     this.state = { style: { flex: "1 1 auto" }};
   }
 
-   onMove(moves) {
-    const { children, resizeHandler, index } = this.props;
-    resizeHandler(moves, index)
+   onMove(from, to) {
+    const { resizeHandler, index } = this.props;
+    const element = findDOMNode(this).getBoundingClientRect();
+    resizeHandler(from, to, element, index)
   }
 
   render() {

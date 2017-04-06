@@ -11,35 +11,36 @@ class Split extends React.Component {
 
 
   get renderPanes() {
+    const { direction } = this.props;
     return this.props.children.map((c, index, arr) => {
       const pane = this.state.panes[index];
       const style = {
-        width: `${pane.width}px`
+        [(direction !== "column" ? "width" : "height")]: `${pane.length}%`
       }
+
       return(<Pane key={index} index={index} style={style} resizeHandler={this.onResize.bind(this)}>{c}</Pane>)
     })
   }
 
   // TODO: Figure out another way!
-  onResize(moves, index) {
-    if(!moves) {
-      const panes = this.state.panes.map(p => {
-        p.original = p.width
-        return p;
-      })
-      this.setState({panes})
-      return;
+  onResize(from, to, element, index) {
+    const panes = this.state.panes
+    const currentPane = { ...panes[index] }
+    const nextPane = { ...panes[index+1] }
+
+    if(!from) {
+      currentPane.startLength = currentPane.length;
+      nextPane.startLength = nextPane.length;
+    } else {
+      const length = to - element.left; //get current width
+      currentPane.length = (length / this.state.totalLength) * 100; // convert to percent
+      nextPane.length = (currentPane.startLength - currentPane.length) + nextPane.startLength // move the unfilled space to the next pane
     }
-    let panes = this.state.panes
-    let currentWidth = panes[index].original
-    let nextWidth = panes[index+1].original || panes[index-1].original
-    currentWidth = currentWidth + moves;
-    nextWidth = nextWidth - moves;
-    if (currentWidth<100 || nextWidth<100) return;
-    console.log(currentWidth, nextWidth)
-    panes[index].width = currentWidth
-    panes[index+1].width = nextWidth
-    this.setState({panes})
+
+    this.setState({panes: { ...panes,
+      [index]: currentPane,
+      [index+1]: nextPane
+    }})
   }
 
   onValidateWidth(width) {
@@ -49,22 +50,24 @@ class Split extends React.Component {
   }
 
   componentDidMount() {
-    const eachPaneWidth = findDOMNode(this).clientWidth / this.props.children.length
-    const panes = []
+    const { direction } = this.props;
+
+    const totalLength = findDOMNode(this)[(direction !== "column" ? "clientWidth" : "clientHeight")];
+    const length = 100 / this.props.children.length
+    const panes = {}
     this.props.children.forEach((c, index) => {
-      panes.push({
-        index: index,
-        width: eachPaneWidth,
-        original: eachPaneWidth
-      })
+      panes[index] = {
+        length: length,
+        startLength: length
+      };
     })
-    this.setState({panes})
+    this.setState({totalLength, panes})
   }
 
   render() {
     const { direction } = this.props;
     return(
-      <div className="split">
+      <div className="split" style={{flexDirection: direction}}>
         {this.state.panes && this.renderPanes}
       </div>
     )

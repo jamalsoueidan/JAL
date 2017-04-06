@@ -2,6 +2,9 @@ import React from 'react'
 import { findDOMNode } from 'react-dom'
 import cn from 'classNames'
 
+//TODO one callback for all events, send type with the event
+// this.props.handler({type: evt.type})
+
 class Resizer extends React.Component {
   constructor(props) {
     super(props)
@@ -18,13 +21,14 @@ class Resizer extends React.Component {
   onMouseDown(evt) {
     evt.preventDefault();
     evt.stopPropagation();
-    this.startX = evt.clientX;
+    this.from = evt.clientX;
     window.addEventListener('mousemove', this.onMouseMove, false);
     window.addEventListener('mouseup', this.onMouseUp, false);
   }
 
   onMouseMove(evt) {
-    this.props.onMove(evt.clientX-this.startX)
+    const to = evt.clientX
+    this.props.onMove(this.from, to)
   }
 
   onMouseUp(evt) {
