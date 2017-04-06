@@ -23,3 +23,24 @@ Optimized for performance renderer items, simple table!
 - [TableX](https://github.com/jamalsoueidan/react-application-library/tree/master/src/components/table_x)
 
 This is build on our previous table with sorting, resize columns, filtering columns, paginate, etc.
+
+# Rules
+
+## 1
+Events that are added as props must be named as "nameHandler", callback should be named "onName".
+
+```js
+<Any resizeHandler={this.onResize} />
+```
+
+## 2
+
+Every filename must be named as the component name.
+
+```js
+// splitter.js
+class Splitter {}
+```
+
+
+... more to come
