@@ -2,6 +2,9 @@
 
 Create vertically and horizontally moveable splitter bar.
 
+![](https://github.com/jamalsoueidan/react-application-library/blob/master/src/components/splitter/screenshot.png?raw=true)
+
+
 ## Examples
 
 ```js

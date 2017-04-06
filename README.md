@@ -24,6 +24,10 @@ Optimized for performance renderer items, simple table!
 
 This is build on our previous table with sorting, resize columns, filtering columns, paginate, etc.
 
+- [Splitter](https://github.com/jamalsoueidan/react-application-library/tree/master/src/components/splitter)
+
+Splitter is a component that split your content with movable splitter between them vertically or horizontally.
+
 # Rules
 
 ## 1
@@ -59,6 +63,6 @@ If you code jump from one method to another, depending on different conditions, 
 
 ## 5
 
-Use less conditions! 
+Use less conditions!
 
 ... more to come
