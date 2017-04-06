@@ -2,6 +2,8 @@ import React from 'react'
 import Pane from './pane'
 import { findDOMNode } from 'react-dom'
 
+require('./stylesheet.css')
+
 class Split extends React.Component {
   constructor(props) {
     super(props)
