@@ -35,6 +35,7 @@ class Split extends React.Component {
     let nextWidth = panes[index+1].original || panes[index-1].original
     currentWidth = currentWidth + moves;
     nextWidth = nextWidth - moves;
+    if (currentWidth<100 || nextWidth<100) return;
     console.log(currentWidth, nextWidth)
     panes[index].width = currentWidth
     panes[index+1].width = nextWidth
