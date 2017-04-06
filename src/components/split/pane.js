@@ -8,20 +8,16 @@ class Pane extends React.Component {
     this.state = { style: { flex: "1 1 auto" }};
   }
 
-   onMove(startX, clientX) {
+   onMove(moves) {
     const { children, resizeHandler, index } = this.props;
-    const node = findDOMNode(this)
-    const width = startX + (clientX - startX)
-    this.setState({style: {
-      width: width + "px"
-    }})
+    resizeHandler(moves, index)
   }
 
   render() {
-    const { showResizer } = this.props;
-    console.log("newStyle", this.state.style)
+    const { showResizer, style} = this.props;
+    console.log("newStyle", style)
     return(
-      <div className="pane" style={this.state.style}>
+      <div className="pane" style={style}>
         <div className="pane-content">{this.props.children}</div>
         <Resizer className="pane-divider" onMove={this.onMove.bind(this)} />
        </div>

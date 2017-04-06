@@ -1,6 +1,6 @@
 import React from 'react'
 import { findDOMNode } from 'react-dom'
-import cn from 'classnames'
+import cn from 'classNames'
 
 class Resizer extends React.Component {
   constructor(props) {
@@ -24,12 +24,11 @@ class Resizer extends React.Component {
   }
 
   onMouseMove(evt) {
-    const { onMove } = this.props;
-    console.log(this.startX, evt.clientX)
-    onMove(this.startX, evt.clientX)
+    this.props.onMove(evt.clientX-this.startX)
   }
 
   onMouseUp(evt) {
+    this.props.onMove();
     window.removeEventListener('mousemove', this.onMouseMove, false);
     window.removeEventListener('mouseup', this.onMouseUp, false);
   }

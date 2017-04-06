@@ -9,6 +9,8 @@ html, body, #application {
   height: 100%;
   align-items: stretch;
   justify-content: flex-start;
+  border: 1px solid #000;
+  box-sizing: border-box;
 }
 
 .pane {

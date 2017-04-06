@@ -9,6 +9,7 @@ class Example extends React.Component {
       <Split direction="horizontal">
         <div>jamal</div>
         <div>ahmad</div>
+        <div>ahmad</div>
       </Split>
     )
   }
