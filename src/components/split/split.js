@@ -35,18 +35,13 @@ class Split extends React.Component {
       const length = to - element.left; //get current width
       currentPane.length = (length / this.state.totalLength) * 100; // convert to percent
       nextPane.length = (currentPane.startLength - currentPane.length) + nextPane.startLength // move the unfilled space to the next pane
+      if(currentPane.length<4 || nextPane.length<4) return;
     }
 
     this.setState({panes: { ...panes,
       [index]: currentPane,
       [index+1]: nextPane
     }})
-  }
-
-  onValidateWidth(width) {
-    const minimumWidth = (this.props.children.length-1) * 100;
-    const allowed = width + minimumWidth;
-    return allowed < this.width && width >= 110;
   }
 
   componentDidMount() {
