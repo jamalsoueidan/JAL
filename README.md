@@ -42,5 +42,10 @@ Every filename must be named as the component name.
 class Splitter {}
 ```
 
+## 3
+
+Push responsibility out!
+
+If method have more then 1 responsibility, divide the method, if the class have too many responsibilities then divide the class.
 
 ... more to come

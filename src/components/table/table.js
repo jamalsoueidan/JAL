@@ -63,7 +63,6 @@ export default class Table extends React.Component {
     }
   }
 
-
   onMouseWheel(evt) {
     evt.preventDefault();
     const wheelDelta = Math.max(-1, Math.min(1, (evt.wheelDelta || -evt.detail)));
