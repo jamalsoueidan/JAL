@@ -24,8 +24,9 @@ class Resizer extends React.Component {
   }
 
   onMouseMove(evt) {
-    const { onMove, index } = this.props;
-    onMove(evt.clientX - this.startX, index)
+    const { onMove } = this.props;
+    console.log(this.startX, evt.clientX)
+    onMove(this.startX, evt.clientX)
   }
 
   onMouseUp(evt) {

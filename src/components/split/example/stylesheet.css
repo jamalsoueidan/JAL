@@ -3,7 +3,7 @@ html, body, #application {
   height: 100%;
 }
 
-.split, .pane {
+.split {
   display: flex;
   width: 100%;
   height: 100%;
@@ -12,6 +12,10 @@ html, body, #application {
 }
 
 .pane {
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+
   .pane-divider {
     background-color: #eee;
     background-repeat: no-repeat;

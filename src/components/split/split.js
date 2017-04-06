@@ -3,11 +3,28 @@ import Pane from './pane'
 import { findDOMNode } from 'react-dom'
 
 class Split extends React.Component {
+  constructor(props) {
+    super(props)
+    const percentWidth = this.props.children.length / 100;
+    this.state = {
+      percentWidth
+    }
+  }
+
+
   get renderPanes() {
     return this.props.children.map((c, index, arr) => {
       const showResizer = (index !== (arr.length-1))
-      return(<Pane key={index} showResizer={showResizer} validateWidth={this.onValidateWidth.bind(this)}>{c}</Pane>)
+      let movement = null;
+      if(this.state.index === index) {
+        movement = this.state.movement;
+      }
+      return(<Pane key={index} index={index} movement={movement} percentWidth={this.state.percentWidth} resizeHandler={this.onResize.bind(this)}>{c}</Pane>)
     })
+  }
+
+  onResize(movement, index) {
+    this.setState({movement, index})
   }
 
   onValidateWidth(width) {
