@@ -38,11 +38,11 @@ Events that are added as props must be named as "nameHandler", callback should b
 ```
 
 ## 2
+Every component name correspond to one JS file.
 
-Every filename must be named as the component name.
 
 ```js
-// splitter.js
+// /components/splitter/splitter.js
 class Splitter {}
 ```
 
