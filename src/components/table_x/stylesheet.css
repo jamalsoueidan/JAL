@@ -1,9 +1,5 @@
 $border: #a8a8a8;
 
-body {
-  padding: 10px;
-}
-
 .border {
   border:1px solid #000;
   width: 80%;
