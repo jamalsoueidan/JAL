@@ -44,8 +44,21 @@ class Splitter {}
 
 ## 3
 
-Push responsibility out!
+Divide responsibilities or push them in new class!
 
 If method have more then 1 responsibility, divide the method, if the class have too many responsibilities then divide the class.
+
+
+## 4
+
+Stop using GOTO
+
+Don't make it hard for other developers to follow how your code execute!
+If you code jump from one method to another, depending on different conditions, then refactor!
+
+
+## 5
+
+Use less conditions! 
 
 ... more to come
