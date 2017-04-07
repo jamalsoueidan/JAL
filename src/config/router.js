@@ -10,6 +10,7 @@ import ListExample from 'components/list/example'
 import TableExample from 'components/table/example'
 import TableXExample from 'components/table_x/example'
 import SplitterExample from 'components/splitter/example'
+import GridExample from 'components/grid/example'
 
 const routes = [
   { name: 'application', path: '/'},
@@ -18,7 +19,8 @@ const routes = [
   { name: 'application.list', path: 'list', component: ListExample },
   { name: 'application.splitter', path: 'splitter', component: SplitterExample },
   { name: 'application.table', path: 'table', component: TableExample },
-  { name: 'application.tableX', path: 'tablex', component: TableXExample }
+  { name: 'application.tableX', path: 'tablex', component: TableXExample },
+  { name: 'application.grid', path: 'grid', component: GridExample }
 ];
 
 const router = createRouter(routes, {

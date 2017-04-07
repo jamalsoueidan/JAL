@@ -1,0 +1,9 @@
+.grid {
+  height :300px;
+  width: 100%;
+  .grid-list {
+    height: 100%;
+    width: 100%;
+    overflow: hidden
+  }
+}
