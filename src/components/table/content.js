@@ -77,6 +77,10 @@ export default class Content extends React.Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
+    if(nextProps.data!== this.props.data) {
+      this.data = this.props.data;
+    }
+    
     if(nextState.sort !== this.state.sort) {
       const sort = nextState.sort
       this.data = this.data.sort(sort);
