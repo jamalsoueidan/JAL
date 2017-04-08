@@ -17,9 +17,9 @@ const columns = [
 
 
 const rowRenderer = (item, props) => {
-  if(props.type === "thead") {
+  if(props.type === "header") {
     return(
-      <div className="header" style={props.style}>
+      <div className="header">
         {props.columns.map((c) => {
           return(<div key={c.attribute}>{c.displayName}</div>)
         })}
