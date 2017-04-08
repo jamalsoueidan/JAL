@@ -1,17 +1,9 @@
 .customTable {
   border: 1px solid #000;
 
-  tr {
-    box-sizing: border-box;
-  }
-  
-  tbody {
-    tr:nth-child(even) {background: #f2f7ff}
-  }
-
-  thead {
-    tr {
-      background-color: #ccc;
+  div.item, div.header {
+    :first-child {
+      min-width: 40px;
     }
   }
 }

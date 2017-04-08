@@ -19,23 +19,19 @@ const columns = [
 const rowRenderer = (item, props) => {
   if(props.type === "thead") {
     return(
-      <tr>
+      <div className="header" style={props.style}>
         {props.columns.map((c) => {
-          return(<td key={c.attribute} style={props.style}><div>{c.displayName}</div></td>)
+          return(<div key={c.attribute}>{c.displayName}</div>)
         })}
-      </tr>
+      </div>
     )
   }
 
   return(
-    <tr key={item.id}>
-      <td style={props.style}>
-        <div>{item.id}</div>
-      </td>
-      <td style={props.style}>
-        <div>{item.first_name}</div>
-      </td>
-    </tr>
+    <div key={item.id}  className="item" style={props.style}>
+      <div>{item.id}</div>
+      <div>{item.first_name}</div>
+    </div>
   )
 }
 

@@ -24,7 +24,6 @@ export default class Content extends React.Component {
   }
 
   filter(columns) {
-    console.log("here we go")
     this.setState({columns})
   }
 
@@ -54,20 +53,26 @@ export default class Content extends React.Component {
     const { rowRenderer, rowHeight } = this.props;
     const columns = this.state.columns;
     if(!columns) return;
-    return rowRenderer(null, {type: 'thead', rowHeight, sort: this.sort.bind(this), filter: this.filter.bind(this), columns})
+    const style = {height: `${rowHeight}px`, lineHeight: `${rowHeight}px`};
+    return rowRenderer(null, {type: 'thead', rowHeight, sort: this.sort.bind(this), filter: this.filter.bind(this), columns, style})
   }
 
   render() {
+    const { rowPosition, rowHeight, perPage, tableHeight } = this.props;
+    const length = this.data.length - perPage;
+    const percent = (rowPosition / length * 100);
+    const top = percent / 100 * ((rowHeight * (perPage+1)) - tableHeight)
+
     return(
       <div className="content">
-        <table>
-          <thead>
-            {this.thead}
-          </thead>
-          <tbody>
+        <div className="content-header">
+        {this.thead}
+        </div>
+        <div className="content-body">
+          <div className="content-items" style={{top: `-${top}px`}}>
             {this.tbody}
-          </tbody>
-        </table>
+          </div>
+        </div>
       </div>
     )
   }

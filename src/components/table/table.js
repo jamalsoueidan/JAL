@@ -41,7 +41,7 @@ export default class Table extends React.Component {
   }
 
   calculateRowHeight() {
-    const rowHeight = (this.node.offsetHeight / this.perPage)
+    const rowHeight = 40;//(this.node.offsetHeight / this.perPage)
     // TODO: Fix this issue with rowHeight becoming 13.4 with 400px as example!
     const checkMistake = (rowHeight + "").split(".")
     if(checkMistake[1] && checkMistake[1] !== "5") {
@@ -85,7 +85,7 @@ export default class Table extends React.Component {
 
   renderContent() {
     const {data, rowRenderer, perPage, selected, columns} = this.props;
-    const {scrollPosition, rowHeight, rowPosition} = this.state;
+    const {scrollPosition, rowHeight, rowPosition, tableHeight} = this.state;
 
     return(
       <Content
@@ -97,6 +97,7 @@ export default class Table extends React.Component {
         rowHeight={rowHeight}
         selected={selected}
         perPage={perPage}
+        tableHeight={tableHeight}
         rowPosition={rowPosition} />
     )
   }
