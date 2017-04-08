@@ -15,11 +15,10 @@ const columns = [
   }
 ]
 
-
 const rowRenderer = (item, props) => {
   if(props.type === "header") {
     return(
-      <div className="header">
+      <div className="customHeader">
         {props.columns.map((c) => {
           return(<div key={c.attribute}>{c.displayName}</div>)
         })}
@@ -28,7 +27,7 @@ const rowRenderer = (item, props) => {
   }
 
   return(
-    <div key={item.id}  className="item" style={props.style}>
+    <div className="customItem">
       <div>{item.id}</div>
       <div>{item.first_name}</div>
     </div>
