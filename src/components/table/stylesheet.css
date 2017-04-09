@@ -4,50 +4,46 @@ html, body {
   margin: 0px;
 }
 
+$scollWidth: 15px;
+
 .table {
   height: 440px;
   width: 100%;
-  display: flex;
   overflow: hidden;
 
-  .content {
-    position: relative;
-    top: 0px;
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-
-    .content-header {
-      position: relative;
-      & > div {
-        position: absolute;
-        display: flex;
-        top: 0px;
-        background-color: #fff;
-        width: 100%;
-        z-index: 1000;
-      }
-    }
-    .content-items {
-      position: absolute;
+  .table-header {
+    & > div {
+      display: flex;
+      background-color: #fff;
       width: 100%;
-      height: 100%;
-      top: 0px;
-
-      & > div {
-        display: flex;
-      }
     }
   }
 
-  .scroll {
-    overflow-y: scroll;
-    overflow-x: hidden;
-    height: 100%;
+  .table-list {
+    display: flex;
+    height: calc(100% - 40px);
+    width: 100%;
 
-    div {
-      width: 1px;
-      overflow: hidden;
+    .table-list-items {
+      width: calc(100% - 15px);
+      height: 100%;
+
+      & > div {
+        display: flex;
+      }
+    }
+
+    .table-scroll {
+      overflow-y: scroll;
+      overflow-x: hidden;
+      height: 100%;
+      width: $scollWidth;
+
+      div {
+        width: 10px;
+        overflow: hidden;
+        visibility: hidden;
+      }
     }
   }
 }

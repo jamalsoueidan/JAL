@@ -1,5 +1,6 @@
 import React from 'react'
 import Scroll from './scroll'
+import Header from './header'
 import Content from './content'
 import { Scale } from 'utils'
 import { findDOMNode } from 'react-dom'
@@ -9,6 +10,7 @@ require('./stylesheet.css')
 export default class Table extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       scrollToPosition: 0,
       scrollMovement: 0,
@@ -19,7 +21,7 @@ export default class Table extends React.Component {
     }
 
     this.rowIndexToScrollPosition = this.rowIndexToScrollPosition.bind(this)
-    this.scrollPositionToRowIndex = this.scrollPositionToRowIndex.bind(this)
+    this.onScroll = this.onScroll.bind(this)
     this.onMouseWheel = this.onMouseWheel.bind(this)
     this.onResize = this.onResize.bind(this)
   }
@@ -41,14 +43,7 @@ export default class Table extends React.Component {
   }
 
   calculateRowHeight() {
-    const rowHeight = 40;//(this.node.offsetHeight / this.perPage)
-    // TODO: Fix this issue with rowHeight becoming 13.4 with 400px as example!
-    const checkMistake = (rowHeight + "").split(".")
-    if(checkMistake[1] && checkMistake[1] !== "5") {
-      console.error(`${rowHeight} is not acceptable in css, please change height of the table, it must be .5 and not .1, .2, .3 etc.`)
-      console.error("You can actually figure out what the best height for table, by saying 11 rows x 10 perPage = 440pixel")
-    }
-    this.setState({rowHeight, tableHeight: this.node.offsetHeight})
+    this.setState({rowHeight: 40, tableHeight: this.node.offsetHeight})
   }
 
   onResize() {
@@ -78,12 +73,22 @@ export default class Table extends React.Component {
     this.setState({scrollToPosition})
   }
 
-  scrollPositionToRowIndex(scrollPosition, scrollMaxPosition) {
-    const scale = new Scale().domain(0, scrollMaxPosition).range(0, this.props.data.length-this.props.perPage);
-    this.setState({rowPosition: scale(scrollPosition)})
+  onScroll(scrollPercent) {
+    console.log(scrollPercent)
+    this.setState({scrollPercent: scrollPercent})
   }
 
-  renderContent() {
+  get renderHeader() {
+    const attributes = {
+      rowRenderer: this.props.rowRenderer,
+      rowHeight: this.props.rowHeight,
+      columns: this.props.columns
+    }
+
+    return <Header { ... attributes } />
+  }
+
+  get renderItems() {
     const {data, rowRenderer, perPage, selected, columns} = this.props;
     const {scrollPosition, rowHeight, rowPosition, tableHeight} = this.state;
 
@@ -102,18 +107,16 @@ export default class Table extends React.Component {
     )
   }
 
-  renderScroll() {
-    const {scrollToPosition, scrollMovement, fakeRowHeight} = this.state;
+  get renderScroll() {
+    const {scrollToPosition, scrollMovement } = this.state;
 
     // create empty element inside scroll component, so we get fake horizontal scroll!
-    const fakeHeight = this.dataLength * fakeRowHeight;
+    const height = this.dataLength * 10;
 
     return(
-      <Scroll
-        scrollToPosition={scrollToPosition}
-        scrollMovement={scrollMovement}
-        fakeHeight={fakeHeight}
-        scrollPositionToRowIndex={this.scrollPositionToRowIndex} />
+      <Scroll scrollToPosition={scrollToPosition} scrollMovement={scrollMovement} scrollHandler={this.onScroll}>
+        <div style={{height: height + "px"}}></div>
+      </Scroll>
     )
   }
 
@@ -122,8 +125,11 @@ export default class Table extends React.Component {
 
     return(
       <div className="table">
-        {rowHeight && this.renderContent() }
-        {rowHeight && this.renderScroll() }
+        { rowHeight && this.renderHeader }
+        <div className="table-list">
+          { rowHeight && this.renderItems }
+          { rowHeight && this.renderScroll }
+        </div>
       </div>
     )
   }

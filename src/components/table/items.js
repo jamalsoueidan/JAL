@@ -5,21 +5,24 @@ export default class Items extends React.Component {
   get data() {
     const { perPage, rowPosition, data} = this.props;
 
+    const dataLength = data.length
     let from = Math.ceil( rowPosition );
-    let to = perPage+from;
-    if(to>=data.length) {
-      from = data.length - perPage;
-      to = data.length;
+    let to = perPage + from;
+
+    if(to >= dataLength) {
+      from = dataLength - perPage;
+      to = dataLength;
     }
 
-    return data.slice(from, to)
+    return data.slice(0, 10)
   }
 
   get style() {
     const { rowPosition, rowHeight, perPage, tableHeight, data } = this.props;
     const length = data.length - perPage;
     const percent = (rowPosition / length * 100);
-    return { top: percent / 100 * ((rowHeight * (perPage+1)) - tableHeight) + "px" }
+    const top = (percent / 100) * ((rowHeight * (perPage+1)) - tableHeight)
+    return { top: `-${top}px` }
   }
 
   get items() {
@@ -33,7 +36,7 @@ export default class Items extends React.Component {
 
   render() {
     return(
-      <div className="content-items" style={this.style}>
+      <div className="table-list-items" style={this.style}>
         {this.items}
       </div>
     )

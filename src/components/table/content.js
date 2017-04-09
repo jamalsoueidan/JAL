@@ -12,27 +12,8 @@ export default class Content extends React.Component {
     rowIndexToScrollPosition(index)
   }
 
-  get items() {
-    return(<Items {...this.props} />)
-  }
-
-  get header() {
-    const attributes = {
-      rowRenderer: this.props.rowRenderer,
-      rowHeight: this.props.rowHeight,
-      columns: this.props.columns
-    }
-
-    return <Header { ... attributes } />
-  }
-
   render() {
-    return(
-      <div className="content">
-        { this.header }
-        { this.items }
-      </div>
-    )
+    return(<Items {...this.props} />)
   }
 
   componentDidMount() {

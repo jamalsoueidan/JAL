@@ -11,7 +11,7 @@ export default class Header extends React.Component {
     if(!columns) return;
 
     return(
-      <div className="content-header" style={{ height: `${rowHeight}px` }}>
+      <div className="table-header" style={{ height: `${rowHeight}px` }}>
         {this.header}
       </div>
     )

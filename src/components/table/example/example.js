@@ -36,6 +36,6 @@ const rowRenderer = (item, props) => {
 
 export default () => (
   <div className="customTable">
-    <Table data={data} rowRenderer={rowRenderer} perPage={15} columns={columns} />
+    <Table data={data} rowRenderer={rowRenderer} rowHeight={40} columns={columns} />
   </div>
 )

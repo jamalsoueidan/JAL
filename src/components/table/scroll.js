@@ -2,27 +2,14 @@ import React from 'react'
 import { findDOMNode } from 'react-dom'
 import { Scale } from 'utils'
 
-const FakeContent = ({height}) => {
-  return(<div className="fakeContent" style={{height: height + "px", backgroundColor: "#ff0040", visibility: "hidden"}}></div>)
-}
-
 class Scroll extends React.Component {
   constructor(props) {
     super(props);
     this.onScroll = this.onScroll.bind(this)
-    this.state = {}
   }
 
   get node() {
     return findDOMNode(this);
-  }
-
-  calculateScrollWith() {
-    const node = this.node
-    // IE doesn't scroll if there is not avaible content for scroll, so fake content must have atleast 1.5px
-    const IEFIX = 1.5;
-    const width = node.offsetWidth - node.clientWidth + IEFIX;
-    this.setState({width})
   }
 
   onWheelScroll() {
@@ -39,24 +26,24 @@ class Scroll extends React.Component {
   }
 
   onScroll(evt) {
-    const  { scrollPositionToRowIndex } = this.props;
-    const scrollMaxPosition = this.node.scrollHeight - this.node.offsetHeight;
-    scrollPositionToRowIndex(this.node.scrollTop, scrollMaxPosition)
+    const  { scrollHandler } = this.props;
+    const scrollHeight = this.node.scrollHeight - this.node.offsetHeight;
+    const scrollPosition = this.node.scrollTop;
+    const scrollProcent = scrollPosition / scrollHeight * 100;
+    scrollHandler(scrollProcent)
   }
 
   render() {
-    const {width} = this.state;
-    const {fakeHeight} = this.props;
+    const { children } = this.props;
 
     return(
-      <div className="scroll" style={{width}}>
-        <FakeContent height={fakeHeight}/>
+      <div className="table-scroll">
+        {children}
       </div>
     )
   }
 
   componentDidMount() {
-    this.calculateScrollWith();
     this.onPropScrollToPosition();
     this.node.addEventListener('scroll', this.onScroll)
   }
@@ -76,7 +63,7 @@ class Scroll extends React.Component {
 
 Scroll.propTypes = {
   /**
-   * You know how much you need to scroll by ysing fakeHeight/items, then total * 3 items, you get the correct position.
+   * You know how much you need to scroll by using fakeHeight/items, then total * 3 items, you get the correct position.
    */
   scrollToPosition: React.PropTypes.number,
   /**
@@ -84,16 +71,10 @@ Scroll.propTypes = {
    */
   scrollMovement: React.PropTypes.number,
   /**
-   * We need to create fake element inside scroll component, to show a horizontal scroll,
-   * the height responed to items , if the height is 1000px, and you have 100 items,
-   * then you can move to item number 100 by specifing 1000 in scrollToPosition.
-   */
-  fakeHeight: React.PropTypes.number.isRequired,
-  /**
    * This is callback scroll component calls whenever the scroll moves, you will get scrollPositionToRowIndex(scrollPosition, scrollMaxPosition)
    * Use math to calculate which items to show!
    */
-  scrollPositionToRowIndex: React.PropTypes.func.isRequired
+  scrollHandler: React.PropTypes.func.isRequired
 };
 
 export default Scroll
