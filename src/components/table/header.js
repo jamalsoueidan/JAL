@@ -7,11 +7,11 @@ export default class Header extends React.Component {
   }
 
   render() {
-    const { columns, rowHeight } = this.props;
+    const { columns } = this.props;
     if(!columns) return;
 
     return(
-      <div className="table-header" style={{ height: `${rowHeight}px` }}>
+      <div className="table-header">
         {this.header}
       </div>
     )

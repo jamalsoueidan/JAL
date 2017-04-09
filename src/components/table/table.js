@@ -12,18 +12,15 @@ export default class Table extends React.Component {
     super(props);
 
     this.state = {
+      scrollPercent: 0,
       scrollToPosition: 0,
       scrollMovement: 0,
       rowPosition: 0,
-      rowHeight: null,
-      fakeRowHeight: 10,
-      tableHeight: 0
     }
 
     this.rowIndexToScrollPosition = this.rowIndexToScrollPosition.bind(this)
     this.onScroll = this.onScroll.bind(this)
     this.onMouseWheel = this.onMouseWheel.bind(this)
-    this.onResize = this.onResize.bind(this)
   }
 
   get perPage() {
@@ -40,14 +37,6 @@ export default class Table extends React.Component {
 
   get node() {
     return findDOMNode(this);
-  }
-
-  calculateRowHeight() {
-    this.setState({rowHeight: 40, tableHeight: this.node.offsetHeight})
-  }
-
-  onResize() {
-    this.calculateRowHeight();
   }
 
   gotoPage() {
@@ -74,7 +63,6 @@ export default class Table extends React.Component {
   }
 
   onScroll(scrollPercent) {
-    console.log(scrollPercent)
     this.setState({scrollPercent: scrollPercent})
   }
 
@@ -90,20 +78,16 @@ export default class Table extends React.Component {
 
   get renderItems() {
     const {data, rowRenderer, perPage, selected, columns} = this.props;
-    const {scrollPosition, rowHeight, rowPosition, tableHeight} = this.state;
+    const {scrollPercent} = this.state;
 
     return(
       <Content
-        rowIndexToScrollPosition={this.rowIndexToScrollPosition}
         columns={columns}
-        scrollPosition={scrollPosition}
         data={data}
-        rowRenderer={rowRenderer}
-        rowHeight={rowHeight}
-        selected={selected}
         perPage={perPage}
-        tableHeight={tableHeight}
-        rowPosition={rowPosition} />
+        rowRenderer={rowRenderer}
+        scrollPercent={scrollPercent}
+        selected={selected} />
     )
   }
 
@@ -121,23 +105,21 @@ export default class Table extends React.Component {
   }
 
   render() {
-    const {rowHeight} = this.state;
+    const {columns} = this.props;
 
     return(
       <div className="table">
-        { rowHeight && this.renderHeader }
+        { columns && this.renderHeader }
         <div className="table-list">
-          { rowHeight && this.renderItems }
-          { rowHeight && this.renderScroll }
+          { columns && this.renderItems }
+          { columns && this.renderScroll }
         </div>
       </div>
     )
   }
 
   componentDidMount() {
-    this.calculateRowHeight();
     this.gotoPage();
-    window.addEventListener("resize", this.onResize);
     this.node.addEventListener("mousewheel", this.onMouseWheel);
   }
 
@@ -146,17 +128,12 @@ export default class Table extends React.Component {
       this.setState({scrollMovement: null})
     }
 
-    if(prevProps.perPage!=this.props.perPage) {
-      this.calculateRowHeight();
-    }
-
     if(prevProps.currentPage!=this.props.currentPage) {
       this.gotoPage();
     }
   }
 
   componentWillUnmount() {
-    window.removeEventListener("resize", this.onResize);
     this.node.removeEventListener("mousewheel", this.onMouseWheel);
   }
 }

@@ -3,18 +3,18 @@ import { findDOMNode } from 'react-dom'
 
 export default class Items extends React.Component {
   get data() {
-    const { perPage, rowPosition, data} = this.props;
+    const { perPage, scrollPercent, data} = this.props;
 
     const dataLength = data.length
-    let from = Math.ceil( rowPosition );
-    let to = perPage + from;
+    let from = scrollPercent/100 * dataLength;
+    let to = from + perPage;
 
     if(to >= dataLength) {
       from = dataLength - perPage;
       to = dataLength;
     }
 
-    return data.slice(0, 10)
+    return data.slice(from, to)
   }
 
   get style() {
