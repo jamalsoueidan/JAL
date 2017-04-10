@@ -24,12 +24,10 @@ class Scroll extends React.Component {
 
   onWheelScroll() {
     const { scrollMovement, scrollAmount} = this.props;
-    const restScroll = this.scrollHeight - this.node.scrollTop
-    const scrollAmountPosition = scrollAmount / 100 * restScroll;
     if(scrollMovement>0) {
-      this.node.scrollTop += scrollAmountPosition;
+      this.node.scrollTop += this.toScrollPosition(scrollAmount);
     } else {
-      this.node.scrollTop -= scrollAmountPosition;
+      this.node.scrollTop -= this.toScrollPosition(scrollAmount);
     }
   }
 
