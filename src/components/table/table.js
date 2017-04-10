@@ -48,12 +48,11 @@ export default class Table extends React.Component {
 
   onMouseWheel(evt) {
     evt.preventDefault();
-    const wheelDelta = Math.max(-1, Math.min(1, (evt.wheelDelta || -evt.detail)));
-    let scrollMovement = this.state.fakeRowHeight
-    if(wheelDelta<0) {
-      scrollMovement -= scrollMovement*2
+    if(evt.wheelDelta>0) {
+      this.setState({scrollMovement: -1})
+    } else {
+      this.setState({scrollMovement: 1})
     }
-    this.setState({scrollMovement})
   }
 
   rowIndexToScrollPosition(rowIndex) {
@@ -66,13 +65,8 @@ export default class Table extends React.Component {
   }
 
   get renderHeader() {
-    const attributes = {
-      rowRenderer: this.props.rowRenderer,
-      rowHeight: this.props.rowHeight,
-      columns: this.props.columns
-    }
-
-    return <Header { ... attributes } />
+    const { rowRenderer, columns } = this.props
+    return <Header rowRenderer={rowRenderer} columns={columns} />
   }
 
   get renderItems() {
@@ -91,13 +85,13 @@ export default class Table extends React.Component {
   }
 
   get renderScroll() {
-    const {scrollToPosition, scrollMovement } = this.state;
+    const {scrollTo, scrollMovement } = this.state;
 
     // create empty element inside scroll component, so we get fake horizontal scroll!
     const height = this.dataLength * 10;
 
     return(
-      <Scroll scrollTo={50} scrollMovement={scrollMovement} scrollHandler={this.onScroll}>
+      <Scroll scrollTo={scrollTo} scrollMovement={scrollMovement} scrollHandler={this.onScroll}>
         <div style={{height: height + "px"}}></div>
       </Scroll>
     )

@@ -18,15 +18,24 @@ class Scroll extends React.Component {
     return this.node.scrollHeight - this.node.offsetHeight;
   }
 
+  toScrollPosition(percent) {
+    return (percent / 100) * this.scrollHeight
+  }
+
   onWheelScroll() {
-    const { scrollMovement } = this.props;
-    this.node.scrollTop -= scrollMovement;
+    const { scrollMovement, scrollAmount} = this.props;
+    const restScroll = this.scrollHeight - this.node.scrollTop
+    const scrollAmountPosition = scrollAmount / 100 * restScroll;
+    if(scrollMovement>0) {
+      this.node.scrollTop += scrollAmountPosition;
+    } else {
+      this.node.scrollTop -= scrollAmountPosition;
+    }
   }
 
   onPropScrollToPosition() {
     const { scrollTo } = this.props;
-    const scrollPosition = (scrollTo / 100) * this.scrollHeight
-    this.node.scrollTop = scrollPosition;
+    this.node.scrollTop = this.toScrollPosition(scrollTo);
   }
 
   onScroll(evt) {
@@ -52,7 +61,9 @@ class Scroll extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    this.onWheelScroll();
+    if(this.props.scrollMovement) {
+      this.onWheelScroll();
+    }
 
     if(prevProps.scrollTo !== this.props.scrollTo) {
       this.onPropScrollToPosition();
@@ -79,5 +90,11 @@ Scroll.propTypes = {
    */
   scrollHandler: React.PropTypes.func.isRequired
 };
+
+Scroll.defaultProps = {
+  scrollAmount: .2,
+  scrollTo: null,
+  scrollMovement: null
+}
 
 export default Scroll
