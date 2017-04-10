@@ -8,7 +8,7 @@ export default class Items extends React.Component {
   }
 
   scrollToSelected() {
-    const { selected, selectHandler, data } = this.props
+    const { data, selected, selectHandler } = this.props
     if(!selected) return;
     const keys = Object.keys(selected);
     const index = data.findIndex((item) => keys.every(key => selected[key] === item[key]))
@@ -17,14 +17,11 @@ export default class Items extends React.Component {
   }
 
   get data() {
-    const { scrollPercent, data} = this.props;
-
-    const perPage = 15;
-
+    const { data, perPage, scrollPercent} = this.props;
     const dataLength = data.length
+
     let from = scrollPercent/100 * dataLength;
     let to = from + perPage;
-
     if(to >= dataLength) {
       from = dataLength - perPage;
       to = dataLength;
@@ -36,6 +33,7 @@ export default class Items extends React.Component {
   get style() {
     const scrollPercent = this.props.scrollPercent;
     const missingHeight = this.state.missingHeight;
+    if(!missingHeight) return;
     const top = scrollPercent / 100 * missingHeight;
     return { top: `-${top}px` }
   }
