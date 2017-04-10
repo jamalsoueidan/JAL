@@ -10,6 +10,8 @@ html, body {
   overflow: hidden;
 
   .table-header {
+    background-color: #fff;
+
     & > div {
       display: flex;
       background-color: #fff;
@@ -19,16 +21,25 @@ html, body {
 
   .table-list {
     display: flex;
+    position: relative;
     height: calc(100% - 40px);
     width: 100%;
 
     .table-list-items {
+      position: absolute;
       width: calc(100% - 15px);
       height: 100%;
+      top: 0px;
+      z-index: -1;
 
       & > div {
         display: flex;
       }
+    }
+
+    .table-list-scroll {
+      position: absolute;
+      right: 0;
     }
   }
 }

@@ -44,7 +44,7 @@ export default class List extends React.Component {
 
     // create empty element inside scroll component, so we get fake horizontal scroll!
     return(
-      <Scroll scrollTo={scrollTo} scrollMovement={scrollMovement} scrollHandler={this.onScroll}>
+      <Scroll className="table-list-scroll" scrollTo={scrollTo} scrollMovement={scrollMovement} scrollHandler={this.onScroll}>
         <div style={{height: this.props.data.length * 10 + "px"}}></div>
       </Scroll>
     )

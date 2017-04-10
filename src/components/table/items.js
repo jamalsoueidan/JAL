@@ -2,6 +2,11 @@ import React from 'react'
 import { findDOMNode } from 'react-dom'
 
 export default class Items extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
   scrollToSelected() {
     const { selected, selectHandler, data } = this.props
     if(!selected) return;
@@ -14,7 +19,7 @@ export default class Items extends React.Component {
   get data() {
     const { scrollPercent, data} = this.props;
 
-    const perPage = 10;
+    const perPage = 15;
 
     const dataLength = data.length
     let from = scrollPercent/100 * dataLength;
@@ -29,11 +34,9 @@ export default class Items extends React.Component {
   }
 
   get style() {
-    const { rowPosition, perPage, tableHeight, data } = this.props;
-    const rowHeight = 40;
-    const length = data.length - perPage;
-    const percent = (rowPosition / length * 100);
-    const top = (percent / 100) * ((rowHeight * (perPage+1)) - tableHeight)
+    const scrollPercent = this.props.scrollPercent;
+    const missingHeight = this.state.missingHeight;
+    const top = scrollPercent / 100 * missingHeight;
     return { top: `-${top}px` }
   }
 
@@ -48,7 +51,7 @@ export default class Items extends React.Component {
 
   render() {
     return(
-      <div className="table-list-items" style={this.style}>
+      <div className="table-list-items" style={this.style} style={this.style}>
         {this.items}
       </div>
     )
@@ -56,6 +59,9 @@ export default class Items extends React.Component {
 
   componentDidMount() {
     this.scrollToSelected()
+    const node = findDOMNode(this);
+    const missingHeight = node.scrollHeight - node.clientHeight;
+    this.setState({missingHeight})
   }
 
   componentDidUpdate(prevProps, prevState) {
