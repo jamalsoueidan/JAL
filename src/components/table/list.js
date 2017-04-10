@@ -1,67 +1,68 @@
 import React from 'react'
 import { findDOMNode } from 'react-dom'
 import Items from './items'
-import Scroll from 'components/scroll'
 
 export default class List extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {};
+  }
 
-    this.state = {
-      scrollTo: 0,
-      scrollMovement: 0,
-      indexAt: 0
+  findSelected() {
+    const { data, select, selectHandler } = this.props
+    if(!select) return;
+    const keys = Object.keys(select);
+    const index = data.findIndex((item) => keys.every(key => select[key] === item[key]))
+    selectHandler(index)
+  }
+
+  calculateTop() {
+    const node = findDOMNode(this);
+    const missingHeight = node.scrollHeight - node.clientHeight;
+    this.setState({missingHeight})
+  }
+
+  get data() {
+    const { data, perPage, indexAt} = this.props;
+    const dataLength = data.length
+
+    let from = indexAt;
+    let to = from + perPage;
+    if(to >= dataLength) {
+      from = dataLength - perPage;
+      to = dataLength;
     }
 
-    this.onSelected = this.onSelected.bind(this)
-    this.onScroll = this.onScroll.bind(this)
-    this.onMouseWheel = this.onMouseWheel.bind(this)
+    return data.slice(from, to)
   }
 
-  onMouseWheel(evt) {
-    evt.preventDefault();
-    if(evt.wheelDelta>0) {
-      this.setState({scrollMovement: -1})
-    } else {
-      this.setState({scrollMovement: 1})
-    }
-  }
-
-  onSelected(index) {
-    const data = this.props.data
-    const scrollTo = index / data.length * 100
-    this.setState({scrollTo})
-  }
-
-  onScroll(percent) {
-    const data = this.props.data
-    const indexAt = percent / 100 * data.length;
-    this.setState({indexAt})
+  get style() {
+    const { data, indexAt } = this.props;
+    const missingHeight = this.state.missingHeight;
+    if(!missingHeight) return;
+    const percent = indexAt / data.length * 100;
+    const top = percent / 100 * missingHeight;
+    return { top: `-${top}px` }
   }
 
   render() {
-    const {columns, data, rowRenderer, select, perPage } = this.props;
-    const {scrollTo, scrollMovement, indexAt} = this.state;
+    const {columns, rowRenderer, select } = this.props;
 
     return(
       <div className="table-list">
-        <Items columns={columns} data={data} rowRenderer={rowRenderer} select={select} indexAt={indexAt} perPage={perPage} selectHandler={this.onSelected} />
-        <Scroll className="table-list-scroll" scrollTo={scrollTo} scrollMovement={scrollMovement} scrollHandler={this.onScroll} height={data.length * 10}/>
+        <Items columns={columns} data={this.data} rowRenderer={rowRenderer} select={select} style={this.style}  />
       </div>
     )
   }
 
   componentDidMount() {
-    findDOMNode(this).addEventListener("mousewheel", this.onMouseWheel);
+    this.findSelected()
+    this.calculateTop();
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(prevState.scrollMovement!==this.state.scrollMovement) {
-      this.setState({scrollMovement: null})
+    if(prevProps.selected!==this.props.selected) {
+      this.findSelected()
     }
-  }
-
-  componentWillUnmount() {
-    findDOMNode(this).removeEventListener("mousewheel", this.onMouseWheel);
   }
 }

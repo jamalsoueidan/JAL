@@ -5,6 +5,7 @@ html, body {
 }
 
 .table {
+  position: relative;
   height: 440px;
   width: 100%;
   overflow: hidden;
@@ -20,14 +21,13 @@ html, body {
   }
 
   .table-list {
-    display: flex;
     position: relative;
     height: calc(100% - 40px);
-    width: 100%;
+    width: calc(100% - 15px);
 
     .table-list-items {
       position: absolute;
-      width: calc(100% - 15px);
+      width: 100%;
       height: 100%;
       top: 0px;
       z-index: -1;
@@ -36,10 +36,12 @@ html, body {
         display: flex;
       }
     }
+  }
 
-    .table-list-scroll {
-      position: absolute;
-      right: 0;
-    }
+  .table-scroll {
+    position: absolute;
+    top: 40px;
+    right: 0px;
+    height: calc(100% - 40px);
   }
 }
