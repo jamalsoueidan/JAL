@@ -1,8 +1,7 @@
 import React from 'react'
-import Scroll from './scroll'
+import Scroll from 'components/scroll'
 import Header from './header'
 import Content from './content'
-import { Scale } from 'utils'
 import { findDOMNode } from 'react-dom'
 
 require('./stylesheet.css')
@@ -98,7 +97,7 @@ export default class Table extends React.Component {
     const height = this.dataLength * 10;
 
     return(
-      <Scroll scrollToPosition={scrollToPosition} scrollMovement={scrollMovement} scrollHandler={this.onScroll}>
+      <Scroll scrollTo={50} scrollMovement={scrollMovement} scrollHandler={this.onScroll}>
         <div style={{height: height + "px"}}></div>
       </Scroll>
     )

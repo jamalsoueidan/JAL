@@ -1,6 +1,8 @@
 import React from 'react'
 import { findDOMNode } from 'react-dom'
-import { Scale } from 'utils'
+import cn from 'classNames'
+
+require('./stylesheet.css')
 
 class Scroll extends React.Component {
   constructor(props) {
@@ -12,32 +14,33 @@ class Scroll extends React.Component {
     return findDOMNode(this);
   }
 
+  get scrollHeight() {
+    return this.node.scrollHeight - this.node.offsetHeight;
+  }
+
   onWheelScroll() {
     const { scrollMovement } = this.props;
     this.node.scrollTop -= scrollMovement;
   }
 
   onPropScrollToPosition() {
-    const { scrollToPosition } = this.props;
-    const scrollHeight = this.node.scrollHeight;
-    const scrollMaxPosition = scrollHeight - this.node.offsetHeight;
-    const scale = new Scale().domain(0, this.node.scrollHeight).range(0, scrollMaxPosition);
-    this.node.scrollTop = scale(scrollToPosition);
+    const { scrollTo } = this.props;
+    const scrollPosition = (scrollTo / 100) * this.scrollHeight
+    this.node.scrollTop = scrollPosition;
   }
 
   onScroll(evt) {
     const  { scrollHandler } = this.props;
-    const scrollHeight = this.node.scrollHeight - this.node.offsetHeight;
     const scrollPosition = this.node.scrollTop;
-    const scrollProcent = scrollPosition / scrollHeight * 100;
+    const scrollProcent = scrollPosition / this.scrollHeight * 100;
     scrollHandler(scrollProcent)
   }
 
   render() {
     const { children } = this.props;
-
+    const className = cn("scroll", this.props.className)
     return(
-      <div className="table-scroll">
+      <div className={className}>
         {children}
       </div>
     )
@@ -51,7 +54,7 @@ class Scroll extends React.Component {
   componentDidUpdate(prevProps) {
     this.onWheelScroll();
 
-    if(prevProps.scrollToPosition !== this.props.scrollToPosition) {
+    if(prevProps.scrollTo !== this.props.scrollTo) {
       this.onPropScrollToPosition();
     }
   }
@@ -63,9 +66,9 @@ class Scroll extends React.Component {
 
 Scroll.propTypes = {
   /**
-   * You know how much you need to scroll by using fakeHeight/items, then total * 3 items, you get the correct position.
+   * How much to scroll in percent
    */
-  scrollToPosition: React.PropTypes.number,
+  scrollTo: React.PropTypes.number,
   /**
    * Type how much movement the scroll should scroll up or down, -10 then it will scroll up 10px etc.
    */
