@@ -44,11 +44,11 @@ class Scroll extends React.Component {
   }
 
   render() {
-    const { children } = this.props;
+    const { height } = this.props;
     const className = cn("scroll", this.props.className)
     return(
       <div className={className}>
-        {children}
+        <div style={{height: `${height}px`}}></div>
       </div>
     )
   }
@@ -75,24 +75,29 @@ class Scroll extends React.Component {
 
 Scroll.propTypes = {
   /**
-   * How much to scroll in percent
+   * scroll to what position in percent.
    */
   scrollTo: React.PropTypes.number,
   /**
-   * Type how much movement the scroll should scroll up or down, -10 then it will scroll up 10px etc.
+   * height of the fake content
+   */
+  height: React.PropTypes.number.isRequired,
+  /**
+   * what direction should we scroll (used with wheel events +1 down, -1 up).
    */
   scrollMovement: React.PropTypes.number,
   /**
-   * This is callback scroll component calls whenever the scroll moves, you will get scrollPositionToRowIndex(scrollPosition, scrollMaxPosition)
-   * Use math to calculate which items to show!
+   * scrollMovement, choose the direction, here is specify the amount of movement.
+   */
+  scrollAmount: React.PropTypes.number,
+  /**
+   * This is callback scroll component calls whenever the scroll moves, output percent!
    */
   scrollHandler: React.PropTypes.func.isRequired
 };
 
 Scroll.defaultProps = {
-  scrollAmount: .2,
-  scrollTo: null,
-  scrollMovement: null
+  scrollAmount: .2
 }
 
 export default Scroll

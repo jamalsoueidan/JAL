@@ -1,26 +1,25 @@
 import React from 'react'
 import { findDOMNode } from 'react-dom'
 
-export default class Items extends React.Component {
+class Items extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
 
-  scrollToSelected() {
-    const { data, selected, selectHandler } = this.props
-    if(!selected) return;
-    const keys = Object.keys(selected);
-    const index = data.findIndex((item) => keys.every(key => selected[key] === item[key]))
-    const percent = index / data.length * 100
-    selectHandler(percent)
+  findSelected() {
+    const { data, select, selectHandler } = this.props
+    if(!select) return;
+    const keys = Object.keys(select);
+    const index = data.findIndex((item) => keys.every(key => select[key] === item[key]))
+    selectHandler(index)
   }
 
   get data() {
-    const { data, perPage, scrollPercent} = this.props;
+    const { data, perPage, indexAt} = this.props;
     const dataLength = data.length
 
-    let from = scrollPercent/100 * dataLength;
+    let from = indexAt;
     let to = from + perPage;
     if(to >= dataLength) {
       from = dataLength - perPage;
@@ -39,10 +38,10 @@ export default class Items extends React.Component {
   }
 
   get items() {
-    const { rowRenderer, columns, selected } = this.props;
+    const { rowRenderer, columns, select } = this.props;
     return this.data.map(item => (
       <div key={item.id} className="item">
-        { rowRenderer(item, {type: 'item', selected, columns}) }
+        { rowRenderer(item, {type: 'item', select, columns}) }
       </div>
     ));
   }
@@ -56,7 +55,7 @@ export default class Items extends React.Component {
   }
 
   componentDidMount() {
-    this.scrollToSelected()
+    this.findSelected()
     const node = findDOMNode(this);
     const missingHeight = node.scrollHeight - node.clientHeight;
     this.setState({missingHeight})
@@ -64,7 +63,19 @@ export default class Items extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if(prevProps.selected!==this.props.selected) {
-      this.scrollToSelected()
+      this.findSelected()
     }
   }
 }
+
+Items.propTypes = {
+  columns: React.PropTypes.array,
+  data: React.PropTypes.array.isRequired,
+  // render data from index,
+  indexAt: React.PropTypes.number,
+  rowRenderer: React.PropTypes.func.isRequired,
+  select: React.PropTypes.object,
+  selectHandler: React.PropTypes.func
+};
+
+export default Items

@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default class Header extends React.Component {
+class Header extends React.Component {
   get header() {
     const { rowRenderer, columns } = this.props;
     return rowRenderer(null, {type: 'header', columns})
@@ -17,3 +17,10 @@ export default class Header extends React.Component {
     )
   }
 }
+
+Header.propTypes = {
+  columns: React.PropTypes.array,
+  rowRenderer: React.PropTypes.func.isRequired
+};
+
+export default Header

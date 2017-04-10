@@ -10,7 +10,7 @@ export default class List extends React.Component {
     this.state = {
       scrollTo: 0,
       scrollMovement: 0,
-      scrollPercent: 0
+      indexAt: 0
     }
 
     this.onSelected = this.onSelected.bind(this)
@@ -27,36 +27,26 @@ export default class List extends React.Component {
     }
   }
 
-  onSelected(scrollTo) {
+  onSelected(index) {
+    const data = this.props.data
+    const scrollTo = index / data.length * 100
     this.setState({scrollTo})
   }
 
-  onScroll(scrollPercent) {
-    this.setState({scrollPercent})
-  }
-
-  get renderItems() {
-    return(<Items {...this.props} scrollPercent={this.state.scrollPercent} selectHandler={this.onSelected} />)
-  }
-
-  get renderScroll() {
-    const {scrollTo, scrollMovement} = this.state;
-
-    // create empty element inside scroll component, so we get fake horizontal scroll!
-    return(
-      <Scroll className="table-list-scroll" scrollTo={scrollTo} scrollMovement={scrollMovement} scrollHandler={this.onScroll}>
-        <div style={{height: this.props.data.length * 10 + "px"}}></div>
-      </Scroll>
-    )
+  onScroll(percent) {
+    const data = this.props.data
+    const indexAt = percent / 100 * data.length;
+    this.setState({indexAt})
   }
 
   render() {
-    const {columns} = this.props;
+    const {columns, data, rowRenderer, select, perPage } = this.props;
+    const {scrollTo, scrollMovement, indexAt} = this.state;
 
     return(
       <div className="table-list">
-        { columns && this.renderItems }
-        { columns && this.renderScroll }
+        <Items columns={columns} data={data} rowRenderer={rowRenderer} select={select} indexAt={indexAt} perPage={perPage} selectHandler={this.onSelected} />
+        <Scroll className="table-list-scroll" scrollTo={scrollTo} scrollMovement={scrollMovement} scrollHandler={this.onScroll} height={data.length * 10}/>
       </div>
     )
   }
