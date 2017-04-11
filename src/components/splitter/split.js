@@ -17,7 +17,6 @@ class Split extends React.Component {
 
 
   get renderPanes() {
-
     return this.props.children.map((c, index, arr) => {
       const pane = this.state.panes[index];
 

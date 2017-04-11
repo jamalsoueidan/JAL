@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { routeNodeSelector } from 'redux-router5';
 import { routes } from 'config/router'
-import LinkTo from 'components/link_to'
+import { Splitter, LinkTo } from 'components'
 
 const findRouteByName = (routeName, routes) => {
   return routes.find(route => route.name === routeName)
@@ -34,26 +34,38 @@ class Application extends React.Component {
     this.router.removeListener(this.routerChange)
   }
 
-  render() {
+  get navigation() {
+    return(
+      <ul>
+        <li><LinkTo name="application.barchart">Barchart</LinkTo></li>
+        <li><LinkTo name="application.dropdown">Dropdown</LinkTo></li>
+        <li><LinkTo name="application.list">List</LinkTo></li>
+        <li><LinkTo name="application.splitter">Splitter</LinkTo></li>
+        <li><LinkTo name="application.table">Table</LinkTo></li>
+        <li><LinkTo name="application.tableX">Table X</LinkTo></li>
+      </ul>
+    )
+  }
+
+  get example() {
     const { route } = this.state
     if(route) {
       const selectNode = findRouteByName(route.name, routes)
       if(selectNode && selectNode.component) {
         const ComponentRender = selectNode.component;
         return <ComponentRender />
-      } else {
-        return(
-          <ul>
-            <li><LinkTo name="application.barchart">Barchart</LinkTo></li>
-            <li><LinkTo name="application.dropdown">Dropdown</LinkTo></li>
-            <li><LinkTo name="application.list">List</LinkTo></li>
-            <li><LinkTo name="application.splitter">Splitter</LinkTo></li>
-            <li><LinkTo name="application.table">Table</LinkTo></li>
-            <li><LinkTo name="application.tableX">Table X</LinkTo></li>
-          </ul>
-        )
       }
     }
+    return(<div>Choose from the list</div>);
+  }
+
+  render() {
+    return(
+      <Splitter direction="row">
+        <div>{this.navigation}</div>
+        <div>{this.example}</div>
+      </Splitter>
+    )
   }
 }
 
