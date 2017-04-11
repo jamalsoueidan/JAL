@@ -1,8 +1,9 @@
-import React from 'react'
 import { findDOMNode } from 'react-dom'
+import React from 'react'
 import Header from './header'
 import List from './list'
 import Scroll from 'components/scroll'
+import cn from 'classNames'
 
 require('./stylesheet.css')
 
@@ -16,8 +17,8 @@ class Table extends React.Component {
     }
 
     this.onScroll = this.onScroll.bind(this)
-    this.onSelect = this.onSelect.bind(this)
     this.onMouseWheel = this.onMouseWheel.bind(this)
+    this.onSelect = this.onSelect.bind(this)
   }
 
   onMouseWheel(evt) {
@@ -47,21 +48,26 @@ class Table extends React.Component {
     const {data, columns, perPage, rowRenderer, select} = this.props;
     const {indexAt, scrollTo, scrollMovement} = this.state;
 
+    const className = cn("table", this.props.className)
     return(
-      <div className="table">
+      <div className={className}>
         <Header rowRenderer={rowRenderer} columns={columns} />
         <List data={data} indexAt={indexAt} rowRenderer={rowRenderer} columns={columns} select={select} perPage={perPage} selectHandler={this.onSelect} />
-        <Scroll className="table-scroll" scrollTo={scrollTo} scrollMovement={scrollMovement} scrollHandler={this.onScroll} height={data.length * 10}/>
+        { this.props.scrollVisible && <Scroll className="table-scroll" scrollTo={scrollTo} scrollMovement={scrollMovement} scrollHandler={this.onScroll} height={data.length * 10}/> }
       </div>
     )
   }
 
   componentDidMount() {
-    findDOMNode(this).addEventListener("mousewheel", this.onMouseWheel);
+    if(this.props.scrollVisible) {
+      findDOMNode(this).addEventListener("mousewheel", this.onMouseWheel);
+    }
   }
 
   componentWillUnmount() {
-    findDOMNode(this).removeEventListener("mousewheel", this.onMouseWheel);
+    if(this.props.scrollVisible) {
+      findDOMNode(this).removeEventListener("mousewheel", this.onMouseWheel);
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -76,11 +82,13 @@ Table.propTypes = {
   data: React.PropTypes.array.isRequired,
   perPage: React.PropTypes.number.isRequired,
   rowRenderer: React.PropTypes.func.isRequired,
+  scrollVisible: React.PropTypes.bool.isRequired,
   select: React.PropTypes.object
 };
 
 Table.defaultProps = {
-  perPage: 30
+  scrollVisible: true,
+  perPage: 10
 }
 
 export default Table
