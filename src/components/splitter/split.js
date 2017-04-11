@@ -64,16 +64,21 @@ class Split extends React.Component {
   }
 
   componentDidMount() {
+    const children = this.props.children;
+    const panes = this.props.panes;
+    const statePanes = {}
     const totalLength = findDOMNode(this)[(this.isRowDirection ? "clientWidth" : "clientHeight")];
-    const length = 100 / this.props.children.length
-    const panes = {}
-    this.props.children.forEach((c, index) => {
-      panes[index] = {
+    let length = 100 / children.length
+    children.forEach((c, index) => {
+      if(panes && panes[index]) {
+        length = panes[index];
+      }
+      statePanes[index] = {
         length: length,
         startLength: length
       };
     })
-    this.setState({totalLength, panes})
+    this.setState({totalLength, panes: statePanes})
   }
 
   render() {
