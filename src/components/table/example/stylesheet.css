@@ -1,7 +1,4 @@
 .customTable {
-  border: 1px solid #000;
-  box-sizing: border-box;
-
   div.customItem, div.customHeader {
     display: flex;
     border: 1px solid #000;

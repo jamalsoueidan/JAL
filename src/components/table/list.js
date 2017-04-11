@@ -6,6 +6,7 @@ export default class List extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.onResize = this.onResize.bind(this)
   }
 
   findSelected() {
@@ -16,10 +17,15 @@ export default class List extends React.Component {
     selectHandler(index)
   }
 
+  onResize() {
+    this.calculateTop();
+  }
+
   calculateTop() {
     const node = findDOMNode(this);
-    const missingHeight = node.scrollHeight - node.clientHeight;
-    this.setState({missingHeight})
+    const scrollHeight = this.state.scrollHeight || node.scrollHeight
+    const missingHeight = scrollHeight - node.clientHeight;
+    this.setState({missingHeight, scrollHeight})
   }
 
   get data() {
@@ -58,6 +64,12 @@ export default class List extends React.Component {
   componentDidMount() {
     this.findSelected()
     this.calculateTop();
+
+    window.addEventListener('resize', this.onResize, false)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onResize, false)
   }
 
   componentDidUpdate(prevProps, prevState) {

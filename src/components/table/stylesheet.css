@@ -1,12 +1,6 @@
-html, body {
-  height:100%;
-  padding: 0px;
-  margin: 0px;
-}
-
 .table {
   position: relative;
-  height: 440px;
+  height: 100%;
   width: 100%;
   overflow: hidden;
 
