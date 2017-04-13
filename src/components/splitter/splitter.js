@@ -8,7 +8,22 @@ require('./stylesheet.css')
 const ROW_DIRECTION = "row"
 const COLUMN_DIRECTION = "column"
 
-class Split extends React.Component {
+/**
+ * General component description.
+ */
+class Splitter extends React.Component {
+  static propTypes = {
+    /**
+     * These are usually `ListItem`s that are passed to
+     * be part of the list.
+     */
+    direction: React.PropTypes.string
+  };
+
+  static defaultProps = {
+    direction: "row"
+  }
+
   constructor(props) {
     super(props)
     const percentWidth = this.props.children.length / 100;
@@ -91,4 +106,4 @@ class Split extends React.Component {
   }
 }
 
-export default Split
+export default Splitter

@@ -1,1 +1,1 @@
-export default from './split'
+export default from './splitter'
