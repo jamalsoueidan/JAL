@@ -4,6 +4,12 @@ import { routeNodeSelector } from 'redux-router5';
 import { routes } from 'config/router'
 import { Splitter, LinkTo } from 'components'
 
+import {parse} from 'react-docgen';
+import c from '!raw-loader!./components/splitter/splitter';
+const componentDocs = parse(c);
+
+console.log(componentDocs)
+
 require('./stylesheet.css')
 
 const findRouteByName = (routeName, routes) => {

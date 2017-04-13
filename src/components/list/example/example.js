@@ -1,5 +1,5 @@
 import React from 'react'
-import { List, Item } from 'components/list'
+import { List, ListItem } from 'components/list'
 import { routeNode } from 'react-router5';
 
 require('./stylesheet.css')
@@ -16,9 +16,9 @@ class Example extends React.Component {
         <List data={data} itemRenderer={(item) => <div>{item}</div>} />
 
         <List>
-          <Item className="header">
+          <ListItem className="header">
             Header
-          </Item>
+          </ListItem>
           <List className="items" data={data} itemRenderer={(item) => {
             <span className="testerne">{item}</span>
           }}/>
