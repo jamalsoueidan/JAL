@@ -13,7 +13,7 @@ class Example extends React.Component {
       <div>
         <List data={data}/>
 
-        <List data={data} itemRenderer={(item) => <div>{item}</div>} />
+        <List className="customList" data={data} options={{obj1: "something"}} itemRenderer={(item, options) => <div>{item} {options.obj1}</div>} />
 
         <List>
           <ListItem className="header">
