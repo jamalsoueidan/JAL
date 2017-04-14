@@ -1,8 +1,8 @@
 import React from 'react'
 import { findDOMNode } from 'react-dom'
-import Items from './items'
+import List from 'components/list'
 
-export default class List extends React.Component {
+export default class Body extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -55,8 +55,8 @@ export default class List extends React.Component {
     const {columns, rowRenderer, select } = this.props;
 
     return(
-      <div className="table-list">
-        <Items columns={columns} data={this.data} rowRenderer={rowRenderer} select={select} style={this.style}  />
+      <div className="table-body">
+        <List className="table-list" style={this.style}  itemRenderer={rowRenderer} data={this.data} options={{type: 'item', columns, select}} />
       </div>
     )
   }

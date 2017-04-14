@@ -1,7 +1,7 @@
 import { findDOMNode } from 'react-dom'
 import React from 'react'
 import Header from './header'
-import List from './list'
+import Body from './body'
 import Scroll from 'components/scroll'
 import cn from 'classNames'
 
@@ -52,8 +52,10 @@ class Table extends React.Component {
     return(
       <div className={className}>
         <Header rowRenderer={rowRenderer} columns={columns} />
-        <List data={data} indexAt={indexAt} rowRenderer={rowRenderer} columns={columns} select={select} perPage={perPage} selectHandler={this.onSelect} />
-        { this.props.scrollVisible && <Scroll className="table-scroll" scrollTo={scrollTo} scrollMovement={scrollMovement} scrollHandler={this.onScroll} height={data.length * 10}/> }
+        <Body data={data} indexAt={indexAt} rowRenderer={rowRenderer} columns={columns} select={select} perPage={perPage} selectHandler={this.onSelect} />
+        { this.props.scrollVisible &&
+          <Scroll className="table-scroll" scrollTo={scrollTo} scrollMovement={scrollMovement} scrollHandler={this.onScroll} height={data.length * 10}/>
+        }
       </div>
     )
   }
