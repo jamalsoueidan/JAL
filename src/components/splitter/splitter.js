@@ -1,29 +1,18 @@
+import { findDOMNode } from 'react-dom'
 import React from 'react'
 import Pane from './pane'
-import { findDOMNode } from 'react-dom'
+import Validator from './validator'
 import cn from 'classNames'
 
 require('./stylesheet.css')
 
-const ROW_DIRECTION = "row"
-const COLUMN_DIRECTION = "column"
+const VERTICAL_ORIENTATION = "vertical"
+const HORIZONTAL_ORIENTATION = "horizontal"
 
 /**
  * General component description.
  */
 class Splitter extends React.Component {
-  static propTypes = {
-    /**
-     * These are usually `ListItem`s that are passed to
-     * be part of the list.
-     */
-    direction: React.PropTypes.string
-  };
-
-  static defaultProps = {
-    direction: "row"
-  }
-
   constructor(props) {
     super(props)
     const percentWidth = this.props.children.length / 100;
@@ -32,15 +21,16 @@ class Splitter extends React.Component {
 
 
   get renderPanes() {
+    const { orientation } = this.props;
     return this.props.children.map((c, index, arr) => {
       const pane = this.state.panes[index];
 
       const style = {
-        [(this.isRowDirection ? "width" : "height")]: `${pane.length}%`,
-        flexDirection: this.direction,
+        [(this.isVerticalOrientation ? "width" : "height")]: `${pane.length}%`,
+        flexDirection: this.flexDirection,
       }
 
-      return(<Pane key={index} className={this.direction} index={index} style={style} resizeHandler={this.onResize.bind(this)}>{c}</Pane>)
+      return(<Pane key={index} className={orientation} index={index} style={style} resizeHandler={this.onResize.bind(this)}>{c}</Pane>)
     })
   }
 
@@ -54,9 +44,9 @@ class Splitter extends React.Component {
       currentPane.startLength = currentPane.length;
       nextPane.startLength = nextPane.length;
     } else {
-      const elementPosition = ( this.isRowDirection ? element.left : element.top ) // get pane x or y position depending on direction
-      const clientLength = ( this.isRowDirection ? to.clientX : to.clientY ) // get mouse x or y position depending on direction
-      const length = clientLength - elementPosition; // set new height or width depending on direction
+      const elementPosition = ( this.isVerticalOrientation ? element.left : element.top ) // get pane x or y position depending on orientation
+      const clientLength = ( this.isVerticalOrientation ? to.clientX+5 : to.clientY+5 ) // get mouse x or y position depending on orientation
+      const length = clientLength - elementPosition; // set new height or width depending on orientation
       currentPane.length = (length / this.state.totalLength) * 100; // convert to percent
       nextPane.length = (currentPane.startLength - currentPane.length) + nextPane.startLength // move the unfilled space to the next pane
       if(currentPane.length<4 || nextPane.length<4) return;
@@ -68,21 +58,15 @@ class Splitter extends React.Component {
     }})
   }
 
-  get direction() {
-    const { direction } = this.props;
-    if(direction) return direction;
-    return ROW_DIRECTION;
-  }
-
-  get isRowDirection() {
-    return this.direction !== COLUMN_DIRECTION
+  get isVerticalOrientation() {
+    return this.props.orientation !== HORIZONTAL_ORIENTATION
   }
 
   componentDidMount() {
     const children = this.props.children;
     const panes = this.props.panes;
     const statePanes = {}
-    const totalLength = findDOMNode(this)[(this.isRowDirection ? "clientWidth" : "clientHeight")];
+    const totalLength = findDOMNode(this)[(this.isVerticalOrientation ? "clientWidth" : "clientHeight")];
     let length = 100 / children.length
     children.forEach((c, index) => {
       if(panes && panes[index]) {
@@ -96,14 +80,30 @@ class Splitter extends React.Component {
     this.setState({totalLength, panes: statePanes})
   }
 
+  get flexDirection() {
+    return (this.props.orientation === VERTICAL_ORIENTATION ? "row" : "column" )
+  }
+
   render() {
-    const classNames = cn("split", this.direction)
+    const { orientation } = this.props;
+    const classNames = cn("splitter", orientation)
     return(
-      <div className={classNames} style={{flexDirection: this.direction}}>
+      <div className={classNames} style={{flexDirection: this.flexDirection}}>
         {this.state.panes && this.renderPanes}
       </div>
     )
   }
+}
+
+Splitter.propTypes = {
+  orientation: React.PropTypes.string,
+  className: React.PropTypes.string,
+  panes: Validator.panes,
+  resizeHandler: React.PropTypes.func
+};
+
+Splitter.defaultProps = {
+  orientation: VERTICAL_ORIENTATION
 }
 
 export default Splitter
