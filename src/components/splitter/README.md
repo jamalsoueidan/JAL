@@ -32,3 +32,5 @@ class Example extends React.Component {
 ## TODO
 
 - Responsive add touch events
+- Use debounce when resizing
+-

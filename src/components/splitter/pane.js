@@ -9,10 +9,24 @@ class Pane extends React.Component {
     this.state = { style: { flex: "1 1 auto" }};
   }
 
-   onMove(from, to) {
-    const { resizeHandler, index } = this.props;
+  onDragStart() {
+    const { onDragStart, index } = this.props;
+    if (onDragStart) {
+      onDragStart({index});
+    }
+  }
+
+  onDrag({from, to}) {
+    const { onDrag, index } = this.props;
     const element = findDOMNode(this).getBoundingClientRect();
-    resizeHandler(from, to, element, index)
+    onDrag({from, to, element, index})
+  }
+
+  onDragEnd() {
+    const { onDragEnd, index } = this.props;
+    if (onDragEnd) {
+      onDragEnd({index});
+    }
   }
 
   render() {
@@ -21,10 +35,20 @@ class Pane extends React.Component {
     return(
       <div className={classNames} style={style}>
         <div className="pane-content">{this.props.children}</div>
-        <Resizer className="pane-divider" onMove={this.onMove.bind(this)} />
-       </div>
+        <Resizer className="pane-divider" onDragStart={this.onDragStart.bind(this)} onDrag={this.onDrag.bind(this)} onDragEnd={this.onDragEnd.bind(this)} />
+      </div>
     )
   }
 }
+
+Pane.propTypes = {
+  className: React.PropTypes.string,
+  showResizer: React.PropTypes.bool,
+  index: React.PropTypes.number,
+  style: React.PropTypes.object,
+  onDragStart: React.PropTypes.func,
+  onDrag: React.PropTypes.func,
+  onDragEnd: React.PropTypes.func
+};
 
 export default Pane
