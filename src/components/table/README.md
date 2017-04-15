@@ -53,6 +53,10 @@ export default () => (
 )
 ```
 
+## Requires
+
+- List
+
 ## Features
 
 - Validates columns and data columns is same!

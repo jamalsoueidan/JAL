@@ -45,12 +45,11 @@ class Table extends React.Component {
   }
 
   render() {
-    const {data, columns, perPage, rowRenderer, select} = this.props;
+    const {data, columns, perPage, rowRenderer, select, className} = this.props;
     const {indexAt, scrollTo, scrollMovement} = this.state;
 
-    const className = cn("table", this.props.className)
     return(
-      <div className={className}>
+      <div className={cn("table", className)}>
         <Header rowRenderer={rowRenderer} columns={columns} />
         <Body data={data} indexAt={indexAt} rowRenderer={rowRenderer} columns={columns} select={select} perPage={perPage} selectHandler={this.onSelect} />
         { this.props.scrollVisible &&
@@ -62,13 +61,13 @@ class Table extends React.Component {
 
   componentDidMount() {
     if(this.props.scrollVisible) {
-      findDOMNode(this).addEventListener("mousewheel", this.onMouseWheel);
+      findDOMNode(this).addEventListener("mousewheel", this.onMouseWheel, false);
     }
   }
 
   componentWillUnmount() {
     if(this.props.scrollVisible) {
-      findDOMNode(this).removeEventListener("mousewheel", this.onMouseWheel);
+      findDOMNode(this).removeEventListener("mousewheel", this.onMouseWheel, false);
     }
   }
 
