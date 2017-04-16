@@ -105,11 +105,7 @@ export default class Example extends React.Component {
   render() {
     return(
       <div>
-        <div className="border">
-          <TableX data={data} columns={this.state.columns} perPage={this.state.perPage} currentPage={this.state.page} />
-        </div>
-        {this.renderperPage} <br />
-        {this.renderPaginate}
+        <TableX data={data} columns={this.state.columns} perPage={this.state.perPage} currentPage={this.state.page} />
       </div>
     )
   }

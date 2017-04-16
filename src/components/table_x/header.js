@@ -1,12 +1,17 @@
 import React from 'react'
 import Column from './column'
+import { Splitter } from 'components'
 
-class THead extends React.Component {
+class Header extends React.Component {
+  onDragEnd(panes) {
+    this.props.setOptions({panes})
+  }
+
   render() {
-    const { rowHeight, sort, columns, filter, style } = this.props;
+    const { rowHeight, columns, filter, style } = this.props;
 
     return(
-      <tr key="thead">
+      <Splitter onDragEnd={this.onDragEnd.bind(this)}>
         {columns.filter(c=>c.visibility).map((c, index, array) => {
           let props = {style: style}
 
@@ -16,11 +21,11 @@ class THead extends React.Component {
             props.showResize = false;
           }
 
-          return(<Column key={c.attribute} item={c} sort={sort} filter={filter} {...props} />)
+          return(<Column key={c.attribute} item={c} filter={filter} {...props} />)
         })}
-      </tr>
+      </Splitter>
     )
   }
 }
 
-export default THead
+export default Header

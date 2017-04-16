@@ -1,6 +1,5 @@
 import React from 'react'
 import { findDOMNode } from 'react-dom'
-import Resize from './resize'
 import Filter from './filter'
 
 class Column extends React.Component {
@@ -40,17 +39,6 @@ class Column extends React.Component {
     return 0;
   }
 
-  onResize(clientX) {
-    const width = clientX - findDOMNode(this).offsetLeft
-    this.setState({width})
-  }
-
-  get renderResize() {
-    const { showResize } = this.props;
-    if(!showResize) return;
-    return(<Resize onResize={this.onResize.bind(this)} />)
-  }
-
   get renderFilter() {
     const { showFilter, columns, filter } = this.props;
     if(!showFilter) return;
@@ -68,11 +56,9 @@ class Column extends React.Component {
     const { item } = this.props;
 
     return(
-      <td style={this.style}>
+      <div className="column">
         <div className="displayName" onClick={this.onClick.bind(this)}>{item.displayName}</div>
-        {this.renderResize}
-        {this.renderFilter}
-      </td>
+      </div>
     )
   }
 

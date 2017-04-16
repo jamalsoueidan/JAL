@@ -68,12 +68,14 @@ class Splitter extends React.Component {
     currentPane.startLength = currentPane.length;
     nextPane.startLength = nextPane.length;
 
+    const nextPanes = {panes: { ...panes, [index]: currentPane, [index+1]: nextPane }};
+
     const { onDragEnd } = this.props;
     if (onDragEnd) {
-      onDragEnd();
+      onDragEnd(nextPanes.panes);
     }
 
-    this.setState({panes: { ...panes, [index]: currentPane, [index+1]: nextPane }})
+    this.setState(nextPanes)
   }
 
   get isVerticalOrientation() {

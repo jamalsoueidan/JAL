@@ -1,11 +1,12 @@
 import React from 'react'
 import { findDOMNode } from 'react-dom'
+import Header from './header'
 import List from 'components/list'
 
-export default class Body extends React.Component {
+export default class Content extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { options: { columns: props.columns, select: props.select, setOptions: this.setOptions.bind(this) } };
   }
 
   findSelected() {
@@ -52,6 +53,10 @@ export default class Body extends React.Component {
     return data.slice(from, to)
   }
 
+  setOptions(option) {
+    this.setState({options: { ...this.state.options, ...option }})
+  }
+
   get style() {
     const { data, indexAt } = this.props;
     const missingHeight = this.state.missingHeight;
@@ -62,11 +67,14 @@ export default class Body extends React.Component {
   }
 
   render() {
-    const {columns, rowRenderer, select } = this.props;
+    const { rowRenderer } = this.props;
 
     return(
-      <div className="table-body">
-        <List className="table-list" style={this.style} itemRenderer={rowRenderer} data={this.data} options={{type: 'item', columns, select}} />
+      <div className="table-content">
+        <Header rowRenderer={rowRenderer} options={{...this.state.options, type: 'header'}} />
+        <div className="table-body">
+          <List className="table-list" style={this.style} itemRenderer={rowRenderer} data={this.data} options={{...this.state.options, type: 'item'}} />
+        </div>
       </div>
     )
   }

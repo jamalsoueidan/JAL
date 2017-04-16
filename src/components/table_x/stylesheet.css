@@ -1,44 +1,35 @@
 $border: #a8a8a8;
 
-.border {
-  border:1px solid #000;
-  width: 80%;
-}
+.tableX {
+  .table-body {
+    width: 100%;
+    
+    .row {
+      display: flex;
+      align-items: stretch;
+      justify-content: flex-start;
+      flex: 1;
 
-tr {
-  box-sizing: border-box;
-}
+      > div {
+        flex: 1;
+        padding-left: 5px;
+      }
+    }
+  }
 
-.positionRight {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  padding: 10px;
-}
+  .table-header {
+    display: flex;
+    background: linear-gradient(to bottom, #f7f7f7 0%, #efefef 13%, #e6e6e6 100%);
+    border-bottom: 1px solid $border;
+    border-right: 1px solid $border;
+    height: 40px;
+    line-height: 40px;
 
-thead {
-  tr {
-    td {
-      background: linear-gradient(to bottom, #f7f7f7 0%, #efefef 13%, #e6e6e6 100%);
-      border-bottom: 1px solid $border;
-      border-right: 1px solid $border;
-      position: relative;
-
-      div.displayName {
+    .column {
+      .displayName {
         padding-left: 5px;
         cursor: pointer;
         display: inline-block;
-      }
-
-      .resize {
-        position: absolute;
-        top: 0px;
-        right: 0px;
-        cursor: e-resize;
-        border-left: 1px solid $border;
-        width: 5px;
-        height: 100%;
-        z-index: 100000;
       }
 
       .filter {
@@ -86,8 +77,4 @@ thead {
       }
     }
   }
-}
-
-tbody {
-  tr:nth-child(even) {background: #f2f7ff}
 }
