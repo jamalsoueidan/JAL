@@ -6,7 +6,6 @@ export default class Body extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
-    this.onResize = this.onResize.bind(this)
   }
 
   findSelected() {
@@ -17,15 +16,26 @@ export default class Body extends React.Component {
     selectHandler(index)
   }
 
-  onResize() {
-    this.calculateTop();
+  get node() {
+    return findDOMNode(this);
+  }
+
+  get scrollHeight() {
+    const node = findDOMNode(this);
+    return this.state.scrollHeight || this.node.scrollHeight
+  }
+
+  get missingHeight() {
+    const node = findDOMNode(this);
+    return this.scrollHeight - this.node.clientHeight;
   }
 
   calculateTop() {
-    const node = findDOMNode(this);
-    const scrollHeight = this.state.scrollHeight || node.scrollHeight
-    const missingHeight = scrollHeight - node.clientHeight;
-    this.setState({missingHeight, scrollHeight})
+    if(!this.state.scrollHeight) {
+      this.setState({scrollHeight: this.scrollHeight})
+    }
+
+    this.setState({missingHeight: this.missingHeight})
   }
 
   get data() {
@@ -56,7 +66,7 @@ export default class Body extends React.Component {
 
     return(
       <div className="table-body">
-        <List className="table-list" style={this.style}  itemRenderer={rowRenderer} data={this.data} options={{type: 'item', columns, select}} />
+        <List className="table-list" style={this.style} itemRenderer={rowRenderer} data={this.data} options={{type: 'item', columns, select}} />
       </div>
     )
   }
@@ -64,17 +74,15 @@ export default class Body extends React.Component {
   componentDidMount() {
     this.findSelected()
     this.calculateTop();
-
-    window.addEventListener('resize', this.onResize, false)
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.onResize, false)
   }
 
   componentDidUpdate(prevProps, prevState) {
     if(prevProps.selected!==this.props.selected) {
       this.findSelected()
+    }
+
+    if(this.missingHeight !== this.state.missingHeight) {
+      this.calculateTop();
     }
   }
 }

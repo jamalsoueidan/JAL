@@ -13,12 +13,14 @@ class Table extends React.Component {
     this.state = {
       scrollTo: 0,
       scrollMovement: 0,
-      indexAt: 0
+      indexAt: 0,
+      resize: false
     }
 
     this.onScroll = this.onScroll.bind(this)
     this.onMouseWheel = this.onMouseWheel.bind(this)
     this.onSelect = this.onSelect.bind(this)
+    this.onResize = this.onResize.bind(this)
   }
 
   onMouseWheel(evt) {
@@ -44,6 +46,10 @@ class Table extends React.Component {
     this.setState({scrollTo})
   }
 
+  onResize() {
+    this.setState({resize: !this.state.resize})
+  }
+
   render() {
     const {data, columns, perPage, rowRenderer, select, className} = this.props;
     const {indexAt, scrollTo, scrollMovement} = this.state;
@@ -63,12 +69,16 @@ class Table extends React.Component {
     if(this.props.scrollVisible) {
       findDOMNode(this).addEventListener("mousewheel", this.onMouseWheel, false);
     }
+
+    window.addEventListener('resize', this.onResize, false)
   }
 
   componentWillUnmount() {
     if(this.props.scrollVisible) {
       findDOMNode(this).removeEventListener("mousewheel", this.onMouseWheel, false);
     }
+
+    window.removeEventListener('resize', this.onResize, false)
   }
 
   componentDidUpdate(prevProps, prevState) {
