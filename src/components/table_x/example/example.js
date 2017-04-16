@@ -6,7 +6,7 @@ const columns = [
   {
     attribute: 'id',
     displayName: '#',
-    visibility: false
+    visibility: true
   },
   {
     attribute: 'first_name',
@@ -104,9 +104,7 @@ export default class Example extends React.Component {
 
   render() {
     return(
-      <div>
-        <TableX data={data} columns={this.state.columns} perPage={this.state.perPage} currentPage={this.state.page} />
-      </div>
+      <TableX data={data} columns={this.state.columns} perPage={this.state.perPage} currentPage={this.state.page} />
     )
   }
 }

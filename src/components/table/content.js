@@ -14,7 +14,7 @@ export default class Content extends React.Component {
     if(!select) return;
     const keys = Object.keys(select);
     const index = data.findIndex((item) => keys.every(key => select[key] === item[key]))
-    selectHandler(index)
+    selectHandler(index-25)
   }
 
   get node() {

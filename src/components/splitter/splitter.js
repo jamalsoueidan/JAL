@@ -3,6 +3,7 @@ import React from 'react'
 import Pane from './pane'
 import Validator from './validator'
 import cn from 'classNames'
+import Resize from 'highorder/resize'
 
 require('./stylesheet.css')
 
@@ -15,7 +16,10 @@ const HORIZONTAL_ORIENTATION = "horizontal"
 class Splitter extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {}
+
+    this.state = {
+      totalLength: 0
+    }
 
     this.onDragStart = this.onDragStart.bind(this);
     this.onDrag = this.onDrag.bind(this);
@@ -49,14 +53,12 @@ class Splitter extends React.Component {
     const panes = this.state.panes
     const currentPane = { ...panes[index] }
     const nextPane = { ...panes[index+1] }
-
     const elementPosition = ( this.isVerticalOrientation ? element.left : element.top ) // get pane x or y position depending on orientation
     const clientLength = ( this.isVerticalOrientation ? to.clientX+5 : to.clientY+5 ) // get mouse x or y position depending on orientation
     const length = clientLength - elementPosition; // set new height or width depending on orientation
     currentPane.length = (length / this.state.totalLength) * 100; // convert to percent
     nextPane.length = (currentPane.startLength - currentPane.length) + nextPane.startLength // move the unfilled space to the next pane
-    if(currentPane.length<4 || nextPane.length<4) return; /// ??
-
+    if(currentPane.length<12 || nextPane.length<12) return; /// ??
     this.setState({panes: { ...panes, [index]: currentPane, [index+1]: nextPane }})
   }
 
@@ -113,6 +115,13 @@ class Splitter extends React.Component {
       </div>
     )
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    if( prevProps.clientHeight !== this.props.clientHeight || prevProps.clientWidth !== this.props.clientWidth ) {
+      const totalLength = this.props[(this.isVerticalOrientation ? "clientWidth" : "clientHeight")];
+      this.setState({totalLength})
+    }
+  }
 }
 
 Splitter.propTypes = {
@@ -127,4 +136,4 @@ Splitter.defaultProps = {
   orientation: VERTICAL_ORIENTATION
 }
 
-export default Splitter
+export default Resize(Splitter)

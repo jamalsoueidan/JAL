@@ -1,8 +1,13 @@
 import React from 'react'
-import data from './data'
 import Table from 'components/table'
 
 require('./stylesheet.css')
+
+let data = []
+
+for(var i=1; i<1001; i++) {
+  data.push({id: i, first_name: "jamal"})
+}
 
 const columns = [
   {
@@ -35,5 +40,5 @@ const rowRenderer = (item, props) => {
 }
 
 export default () => (
-  <Table className="customTable" data={data} rowRenderer={rowRenderer} columns={columns} select={{"id":44}} />
+  <Table className="customTable" data={data} rowRenderer={rowRenderer} columns={columns} select={{id:500}} />
 )

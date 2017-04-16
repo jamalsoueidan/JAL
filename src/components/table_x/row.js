@@ -10,6 +10,7 @@ export default class Row extends React.Component {
           let style = {}
           if(panes) {
             style["width"] = panes[index].length + "%"
+            style["flex"] = "auto"
           }
           return(<div key={c.attribute} style={style}>{item[c.attribute]}</div>)
         })}

@@ -7,7 +7,6 @@ require('./stylesheet.css')
 
 export default class TableX extends React.Component {
   rowRenderer(item, props) {
-    console.log("here we go", props)
     if(props.type === "header") {
       return <Header {...props} />
     } else {
