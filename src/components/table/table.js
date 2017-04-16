@@ -1,7 +1,6 @@
 import { findDOMNode } from 'react-dom'
 import React from 'react'
-import Header from './header'
-import Body from './body'
+import Content from './content'
 import Scroll from 'components/scroll'
 import cn from 'classNames'
 
@@ -56,8 +55,7 @@ class Table extends React.Component {
 
     return(
       <div className={cn("table", className)}>
-        <Header rowRenderer={rowRenderer} columns={columns} />
-        <Body data={data} indexAt={indexAt} rowRenderer={rowRenderer} columns={columns} select={select} perPage={perPage} selectHandler={this.onSelect} />
+        <Content data={data} indexAt={indexAt} rowRenderer={rowRenderer} columns={columns} select={select} perPage={perPage} selectHandler={this.onSelect} />
         { this.props.scrollVisible &&
           <Scroll className="table-scroll" scrollTo={scrollTo} scrollMovement={scrollMovement} scrollHandler={this.onScroll} height={data.length * 10}/>
         }
@@ -99,7 +97,7 @@ Table.propTypes = {
 
 Table.defaultProps = {
   scrollVisible: true,
-  perPage: 50
+  perPage: 100
 }
 
 export default Table

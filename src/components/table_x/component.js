@@ -1,23 +1,23 @@
 import React from 'react'
 import Table from 'components/table'
-import THead from './thead'
-import TBody from './tbody'
+import Header from './header'
+import Row from './row'
 
 require('./stylesheet.css')
 
-const rowRenderer = (item, props) => {
-  if(props.type === "thead") {
-    return <THead columns={props.columns} {...props} />
-  } else {
-    return <TBody key={item.id} item={item} columns={props.columns} {...props} />
-  }
-}
-
 export default class TableX extends React.Component {
+  rowRenderer(item, props) {
+    if(props.type === "header") {
+      return <Header {...props} />
+    } else {
+      return <Row key={item.id} item={item} {...props} />
+    }
+  }
+
   render() {
-    const {data, columns, perPage, currentPage} = this.props;
+    const { data, columns } = this.props;
     return(
-      <Table data={data} columns={columns} rowRenderer={rowRenderer} perPage={perPage} currentPage={currentPage} />
+      <Table className="tableX" data={data} columns={columns} rowRenderer={this.rowRenderer.bind(this)}  />
     )
   }
 }

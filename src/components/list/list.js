@@ -31,12 +31,13 @@ class List extends React.Component {
 List.propTypes = {
   className: React.PropTypes.string,
   style: React.PropTypes.object,
+  options: React.PropTypes.object,
   itemRenderer: React.PropTypes.func,
   data: React.PropTypes.array
 }
 
 List.defaultProps = {
-  itemRenderer: (data) => data
+  itemRenderer: (data, options) => data
 }
 
 export default List
