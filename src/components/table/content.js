@@ -9,14 +9,6 @@ export default class Content extends React.Component {
     this.state = { options: { columns: props.columns, select: props.select, setOptions: this.setOptions.bind(this) } };
   }
 
-  findSelected() {
-    const { data, select, selectHandler } = this.props
-    if(!select) return;
-    const keys = Object.keys(select);
-    const index = data.findIndex((item) => keys.every(key => select[key] === item[key]))
-    selectHandler(index-25)
-  }
-
   get node() {
     return findDOMNode(this);
   }
@@ -31,19 +23,15 @@ export default class Content extends React.Component {
     return this.scrollHeight - this.node.clientHeight;
   }
 
-  calculateTop() {
-    if(!this.state.scrollHeight) {
-      this.setState({scrollHeight: this.scrollHeight})
-    }
-
-    this.setState({missingHeight: this.missingHeight})
-  }
-
   get data() {
     const { data, perPage, indexAt} = this.props;
     const dataLength = data.length
 
-    let from = indexAt;
+    //perPage
+    const percent = indexAt / data.length * 100
+    const divide = Math.ceil(percent / 100 * perPage);
+
+    let from = indexAt - divide;
     let to = from + perPage;
     if(to >= dataLength) {
       from = dataLength - perPage;
@@ -53,10 +41,6 @@ export default class Content extends React.Component {
     return data.slice(from, to)
   }
 
-  setOptions(option) {
-    this.setState({options: { ...this.state.options, ...option }})
-  }
-
   get style() {
     const { data, indexAt } = this.props;
     const missingHeight = this.state.missingHeight;
@@ -64,6 +48,26 @@ export default class Content extends React.Component {
     const percent = indexAt / data.length * 100;
     const top = percent / 100 * missingHeight;
     return { top: `-${top}px` }
+  }
+
+  setOptions(option) {
+    this.setState({options: { ...this.state.options, ...option }})
+  }
+
+  findSelected() {
+    const { data, select, selectHandler } = this.props
+    if(!select) return;
+    const keys = Object.keys(select);
+    const index = data.findIndex((item) => keys.every(key => select[key] === item[key])) + 1;
+    selectHandler(index)
+  }
+
+  calculateTop() {
+    if(!this.state.scrollHeight) {
+      this.setState({scrollHeight: this.scrollHeight})
+    }
+
+    this.setState({missingHeight: this.missingHeight})
   }
 
   render() {

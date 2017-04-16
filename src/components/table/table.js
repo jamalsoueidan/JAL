@@ -97,7 +97,7 @@ Table.propTypes = {
 
 Table.defaultProps = {
   scrollVisible: true,
-  perPage: 100
+  perPage: 40
 }
 
 export default Table
