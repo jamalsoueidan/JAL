@@ -1,40 +1,113 @@
-html, body {
-  height:100%;
-  padding: 0px;
-  margin: 0px;
-}
-
 .table {
-  display: flex;
-  flex-direction: row;
-  height: 440px;
+  position: relative;
+  min-height: 300px;
+  height: 100%;
   width: 100%;
   overflow: hidden;
 
-  .content {
-    width: 100%;
+  .table-content {
+    position: relative;
     height: 100%;
+    width: 100%;
 
-    table, tbody, tr, td {
-      border-spacing: 0;
-      margin: 0;
-      padding: 0;
+    .table-header {
+      display: none;
     }
 
-    table {
-      width: 100%;
+    .table-body {
+      position: relative;
+      min-height: 300px;
       height: 100%;
+      width: 100%;
+
+      .table-list {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0px;
+
+        item:last-child {
+          border: none;
+        }
+
+        .row {
+          display: flex;
+          flex-direction: column;
+          border-bottom: 1px solid #eee;
+          flex: 1;
+
+          .column {
+            display: flex;
+            flex-direction: row;
+            padding: 5px;
+
+            .attribute {
+              font-weight: bold;
+            }
+          }
+        }
+      }
     }
   }
-
-  .scroll {
-    overflow-y: scroll;
-    overflow-x: hidden;
+  .table-scroll {
+    position: absolute;
+    top: 0;
+    right: 0;
     height: 100%;
+  }
+}
 
-    div {
-      width: 1px;
-      overflow: hidden;
+@media (width < 700px) {
+  .table .table-content .table-body .table-list .row .column {
+    width: auto !important;
+  }
+}
+
+@media (width >= 700px) {
+  .table {
+    .table-content {
+      .table-header {
+        display: flex;
+        background: linear-gradient(to bottom, #f7f7f7 0%, #efefef 13%, #e6e6e6 100%);
+        border-bottom: 1px solid $border;
+        height: 40px;
+        line-height: 40px;
+        position: relative;
+        z-index: 10000;
+
+        .header {
+          display: flex;
+          flex-direction: row;
+          flex: 1;
+        }
+
+        .column {
+          flex: 1;
+          padding-left: 5px;
+        }
+      }
+
+      .table-body {
+        min-height: 280px;
+        height: calc(100% - 40px);
+
+        .table-list {
+          .row {
+            flex-direction: row;
+            .column {
+              flex: 1;
+              .attribute {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .scroll {
+      height: calc(100% - 40px);
+      top: 40px;
     }
   }
 }

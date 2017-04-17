@@ -7,10 +7,10 @@ class Example extends React.Component {
   render() {
     return(
       <div className="example">
-        <Splitter direction="row">
+        <Splitter orientation="vertical">
           <div>row 1</div>
           <div>row 2</div>
-          <Splitter direction="column">
+          <Splitter orientation="horizontal">
             <div>column 1</div>
             <div>column 2</div>
             <div>column 3</div>

@@ -55,6 +55,7 @@ html, body {
 .library-doc {
 	height: 20%;
 	padding: 10px;
+	box-sizing: border-box;
 	border-bottom: 1px solid #e1e1e1;
 }
 
@@ -62,6 +63,7 @@ html, body {
   background-color: #F8F8F8;
   padding: 10px;
 	height: 80%;
+	box-sizing: border-box;
 }
 
 a {

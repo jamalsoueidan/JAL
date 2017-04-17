@@ -8,7 +8,6 @@ import cn from 'classNames'
 class Resizer extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {}
     this.onMouseMove = this.onMouseMove.bind(this)
     this.onMouseUp = this.onMouseUp.bind(this)
     this.onMouseDown = this.onMouseDown.bind(this)
@@ -24,32 +23,37 @@ class Resizer extends React.Component {
     this.from = {clientX: evt.clientX, clientY: evt.clientY }
     window.addEventListener('mousemove', this.onMouseMove, false);
     window.addEventListener('mouseup', this.onMouseUp, false);
+    const onDragStart = this.props.onDragStart
+    if(onDragStart) {
+      onDragStart({from: this.from})
+    }
   }
 
   onMouseMove(evt) {
     const to = { clientX: evt.clientX, clientY: evt.clientY }
-    this.props.onMove(this.from, to)
+    this.props.onDrag({from: this.from, to})
   }
 
   onMouseUp(evt) {
-    this.props.onMove();
+    this.props.onDragEnd();
     window.removeEventListener('mousemove', this.onMouseMove, false);
     window.removeEventListener('mouseup', this.onMouseUp, false);
   }
 
   render() {
-    let style = {}
-    if(this.state.left) {
-      style['left'] = this.state.left;
-    }
-
-    const className = cn("divider", this.props.className)
-    return(<div className={className} style={style}></div>)
+    return(<div className={cn("divider", this.props.className)}></div>)
   }
 
   componentDidMount() {
     this.node.addEventListener('mousedown', this.onMouseDown, false)
   }
 }
+
+Resizer.propTypes = {
+  className: React.PropTypes.string,
+  onDragStart: React.PropTypes.func,
+  onDrag: React.PropTypes.func,
+  onDragEnd: React.PropTypes.func
+};
 
 export default Resizer

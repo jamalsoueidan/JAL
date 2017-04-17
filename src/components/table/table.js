@@ -1,155 +1,94 @@
-import React from 'react'
-import Scroll from './scroll'
-import Content from './content'
-import { Scale } from 'utils'
 import { findDOMNode } from 'react-dom'
+import React from 'react'
+import Content from './content'
+import Scroll from 'components/scroll'
+import cn from 'classNames'
+import Resize from 'highorder/resize'
 
 require('./stylesheet.css')
 
-export default class Table extends React.Component {
+class Table extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      scrollToPosition: 0,
+      scrollTo: 0,
       scrollMovement: 0,
-      rowPosition: 0,
-      rowHeight: null,
-      fakeRowHeight: 10,
-      tableHeight: 0
+      indexAt: 0
     }
 
-    this.rowIndexToScrollPosition = this.rowIndexToScrollPosition.bind(this)
-    this.scrollPositionToRowIndex = this.scrollPositionToRowIndex.bind(this)
+    this.onScroll = this.onScroll.bind(this)
     this.onMouseWheel = this.onMouseWheel.bind(this)
-    this.onResize = this.onResize.bind(this)
-  }
-
-  get perPage() {
-    const { perPage, columns } = this.props
-    if(columns) return perPage + 1; // if we have thead then +1 perPage
-    return perPage;
-  }
-
-  get dataLength() {
-    const { data, columns } = this.props
-    if(columns) return data.length + 1; // if we have thead then +1 perPage
-    return data.length;
-  }
-
-  get node() {
-    return findDOMNode(this);
-  }
-
-  calculateRowHeight() {
-    const rowHeight = (this.node.offsetHeight / this.perPage)
-    // TODO: Fix this issue with rowHeight becoming 13.4 with 400px as example!
-    const checkMistake = (rowHeight + "").split(".")
-    if(checkMistake[1] && checkMistake[1] !== "5") {
-      console.error(`${rowHeight} is not acceptable in css, please change height of the table, it must be .5 and not .1, .2, .3 etc.`)
-      console.error("You can actually figure out what the best height for table, by saying 11 rows x 10 perPage = 440pixel")
-    }
-    this.setState({rowHeight, tableHeight: this.node.offsetHeight})
-  }
-
-  onResize() {
-    this.calculateRowHeight();
-  }
-
-  gotoPage() {
-    const { currentPage, perPage } = this.props;
-    if(currentPage > 0) {
-      const scrollToPosition = ((currentPage - 1) * perPage) * this.state.fakeRowHeight;
-      this.setState({scrollToPosition});
-    }
+    this.onSelect = this.onSelect.bind(this)
   }
 
   onMouseWheel(evt) {
     evt.preventDefault();
-    const wheelDelta = Math.max(-1, Math.min(1, (evt.wheelDelta || -evt.detail)));
-    let scrollMovement = this.state.fakeRowHeight
-    if(wheelDelta<0) {
-      scrollMovement -= scrollMovement*2
+    if(evt.wheelDelta>0) {
+      this.setState({scrollMovement: -1})
+    } else {
+      this.setState({scrollMovement: 1})
     }
-    this.setState({scrollMovement})
   }
 
-  rowIndexToScrollPosition(rowIndex) {
-    const scrollToPosition = rowIndex * this.state.fakeRowHeight;
-    this.setState({scrollToPosition})
+  // onScroll => update list
+  onScroll(percent) {
+    const data = this.props.data
+    const indexAt = percent / 100 * data.length;
+    this.setState({indexAt})
   }
 
-  scrollPositionToRowIndex(scrollPosition, scrollMaxPosition) {
-    const scale = new Scale().domain(0, scrollMaxPosition).range(0, this.props.data.length-this.props.perPage);
-    this.setState({rowPosition: scale(scrollPosition)})
-  }
-
-  renderContent() {
-    const {data, rowRenderer, perPage, selected, columns} = this.props;
-    const {scrollPosition, rowHeight, rowPosition} = this.state;
-
-    return(
-      <Content
-        rowIndexToScrollPosition={this.rowIndexToScrollPosition}
-        columns={columns}
-        scrollPosition={scrollPosition}
-        data={data}
-        rowRenderer={rowRenderer}
-        rowHeight={rowHeight}
-        selected={selected}
-        perPage={perPage}
-        rowPosition={rowPosition} />
-    )
-  }
-
-  renderScroll() {
-    const {scrollToPosition, scrollMovement, fakeRowHeight} = this.state;
-
-    // create empty element inside scroll component, so we get fake horizontal scroll!
-    const fakeHeight = this.dataLength * fakeRowHeight;
-
-    return(
-      <Scroll
-        scrollToPosition={scrollToPosition}
-        scrollMovement={scrollMovement}
-        fakeHeight={fakeHeight}
-        scrollPositionToRowIndex={this.scrollPositionToRowIndex} />
-    )
+  // onSelect => update scroll
+  onSelect(index) {
+    const data = this.props.data
+    const scrollTo = index / data.length * 100
+    this.setState({scrollTo})
   }
 
   render() {
-    const {rowHeight} = this.state;
+    const {data, columns, perPage, rowRenderer, select, className, clientWidth, clientHeight} = this.props;
+    const {indexAt, scrollTo, scrollMovement} = this.state;
 
     return(
-      <div className="table">
-        {rowHeight && this.renderContent() }
-        {rowHeight && this.renderScroll() }
+      <div className={cn("table", className)}>
+        <Content data={data} indexAt={indexAt} rowRenderer={rowRenderer} columns={columns} select={select} perPage={perPage} selectHandler={this.onSelect} clientWidth={clientWidth} clientHeight={clientHeight}/>
+        { this.props.scrollVisible &&
+          <Scroll className="table-scroll" scrollTo={scrollTo} scrollMovement={scrollMovement} scrollHandler={this.onScroll} height={data.length * 10}/>
+        }
       </div>
     )
   }
 
   componentDidMount() {
-    this.calculateRowHeight();
-    this.gotoPage();
-    window.addEventListener("resize", this.onResize);
-    this.node.addEventListener("mousewheel", this.onMouseWheel);
+    if(this.props.scrollVisible) {
+      findDOMNode(this).addEventListener("mousewheel", this.onMouseWheel, false);
+    }
+  }
+
+  componentWillUnmount() {
+    if(this.props.scrollVisible) {
+      findDOMNode(this).removeEventListener("mousewheel", this.onMouseWheel, false);
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
     if(prevState.scrollMovement!==this.state.scrollMovement) {
       this.setState({scrollMovement: null})
     }
-
-    if(prevProps.perPage!=this.props.perPage) {
-      this.calculateRowHeight();
-    }
-
-    if(prevProps.currentPage!=this.props.currentPage) {
-      this.gotoPage();
-    }
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener("resize", this.onResize);
-    this.node.removeEventListener("mousewheel", this.onMouseWheel);
   }
 }
+
+Table.propTypes = {
+  columns: React.PropTypes.array.isRequired,
+  data: React.PropTypes.array.isRequired,
+  perPage: React.PropTypes.number.isRequired,
+  rowRenderer: React.PropTypes.func.isRequired,
+  scrollVisible: React.PropTypes.bool.isRequired,
+  select: React.PropTypes.object
+};
+
+Table.defaultProps = {
+  scrollVisible: true,
+  perPage: 40
+}
+
+export default Resize(Table)

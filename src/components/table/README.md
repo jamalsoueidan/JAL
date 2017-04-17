@@ -11,6 +11,12 @@ We provided you with example sorting, paginate, filtering in TableX, etc.
 ## Examples
 
 ```js
+let data = []
+
+for(var i=1; i<1000; i++) {
+  data.push({id: i, first_name: "jamal"})
+}
+
 const columns = [
   {
     attribute: 'id',
@@ -22,36 +28,37 @@ const columns = [
   }
 ]
 
-
 const rowRenderer = (item, props) => {
-  if(props.type === "thead") {
+  if(props.type === "header") {
     return(
-      <tr>
+      <div className="header">
         {props.columns.map((c) => {
-          return(<td key={c.attribute} style={props.style}><div>{c.displayName}</div></td>)
+          return(<div className="column" key={c.attribute}>{c.displayName}</div>)
         })}
-      </tr>
+      </div>
     )
   }
 
   return(
-    <tr key={item.id}>
-      <td style={props.style}>
-        <div>{item.id}</div>
-      </td>
-      <td style={props.style}>
-        <div>{item.first_name}</div>
-      </td>
-    </tr>
+    <div className="row">
+      {props.columns.map((c) => (
+        <div key={c.attribute} className="column">
+          <div className="attribute">{c.displayName}:</div>
+          <div className="value">{item[c.attribute]}</div>
+        </div>
+      ))}
+    </div>
   )
 }
 
 export default () => (
-  <div className="customTable">
-    <Table data={data} rowRenderer={rowRenderer} perPage={15} columns={columns} />
-  </div>
+  <Table className="customTable" data={data} rowRenderer={rowRenderer} columns={columns} />
 )
 ```
+
+## Requires
+
+- List
 
 ## Features
 

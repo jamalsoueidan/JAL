@@ -1,95 +1,89 @@
 import React from 'react'
 import { findDOMNode } from 'react-dom'
+import Header from './header'
+import List from 'components/list'
 
 export default class Content extends React.Component {
   constructor(props) {
-    super(props)
-    this.data = props.data;
-    this.state = {
-      columns: props.columns
-    }
+    super(props);
+    this.state = { options: { columns: props.columns, select: props.select, setOptions: this.setOptions.bind(this) } };
   }
 
-  /* This method is called when "selected" props is set */
-  scrollToSelected() {
-    const { selected, rowIndexToScrollPosition, rowHeight } = this.props
-    if(!selected) return;
-    const keys = Object.keys(selected);
-    const index = this.data.findIndex((item) => keys.every(key => selected[key] === item[key]))
-    rowIndexToScrollPosition(index)
-  }
+  get data() {
+    const { data, perPage, indexAt} = this.props;
+    const dataLength = data.length
 
-  sort(callback) {
-    this.setState({sort: callback});
-  }
+    //perPage
+    const percent = indexAt / data.length * 100
+    const divide = Math.ceil(percent / 100 * perPage);
 
-  filter(columns) {
-    console.log("here we go")
-    this.setState({columns})
-  }
-
-  get tbody() {
-    const { rowPosition, rowHeight, rowRenderer, perPage, selected } = this.props;
-    const columns = this.state.columns;
-    const style = {height: `${rowHeight}px`, lineHeight: `${rowHeight}px`};
-
-    if(this.data.length===0) {
-      return rowRenderer(null, {
-        type: 'thead', style
-      })
+    let from = indexAt - divide;
+    let to = from + perPage;
+    if(to >= dataLength) {
+      from = dataLength - perPage;
+      to = dataLength;
     }
 
-    const data = this.data;
-    let from = Math.ceil( rowPosition );
-    let to = perPage+from;
-    if(to>=data.length) {
-      from = data.length - perPage;
-      to = data.length;
-    }
-
-    return data.slice(from, to).map(item => rowRenderer(item, {type: 'tbody', style, selected, columns}));
+    return data.slice(from, to)
   }
 
-  get thead() {
-    const { rowRenderer, rowHeight } = this.props;
-    const columns = this.state.columns;
-    if(!columns) return;
-    return rowRenderer(null, {type: 'thead', rowHeight, sort: this.sort.bind(this), filter: this.filter.bind(this), columns})
+  get top() {
+    if(!this.state.scrollHeight) return;
+    const { data, indexAt } = this.props;
+    const leftScrollHeight = this.state.scrollHeight - this.state.clientHeight;
+    const percent = indexAt / data.length * 100;
+    return percent / 100 * leftScrollHeight;
+  }
+
+  setOptions(option) {
+    this.setState({options: { ...this.state.options, ...option }})
+  }
+
+  findSelected() {
+    const { data, select, selectHandler } = this.props
+    if(!select) return;
+    const keys = Object.keys(select);
+    const index = data.findIndex((item) => keys.every(key => select[key] === item[key])) + 1;
+    selectHandler(index)
   }
 
   render() {
+    const { rowRenderer } = this.props;
+
     return(
-      <div className="content">
-        <table>
-          <thead>
-            {this.thead}
-          </thead>
-          <tbody>
-            {this.tbody}
-          </tbody>
-        </table>
+      <div className="table-content">
+        <Header rowRenderer={rowRenderer} options={{...this.state.options, type: 'header'}} />
+        <div className="table-body" ref="body">
+          <List className="table-list" style={{ top: `-${this.top}px` }} itemRenderer={rowRenderer} data={this.data} options={{...this.state.options, type: 'item'}} ref="list" />
+        </div>
       </div>
     )
   }
 
+  get SCHeight() {
+    const scrollHeight = findDOMNode(this.refs.list).scrollHeight;
+    const clientHeight = findDOMNode(this.refs.body).clientHeight
+    return {scrollHeight, clientHeight};
+  }
+
   componentDidMount() {
-    this.scrollToSelected()
-  }
+    this.findSelected()
 
-  componentWillUpdate(nextProps, nextState) {
-    if(nextProps.data!== this.props.data) {
-      this.data = nextProps.data;
-    }
-
-    if(nextState.sort !== this.state.sort) {
-      const sort = nextState.sort
-      this.data = this.data.sort(sort);
+    if(!this.state.scrollHeight) {
+      this.setState(this.SCHeight)
     }
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     if(prevProps.selected!==this.props.selected) {
-      this.scrollToSelected()
+      this.findSelected()
+    }
+
+    if(prevProps.clientWidth !== this.props.clientWidth) {
+      const SCHeight = this.SCHeight
+      if(this.state.scrollHeight !== SCHeight.scrollHeight) {
+        this.setState(SCHeight)
+      }
     }
   }
 }

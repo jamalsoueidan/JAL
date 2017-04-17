@@ -1,17 +1,15 @@
 import React from 'react'
+import cn from 'classNames'
 
 class Item extends React.Component {
   render() {
-    return(<div className="item">{this.props.children}</div>)
+    const { className, children } = this.props
+    return(<div className={cn("item", className)}>{children}</div>)
   }
 }
 
 Item.propTypes = {
   className: React.PropTypes.string
-}
-
-Item.defaultProps = {
-  className: "item"
 }
 
 export default Item

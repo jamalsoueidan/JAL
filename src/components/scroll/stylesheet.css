@@ -1,0 +1,14 @@
+$scollWidth: 15px;
+
+.scroll {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 100%;
+  width: $scollWidth;
+
+  div {
+    width: 100%;
+    overflow: hidden;
+    visibility: hidden;
+  }
+}

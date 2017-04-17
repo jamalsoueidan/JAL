@@ -1,17 +1,14 @@
 .customTable {
-  border: 1px solid #000;
-
-  tr {
+  div.customItem, div.customHeader {
+    display: flex;
+    border: 1px solid #000;
     box-sizing: border-box;
-  }
-  
-  tbody {
-    tr:nth-child(even) {background: #f2f7ff}
-  }
+    height: 40px;
+    line-height: 40px;
+    flex: 1 1 auto;
 
-  thead {
-    tr {
-      background-color: #ccc;
+    :first-child {
+      min-width: 40px;
     }
   }
 }
