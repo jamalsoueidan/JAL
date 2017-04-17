@@ -83,9 +83,11 @@ class Application extends React.Component {
 
   render() {
     return(
-      <Splitter direction="row" panes={[20, 80]}>
+      <Splitter className="applicationSplitter" panes={[30, 70]}>
         <div>{this.doc}{this.navigation}</div>
-        <div>{this.example}</div>
+        <div>
+          {this.example}
+        </div>
       </Splitter>
     )
   }

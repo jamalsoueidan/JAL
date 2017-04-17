@@ -1,27 +1,33 @@
 import React from 'react'
-import Column from './column'
 import { Splitter } from 'components'
 
+const HeaderColumn = ({column, onClick}) => (
+  <div className="column">
+    <div className="displayName" onClick={() => onClick(column)}>{column.displayName}</div>
+  </div>
+)
+
 class Header extends React.Component {
+  constructor(props) {
+    super(props)
+    this.onClick = this.onClick.bind(this)
+  }
+
+  onClick(column) {
+    this.props.onSort(column.attribute)
+  }
+
   onDragEnd(panes) {
     this.props.setOptions({panes})
   }
 
   render() {
-    const { rowHeight, columns, filter, style } = this.props;
+    const { rowHeight, columns } = this.props;
 
     return(
       <Splitter onDragEnd={this.onDragEnd.bind(this)}>
-        {columns.filter(c=>c.visibility).map((c, index, array) => {
-          let props = {style: style}
-
-          if(index === (array.length-1)) {
-            props.columns = columns;
-            props.showFilter = true;
-            props.showResize = false;
-          }
-
-          return(<Column key={c.attribute} item={c} filter={filter} {...props} />)
+        {columns.filter(c=>c.visibility).map(column => {
+          return(<HeaderColumn key={column.attribute} column={column} onClick={this.onClick} />)
         })}
       </Splitter>
     )

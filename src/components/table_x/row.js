@@ -12,7 +12,12 @@ export default class Row extends React.Component {
             style["width"] = panes[index].length + "%"
             style["flex"] = "auto"
           }
-          return(<div key={c.attribute} style={style}>{item[c.attribute]}</div>)
+          
+          return(
+            <div key={c.attribute} className="column" style={style}>
+              <div className="attribute">{c.displayName}:</div>
+              <div className="value">{item[c.attribute]}</div>
+            </div>)
         })}
       </div>
     )
