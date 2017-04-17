@@ -8,6 +8,10 @@ We provided you with example sorting, paginate, filtering in TableX, etc.
 
 ![](https://github.com/jamalsoueidan/react-application-library/blob/master/src/components/table/screenshot.png?raw=true)
 
+Responsive
+
+![](https://github.com/jamalsoueidan/react-application-library/blob/master/src/components/table/screenshot1.png?raw=true)
+
 ## Examples
 
 ```js
