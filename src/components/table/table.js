@@ -3,6 +3,7 @@ import React from 'react'
 import Content from './content'
 import Scroll from 'components/scroll'
 import cn from 'classNames'
+import Resize from 'highorder/resize'
 
 require('./stylesheet.css')
 
@@ -12,14 +13,12 @@ class Table extends React.Component {
     this.state = {
       scrollTo: 0,
       scrollMovement: 0,
-      indexAt: 0,
-      resize: false
+      indexAt: 0
     }
 
     this.onScroll = this.onScroll.bind(this)
     this.onMouseWheel = this.onMouseWheel.bind(this)
     this.onSelect = this.onSelect.bind(this)
-    this.onResize = this.onResize.bind(this)
   }
 
   onMouseWheel(evt) {
@@ -45,17 +44,13 @@ class Table extends React.Component {
     this.setState({scrollTo})
   }
 
-  onResize() {
-    this.setState({resize: !this.state.resize})
-  }
-
   render() {
-    const {data, columns, perPage, rowRenderer, select, className} = this.props;
+    const {data, columns, perPage, rowRenderer, select, className, clientWidth, clientHeight} = this.props;
     const {indexAt, scrollTo, scrollMovement} = this.state;
 
     return(
       <div className={cn("table", className)}>
-        <Content data={data} indexAt={indexAt} rowRenderer={rowRenderer} columns={columns} select={select} perPage={perPage} selectHandler={this.onSelect} />
+        <Content data={data} indexAt={indexAt} rowRenderer={rowRenderer} columns={columns} select={select} perPage={perPage} selectHandler={this.onSelect} clientWidth={clientWidth} clientHeight={clientHeight}/>
         { this.props.scrollVisible &&
           <Scroll className="table-scroll" scrollTo={scrollTo} scrollMovement={scrollMovement} scrollHandler={this.onScroll} height={data.length * 10}/>
         }
@@ -67,16 +62,12 @@ class Table extends React.Component {
     if(this.props.scrollVisible) {
       findDOMNode(this).addEventListener("mousewheel", this.onMouseWheel, false);
     }
-
-    window.addEventListener('resize', this.onResize, false)
   }
 
   componentWillUnmount() {
     if(this.props.scrollVisible) {
       findDOMNode(this).removeEventListener("mousewheel", this.onMouseWheel, false);
     }
-
-    window.removeEventListener('resize', this.onResize, false)
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -97,7 +88,7 @@ Table.propTypes = {
 
 Table.defaultProps = {
   scrollVisible: true,
-  perPage: 40
+  perPage: 100
 }
 
-export default Table
+export default Resize(Table)

@@ -5,7 +5,7 @@ require('./stylesheet.css')
 
 let data = []
 
-for(var i=1; i<1001; i++) {
+for(var i=1; i<1000; i++) {
   data.push({id: i, first_name: "jamal"})
 }
 
@@ -23,22 +23,26 @@ const columns = [
 const rowRenderer = (item, props) => {
   if(props.type === "header") {
     return(
-      <div className="customHeader">
+      <div className="header">
         {props.columns.map((c) => {
-          return(<div key={c.attribute}>{c.displayName}</div>)
+          return(<div className="column" key={c.attribute}>{c.displayName}</div>)
         })}
       </div>
     )
   }
 
   return(
-    <div className="customItem">
-      <div>{item.id}</div>
-      <div>{item.first_name}</div>
+    <div className="row">
+      {props.columns.map((c) => (
+        <div key={c.attribute} className="column">
+          <div className="attribute">{c.displayName}:</div>
+          <div className="value">{item[c.attribute]}</div>
+        </div>
+      ))}
     </div>
   )
 }
 
 export default () => (
-  <Table className="customTable" data={data} rowRenderer={rowRenderer} columns={columns} select={{id:500}} />
+  <Table className="customTable" data={data} rowRenderer={rowRenderer} columns={columns} />
 )

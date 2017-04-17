@@ -9,20 +9,6 @@ export default class Content extends React.Component {
     this.state = { options: { columns: props.columns, select: props.select, setOptions: this.setOptions.bind(this) } };
   }
 
-  get node() {
-    return findDOMNode(this);
-  }
-
-  get scrollHeight() {
-    const node = findDOMNode(this);
-    return this.state.scrollHeight || this.node.scrollHeight
-  }
-
-  get missingHeight() {
-    const node = findDOMNode(this);
-    return this.scrollHeight - this.node.clientHeight;
-  }
-
   get data() {
     const { data, perPage, indexAt} = this.props;
     const dataLength = data.length
@@ -41,13 +27,12 @@ export default class Content extends React.Component {
     return data.slice(from, to)
   }
 
-  get style() {
+  get top() {
+    if(!this.state.scrollHeight) return;
     const { data, indexAt } = this.props;
-    const missingHeight = this.state.missingHeight;
-    if(!missingHeight) return;
+    const leftScrollHeight = this.state.scrollHeight - this.state.clientHeight;
     const percent = indexAt / data.length * 100;
-    const top = percent / 100 * missingHeight;
-    return { top: `-${top}px` }
+    return percent / 100 * leftScrollHeight;
   }
 
   setOptions(option) {
@@ -62,30 +47,31 @@ export default class Content extends React.Component {
     selectHandler(index)
   }
 
-  calculateTop() {
-    if(!this.state.scrollHeight) {
-      this.setState({scrollHeight: this.scrollHeight})
-    }
-
-    this.setState({missingHeight: this.missingHeight})
-  }
-
   render() {
     const { rowRenderer } = this.props;
 
     return(
       <div className="table-content">
         <Header rowRenderer={rowRenderer} options={{...this.state.options, type: 'header'}} />
-        <div className="table-body">
-          <List className="table-list" style={this.style} itemRenderer={rowRenderer} data={this.data} options={{...this.state.options, type: 'item'}} />
+        <div className="table-body" ref="body">
+          <List className="table-list" style={{ top: `-${this.top}px` }} itemRenderer={rowRenderer} data={this.data} options={{...this.state.options, type: 'item'}} ref="list" />
         </div>
       </div>
     )
   }
 
+  get SCHeight() {
+    const scrollHeight = findDOMNode(this.refs.list).scrollHeight;
+    const clientHeight = findDOMNode(this.refs.body).clientHeight
+    return {scrollHeight, clientHeight};
+  }
+
   componentDidMount() {
     this.findSelected()
-    this.calculateTop();
+
+    if(!this.state.scrollHeight) {
+      this.setState(this.SCHeight)
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -93,8 +79,11 @@ export default class Content extends React.Component {
       this.findSelected()
     }
 
-    if(this.missingHeight !== this.state.missingHeight) {
-      this.calculateTop();
+    if(prevProps.clientWidth !== this.props.clientWidth) {
+      const SCHeight = this.SCHeight
+      if(this.state.scrollHeight !== SCHeight.scrollHeight) {
+        this.setState(SCHeight)
+      }
     }
   }
 }
