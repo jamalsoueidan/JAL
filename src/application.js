@@ -84,8 +84,9 @@ class Application extends React.Component {
   render() {
     return(
       <Splitter className="applicationSplitter" panes={[30, 70]}>
-        <div>{this.doc}{this.navigation}</div>
-        <div>
+        <div className="sidebar">{this.doc}{this.navigation}</div>
+        <div className="main">
+          <h1>{this.state.route.name.substring(12)} component</h1>
           {this.example}
         </div>
       </Splitter>

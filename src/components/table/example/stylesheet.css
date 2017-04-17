@@ -1,4 +1,6 @@
 .customTable {
+  height: 400px;
+
   div.customItem, div.customHeader {
     display: flex;
     border: 1px solid #000;
