@@ -11,21 +11,14 @@
     width: 100%;
 
     .table-header {
-      position: relative;
-      background-color: #fff;
-      z-index: 999;
-
-      & > div {
-        display: flex;
-        width: 100%;
-      }
+      display: none;
     }
 
     .table-body {
       position: relative;
-      min-height: 280px;
-      height: calc(100% - 40px);
-      width: calc(100% - 15px);
+      min-height: 300px;
+      height: 100%;
+      width: 100%;
 
       .table-list {
         position: absolute;
@@ -33,17 +26,88 @@
         height: 100%;
         top: 0px;
 
-        & > div {
+        item:last-child {
+          border: none;
+        }
+
+        .row {
           display: flex;
+          flex-direction: column;
+          border-bottom: 1px solid #eee;
+          flex: 1;
+
+          .column {
+            display: flex;
+            flex-direction: row;
+            padding: 5px;
+
+            .attribute {
+              font-weight: bold;
+            }
+          }
         }
       }
     }
   }
-
   .table-scroll {
     position: absolute;
-    top: 40px;
-    right: 0px;
-    height: calc(100% - 40px);
+    top: 0;
+    right: 0;
+    height: 100%;
+  }
+}
+
+@media (width < 700px) {
+  .table .table-content .table-body .table-list .row .column {
+    width: auto !important;
+  }
+}
+
+@media (width >= 700px) {
+  .table {
+    .table-content {
+      .table-header {
+        display: flex;
+        background: linear-gradient(to bottom, #f7f7f7 0%, #efefef 13%, #e6e6e6 100%);
+        border-bottom: 1px solid $border;
+        height: 40px;
+        line-height: 40px;
+        position: relative;
+        z-index: 10000;
+
+        .header {
+          display: flex;
+          flex-direction: row;
+          flex: 1;
+        }
+
+        .column {
+          flex: 1;
+          padding-left: 5px;
+        }
+      }
+
+      .table-body {
+        min-height: 280px;
+        height: calc(100% - 40px);
+
+        .table-list {
+          .row {
+            flex-direction: row;
+            .column {
+              flex: 1;
+              .attribute {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .scroll {
+      height: calc(100% - 40px);
+      top: 40px;
+    }
   }
 }
