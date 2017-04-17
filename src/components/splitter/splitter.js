@@ -58,7 +58,7 @@ class Splitter extends React.Component {
     const length = clientLength - elementPosition; // set new height or width depending on orientation
     currentPane.length = (length / this.state.totalLength) * 100; // convert to percent
     nextPane.length = (currentPane.startLength - currentPane.length) + nextPane.startLength // move the unfilled space to the next pane
-    if(currentPane.length<12 || nextPane.length<12) return; /// ??
+    if(currentPane.length<15 || nextPane.length<15) return; /// ??
     this.setState({panes: { ...panes, [index]: currentPane, [index+1]: nextPane }})
   }
 
@@ -107,10 +107,9 @@ class Splitter extends React.Component {
   }
 
   render() {
-    const { orientation } = this.props;
-    const classNames = cn("splitter", orientation)
+    const { orientation, className } = this.props;
     return(
-      <div className={classNames} style={{flexDirection: this.flexDirection}}>
+      <div className={cn("splitter", orientation, className)} style={{flexDirection: this.flexDirection}}>
         {this.state.panes && this.renderPanes}
       </div>
     )

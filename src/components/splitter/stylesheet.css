@@ -21,6 +21,7 @@
     > .pane-divider {
       width: 100%;
       height: 10px;
+      min-height: 10px;
       cursor: n-resize;
     }
   }
@@ -29,6 +30,7 @@
     > .pane-divider {
       height: 100%;
       width: 10px;
+      min-width: 10px;
       cursor: e-resize;
     }
   }
