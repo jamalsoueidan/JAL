@@ -59,7 +59,6 @@ export default class extends React.Component {
           <button onClick={this.showLastYear.bind(this)}>Sidste år</button>
           <button onClick={this.showCooling.bind(this)}>Afkøling</button>
         </div>
-        <h1>Responsive</h1>
         <div className="overflow">
           <div className="float">
             <BarChart className="el" data={time} {...this.state} />
@@ -71,7 +70,6 @@ export default class extends React.Component {
             <BarChart className="heat" data={chart2} marginLeft={45} {...this.state} hideAxisX />
           </div>
         </div>
-        <h1>Fixed</h1>
         <BarChart data={chart1} {...this.state} width="500" height="500" />
       </div>
     )
