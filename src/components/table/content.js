@@ -79,9 +79,9 @@ export default class Content extends React.Component {
       this.findSelected()
     }
 
-    if(prevProps.clientWidth !== this.props.clientWidth) {
+    if(prevProps.clientWidth !== this.props.clientWidth || prevProps.clientHeight !== this.props.clientHeight) {
       const SCHeight = this.SCHeight
-      if(this.state.scrollHeight !== SCHeight.scrollHeight) {
+      if(this.state.scrollHeight !== SCHeight.scrollHeight || this.state.clientHeight !== SCHeight.clientHeight) {
         this.setState(SCHeight)
       }
     }
