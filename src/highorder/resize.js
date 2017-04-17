@@ -1,5 +1,6 @@
 import React from 'react'
 import { findDOMNode } from 'react-dom'
+import debounce from 'utils/debounce'
 
 export default (WrappedComponent) => class extends React.Component {
   constructor(props) {
@@ -9,7 +10,7 @@ export default (WrappedComponent) => class extends React.Component {
       clientHeight: 0
     }
 
-    this.onResize = this.onResize.bind(this)
+    this.onResize = debounce(this.onResize.bind(this), 500).bind(this)
   }
 
   onResize() {
