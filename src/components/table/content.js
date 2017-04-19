@@ -14,7 +14,7 @@ export default class Content extends React.Component {
     const dataLength = data.length
 
     //perPage
-    const percent = indexAt / data.length * 100
+    const percent = Math.floor(indexAt / data.length * 100)
     const divide = Math.ceil(percent / 100 * perPage);
 
     let from = indexAt - divide;
