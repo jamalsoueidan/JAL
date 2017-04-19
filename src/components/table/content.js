@@ -75,7 +75,7 @@ export default class Content extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(prevProps.selected!==this.props.selected) {
+    if(prevProps.select!==this.props.select) {
       this.findSelected()
     }
 
