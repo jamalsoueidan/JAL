@@ -12,22 +12,12 @@ class Table extends React.Component {
     super(props);
     this.state = {
       scrollTo: 0,
-      scrollMovement: 0,
+      scrollHeight: 0,
       indexAt: 0
     }
 
     this.onScroll = this.onScroll.bind(this)
-    this.onMouseWheel = this.onMouseWheel.bind(this)
     this.onSelect = this.onSelect.bind(this)
-  }
-
-  onMouseWheel(evt) {
-    evt.preventDefault();
-    if(evt.wheelDelta>0) {
-      this.setState({scrollMovement: -1})
-    } else {
-      this.setState({scrollMovement: 1})
-    }
   }
 
   // onScroll => update list
@@ -44,36 +34,21 @@ class Table extends React.Component {
     this.setState({scrollTo})
   }
 
+  onHeightHandler(scrollHeight) {
+    this.setState({scrollHeight})
+  }
+
   render() {
-    const {data, columns, perPage, rowRenderer, select, className, clientWidth, clientHeight} = this.props;
+    const {data, columns, perPage, rowRenderer, select, className} = this.props;
     const {indexAt, scrollTo, scrollMovement} = this.state;
 
     return(
       <div className={cn("table", className)}>
-        <Content data={data} indexAt={indexAt} rowRenderer={rowRenderer} columns={columns} select={select} perPage={perPage} selectHandler={this.onSelect} clientWidth={clientWidth} clientHeight={clientHeight}/>
-        { this.props.scrollVisible &&
-          <Scroll className="table-scroll" scrollTo={scrollTo} scrollMovement={scrollMovement} scrollHandler={this.onScroll} height={data.length * 10}/>
-        }
+        <Scroll className="table-scroll" onHeightHandler={this.onHeightHandler.bind(this)} scrollTo={scrollTo} onScrollHandler={this.onScroll} height={data.length * 10}>
+          <Content scrollHeight={this.state.scrollHeight} data={data} indexAt={indexAt} rowRenderer={rowRenderer} columns={columns} select={select} perPage={perPage} selectHandler={this.onSelect} />
+        </Scroll>
       </div>
     )
-  }
-
-  componentDidMount() {
-    if(this.props.scrollVisible) {
-      findDOMNode(this).addEventListener("mousewheel", this.onMouseWheel, false);
-    }
-  }
-
-  componentWillUnmount() {
-    if(this.props.scrollVisible) {
-      findDOMNode(this).removeEventListener("mousewheel", this.onMouseWheel, false);
-    }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if(prevState.scrollMovement!==this.state.scrollMovement) {
-      this.setState({scrollMovement: null})
-    }
   }
 }
 
@@ -82,7 +57,6 @@ Table.propTypes = {
   data: React.PropTypes.array.isRequired,
   perPage: React.PropTypes.number.isRequired,
   rowRenderer: React.PropTypes.func.isRequired,
-  scrollVisible: React.PropTypes.bool.isRequired,
   select: React.PropTypes.object
 };
 

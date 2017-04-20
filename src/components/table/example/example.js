@@ -43,6 +43,25 @@ const rowRenderer = (item, props) => {
   )
 }
 
-export default () => (
-  <Table className="customTable" data={data} rowRenderer={rowRenderer} columns={columns} />
-)
+export default class extends React.Component {
+  constructor() {
+    super();
+    this.state = {select: {id: null}}
+  }
+  onClick() {
+    this.setState({
+      select: {
+        id: Math.floor(Math.random()*1000)
+      }
+    })
+  }
+
+  render() {
+    return(
+      <div>
+        <Table className="customTable" data={data} rowRenderer={rowRenderer} columns={columns} select={this.state.select}/>
+        <button onClick={this.onClick.bind(this)}>{this.state.select.id}</button>
+      </div>
+    )
+  }
+}

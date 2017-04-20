@@ -29,4 +29,6 @@ export default () => (
 ## Features
 
 - Drag/Drop
-- ...
+- Redefine the setOptions
+- Optimize, it feels slow?
+- Can define mobile view or desktop view props?

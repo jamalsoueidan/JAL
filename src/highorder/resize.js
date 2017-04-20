@@ -26,7 +26,6 @@ export default (WrappedComponent) => class extends React.Component {
   }
 
   componentDidMount() {
-    this.onResize();
     window.addEventListener('resize', this.onResize, false)
   }
 

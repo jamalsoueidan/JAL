@@ -28,11 +28,12 @@ export default class Content extends React.Component {
   }
 
   get top() {
-    if(!this.state.scrollHeight) return;
+    const { clientHeight, scrollHeight } = this.state;
+
+    if(!clientHeight || !scrollHeight) return 0;
     const { data, indexAt } = this.props;
-    const leftScrollHeight = this.state.scrollHeight - this.state.clientHeight;
     const percent = indexAt / data.length * 100;
-    return percent / 100 * leftScrollHeight;
+    return percent / 100 * (clientHeight - scrollHeight);
   }
 
   setOptions(option) {
@@ -49,29 +50,11 @@ export default class Content extends React.Component {
 
   render() {
     const { rowRenderer } = this.props;
-
-    return(
-      <div className="table-content">
-        <Header rowRenderer={rowRenderer} options={{...this.state.options, type: 'header'}} />
-        <div className="table-body" ref="body">
-          <List className="table-list" style={{ top: `-${this.top}px` }} itemRenderer={rowRenderer} data={this.data} options={{...this.state.options, type: 'item'}} ref="list" />
-        </div>
-      </div>
-    )
-  }
-
-  get SCHeight() {
-    const scrollHeight = findDOMNode(this.refs.list).scrollHeight;
-    const clientHeight = findDOMNode(this.refs.body).clientHeight
-    return {scrollHeight, clientHeight};
+    return <List className="table-list" style={{ position: "absolute", top: `-${this.top}px` }} itemRenderer={rowRenderer} data={this.data} options={{...this.state.options, type: 'item'}} ref="list" />
   }
 
   componentDidMount() {
     this.findSelected()
-
-    if(!this.state.scrollHeight) {
-      this.setState(this.SCHeight)
-    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -79,9 +62,14 @@ export default class Content extends React.Component {
       this.findSelected()
     }
 
+    if(prevProps.scrollHeight !== this.props.scrollHeight) {
+      const clientHeight = findDOMNode(this).clientHeight;
+      this.setState({clientHeight, scrollHeight: this.props.scrollHeight})
+    }
+
     if(prevProps.clientWidth !== this.props.clientWidth || prevProps.clientHeight !== this.props.clientHeight) {
       const SCHeight = this.SCHeight
-      if(this.state.scrollHeight !== SCHeight.scrollHeight || this.state.clientHeight !== SCHeight.clientHeight) {
+      if(this.state.clientHeight !== SCHeight.clientHeight) {
         this.setState(SCHeight)
       }
     }
