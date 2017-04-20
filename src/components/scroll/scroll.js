@@ -32,7 +32,7 @@ class Scroll extends React.Component {
   onScroll(evt) {
     const  { onScrollHandler } = this.props;
     const scrollPosition = this.node.scrollTop;
-    const scrollProcent = Math.floor(scrollPosition / this.scrollHeight * 100);
+    const scrollProcent = scrollPosition / this.scrollHeight * 100;
     onScrollHandler(scrollProcent)
   }
 

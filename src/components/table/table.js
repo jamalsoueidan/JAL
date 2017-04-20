@@ -44,7 +44,7 @@ class Table extends React.Component {
 
     return(
       <div className={cn("table", className)}>
-        <Scroll className="table-scroll" onHeightHandler={this.onHeightHandler.bind(this)} scrollTo={scrollTo} onScrollHandler={this.onScroll} height={data.length * 10}>
+        <Scroll className="table-scroll" onHeightHandler={this.onHeightHandler.bind(this)} scrollTo={scrollTo} onScrollHandler={this.onScroll} height={data.length * 1}>
           <Content scrollHeight={this.state.scrollHeight} data={data} indexAt={indexAt} rowRenderer={rowRenderer} columns={columns} select={select} perPage={perPage} selectHandler={this.onSelect} />
         </Scroll>
       </div>

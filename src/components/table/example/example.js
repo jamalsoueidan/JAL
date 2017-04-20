@@ -5,7 +5,7 @@ require('./stylesheet.css')
 
 let data = []
 
-for(var i=1; i<1000; i++) {
+for(var i=1; i<1000000; i++) {
   data.push({id: i, first_name: "jamal"})
 }
 
