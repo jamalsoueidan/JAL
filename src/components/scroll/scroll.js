@@ -41,8 +41,9 @@ class Scroll extends React.Component {
     const className = cn("scroll", this.props.className)
     return(
       <div className={className}>
-        <div style={{visibility: "hidden", height: `${height}px`}}></div>
-        {children}
+        <div style={{position: "relative", height: `${height}px`}}>
+          {children}
+        </div>
       </div>
     )
   }
